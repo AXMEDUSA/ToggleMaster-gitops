@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+  namespace: analytics-service-prd
+spec:
+  type: ClusterIP
+  selector:
+    app: analytics-service
+  ports:
+    - port: 8005
+      targetPort: 8005
+      protocol: TCP
+      name: http

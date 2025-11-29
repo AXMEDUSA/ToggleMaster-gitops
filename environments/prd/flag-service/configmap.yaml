@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flag-config
+  namespace: flag-service-prd
+data:
+  FLAG_PORT: "8002"
+  FLAG_DB: "flag_db"
+  FLAG_DB_URL: "postgres://postgres:postgres@flag-postgres:5432/flag_db?sslmode=disable"
+  AUTH_URL: "http://auth-service.auth-service-prd.svc.cluster.local:8001/validate"

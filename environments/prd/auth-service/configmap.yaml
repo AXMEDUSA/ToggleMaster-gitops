@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: auth-service-prd
+data:
+  AUTH_PORT: "8001"
+  AUTH_DB_URL: "postgres://postgres:postgres@auth-postgres:5432/auth_db?sslmode=disable"
+  MASTER_KEY: "admin-secreto-123"
+  POSTGRES_USER: "postgres"
+  POSTGRES_DB: "auth_db"

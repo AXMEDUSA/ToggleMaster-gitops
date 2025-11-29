@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: targeting-service
+  namespace: targeting-service-prd
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: targeting-service
+  template:
+    metadata:
+      labels:
+        app: targeting-service
+    spec:
+      imagePullSecrets:
+        - name: acr-pull-secret
+      containers:
+        - name: targeting-service
+          image: toggleacr.azurecr.io/targeting-service:latest
+          ports:
+            - containerPort: 8003
+          envFrom:
+            - configMapRef:
+                name: targeting-config
+            - secretRef:
+                name: targeting-secrets
