@@ -4,7 +4,8 @@ metadata:
   name: evaluation-config
   namespace: evaluation-service-prd
 data:
-  EVA_PORT: "8004"
-  REDIS_URL: "redis://redis:6379"
+  PORT: "8004"
+  REDIS_URL: "redis://:$(REDIS_PASSWORD)@redis-togglemaster.redis.cache.windows.net:6380?ssl=true"
   FLAG_SERVICE_URL: "http://flag-service.flag-service-prd.svc.cluster.local:8002"
   TARGETING_SERVICE_URL: "http://targeting-service.targeting-service-prd.svc.cluster.local:8003"
+  AWS_SQS_URL: "https://satogglemaster.queue.core.windows.net/fila-togglemaster"
