@@ -4,7 +4,7 @@ metadata:
   name: targeting-config
   namespace: targeting-service-prd
 data:
-  TARG_PORT: "8003"
-  TARGETING_DB: "targeting_db"
-  TARGETING_DB_URL: "postgres://postgres:postgres@targeting-postgres:5432/targeting_db?sslmode=disable"
+  PORT: "8003"
+  POSTGRES_USER: "fiapadmin"
+  DATABASE_URL: "postgresql://fiapadmin:IK5bKDl9lJh2joyHnO32MKlb9Gd0y@pgsql-fiap-targeting-pe.postgres.database.azure.com/postgres?sslmode=require"
   AUTH_SERVICE_URL: "http://auth-service.auth-service-prd.svc.cluster.local:8001"
