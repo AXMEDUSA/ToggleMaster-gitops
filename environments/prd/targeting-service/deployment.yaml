@@ -17,7 +17,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: targeting-service
-          image: toggleacr.azurecr.io/targeting-service:latest
+          image: toggleacr.azurecr.io/targeting-service:d7f5c66
           ports:
             - containerPort: 8003
           envFrom:
