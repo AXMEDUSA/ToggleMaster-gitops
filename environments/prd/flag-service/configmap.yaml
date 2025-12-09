@@ -7,4 +7,4 @@ data:
   PORT: "8002"
   POSTGRES_USER: "fiapadmin"
   DATABASE_URL: "postgresql://fiapadmin:ujLwCUkN815I0rB7TpQjpPLys772U@pgsql-fiap-flag-pe.postgres.database.azure.com/postgres?sslmode=require"
-  AUTH_SERVICE_URL: "http://auth.132.196.214.124.nip.io/validate"
+  AUTH_SERVICE_URL: "http://auth-service.auth-service-prd.svc.cluster.local:8001/validate"
