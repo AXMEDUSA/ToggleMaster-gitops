@@ -5,5 +5,4 @@ metadata:
   namespace: analytics-service-prd
 data:
   ANALYTICS_PORT: "8005"
-  AWS_DYNAMODB_TABLE: "togglemaster"
-  AWS_REGION: "us-east-2"
+  AZURE_TABLE_NAME: "togglemaster"
