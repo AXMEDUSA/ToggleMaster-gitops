@@ -6,5 +6,5 @@ metadata:
 data:
   PORT: "8003"
   POSTGRES_USER: "fiapadmin"
-  DATABASE_URL: "postgresql://fiapadmin:IK5bKDl9lJh2joyHnO32MKlb9Gd0y@pgsql-fiap-targeting-pe.postgres.database.azure.com/postgres?sslmode=require"
+  DATABASE_URL: "postgresql://fiapadmin:IK5bKDl9lJh2joyHnO32MKlb9Gd0y@pgsql-fiap-targeting-pe.postgres.database.azure.com/targeting_db?sslmode=require"
   AUTH_SERVICE_URL: "http://auth.132.196.214.124.nip.io"
