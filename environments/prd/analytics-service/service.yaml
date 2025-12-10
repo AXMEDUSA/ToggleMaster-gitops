@@ -12,3 +12,6 @@ spec:
       targetPort: 8005
       protocol: TCP
       name: http
+
+
+#kubectl run -it --rm curl --image=curlimages/curl -n analytics-service-prd --restart=Never -- curl http://analytics-service.analytics-service-prd.svc.cluster.local:8005/health

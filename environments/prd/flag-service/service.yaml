@@ -12,3 +12,6 @@ spec:
       targetPort: 8002
       protocol: TCP
       name: http
+
+
+# kubectl run -it --rm curl --image=curlimages/curl -n flag-service-prd --restart=Never -- curl http://flag-service.flag-service-prd.svc.cluster.local:8002/health

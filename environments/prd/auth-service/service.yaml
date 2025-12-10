@@ -12,3 +12,6 @@ spec:
     targetPort: 8001
     protocol: TCP
     name: http
+
+#Cliente → LoadBalancer (80/443) → Ingress → Service (80) → Pod (8001)
+#testar: kubectl run -it --rm curl --image=curlimages/curl -n auth-service-prd --restart=Never -- curl http://auth-service.auth-service-prd.svc.cluster.local:80/health

@@ -12,3 +12,6 @@ spec:
       targetPort: 8003
       protocol: TCP
       name: http
+
+
+#kubectl run -it --rm curl --image=curlimages/curl -n targeting-service-prd --restart=Never -- curl http://targeting-service.targeting-service-prd.svc.cluster.local:8003/health

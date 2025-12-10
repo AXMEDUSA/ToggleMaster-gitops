@@ -12,3 +12,6 @@ spec:
       targetPort: 8004
       protocol: TCP
       name: http
+
+
+#kubectl run -it --rm curl --image=curlimages/curl -n evaluation-service-prd --restart=Never -- curl http://evaluation-service.evaluation-service-prd.svc.cluster.local:8004/health
