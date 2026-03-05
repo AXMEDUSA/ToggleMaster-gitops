@@ -4,7 +4,7 @@ metadata:
   name: auth-service
   namespace: argocd
 spec:
-  project: auth-service
+  project: environments\prd\auth-service
 
   source:
     repoURL: https://github.com/AXMEDUSA/ToggleMaster-gitops.git
