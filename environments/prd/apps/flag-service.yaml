@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: auth-service
+  name: flag-service
   namespace: argocd
 spec:
-  project: auth-service
+  project: default
 
   source:
     repoURL: https://github.com/AXMEDUSA/ToggleMaster-gitops.git
