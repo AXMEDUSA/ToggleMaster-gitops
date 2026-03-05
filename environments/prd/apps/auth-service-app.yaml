@@ -4,16 +4,16 @@ metadata:
   name: auth-service
   namespace: argocd
 spec:
-  project: environments\prd\auth-service
+  project: default
 
   source:
     repoURL: https://github.com/AXMEDUSA/ToggleMaster-gitops.git
     targetRevision: main
-    path: auth-service
+    path: environments/prd/auth-service 
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: auth-service   
 
   syncPolicy:
     automated:
