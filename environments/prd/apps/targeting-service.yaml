@@ -9,11 +9,11 @@ spec:
   source:
     repoURL: https://github.com/AXMEDUSA/ToggleMaster-gitops.git
     targetRevision: main
-    path: auth-service
+    path: environments/prd/targeting-service 
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: targeting-service
 
   syncPolicy:
     automated:
