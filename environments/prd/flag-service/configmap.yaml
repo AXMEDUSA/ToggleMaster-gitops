@@ -6,5 +6,5 @@ metadata:
 data:
   PORT: "8002"
   POSTGRES_USER: "adminuser"
-  DATABASE_URL: "postgresql://adminuser:senha@123@flag.postgres.database.azure.com/flag_db?sslmode=require"
+  DATABASE_URL: "postgresql://adminuser:senha123@flag.postgres.database.azure.com/flag_db?sslmode=require"
   AUTH_SERVICE_URL: "http://auth-service.auth-service-prd.svc.cluster.local:80"

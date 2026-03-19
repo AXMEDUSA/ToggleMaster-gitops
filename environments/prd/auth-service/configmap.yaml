@@ -5,7 +5,7 @@ metadata:
   namespace: auth-service-prd
 data:
   AUTH_PORT: "8001"
-  DATABASE_URL: "postgresql://adminuser:senha@123@auth-fiap.postgres.database.azure.com:5432/auth_db?sslmode=require"
+  DATABASE_URL: "postgresql://adminuser:senha123@auth-fiap.postgres.database.azure.com:5432/auth_db?sslmode=require"
   MASTER_KEY: "admin-secreto-123"
   POSTGRES_USER: "psqladmin"
   POSTGRES_DB: "auth_db"
