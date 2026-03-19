@@ -17,7 +17,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: evaluation-service
-          image: toggleacr.azurecr.io/evaluation-service:72c6529
+          image: toggleacr.azurecr.io/evaluation-service:18126b1
           ports:
             - containerPort: 8004
           envFrom:

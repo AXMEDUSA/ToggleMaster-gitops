@@ -18,7 +18,7 @@ spec:
       containers:
         - name: analytics-service
         # alterando a tag
-          image: toggleacr.azurecr.io/analytics-service:96a80b2
+          image: toggleacr.azurecr.io/analytics-service:8fc6ebd
           ports:
             - containerPort: 8005
           envFrom:
