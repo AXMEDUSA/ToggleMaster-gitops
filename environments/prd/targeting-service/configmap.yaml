@@ -6,6 +6,6 @@ metadata:
 data:
   PORT: "8003"
   POSTGRES_USER: "adminuser"
-  DATABASE_URL: "postgresql://adminuser:senha123@targeting.postgres.database.azure.com/targeting_db?sslmode=require"
-  AUTH_DATABASE_URL: "postgresql://adminuser:senha@123@auth-fiap.postgres.database.azure.com:5432/auth_db?sslmode=require"
-  AUTH_SERVICE_URL: "http://auth.20.41.58.199.nip.io"
+  DATABASE_URL: "postgresql://adminuser:T0ggl3M%40ster2026!@pg-targeting-togglemaster-fase4.postgres.database.azure.com/targeting_db?sslmode=require"
+  AUTH_DATABASE_URL: "postgresql://adminuser:T0ggl3M%40ster2026!@pg-auth-togglemaster-fase4.postgres.database.azure.com:5432/auth_db?sslmode=require"
+  AUTH_SERVICE_URL: "http://auth-service.auth-service-prd.svc.cluster.local:80"
