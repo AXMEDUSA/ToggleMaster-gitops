@@ -4,7 +4,7 @@ metadata:
   name: auth-service
   namespace: auth-service-prd
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: auth-service
