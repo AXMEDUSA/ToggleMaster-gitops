@@ -13,7 +13,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: flag-service   
+    namespace: flag-service-prd
 
   syncPolicy:
     automated:

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: targeting-service
+  name: analytics-service
   namespace: argocd
 spec:
   project: default
@@ -9,11 +9,11 @@ spec:
   source:
     repoURL: https://github.com/AXMEDUSA/ToggleMaster-gitops.git
     targetRevision: main
-    path: environments/prd/targeting-service 
+    path: environments/prd/analytics-service
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: targeting-service-prd
+    namespace: analytics-service-prd
 
   syncPolicy:
     automated:
