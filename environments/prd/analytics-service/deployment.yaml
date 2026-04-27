@@ -4,7 +4,7 @@ metadata:
   name: analytics-service
   namespace: analytics-service-prd
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: analytics-service
@@ -17,7 +17,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: analytics-service
-          image: toggleacrfase3.azurecr.io/analytics-service:3b52e25
+          image: toggleacrfase4.azurecr.io/analytics-service:latest
           ports:
             - containerPort: 8005
           envFrom:
