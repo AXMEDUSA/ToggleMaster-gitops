@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>ToggleMaster GitOps — Diagrama</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0d1117;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'DejaVu Sans Mono',monospace}
+  canvas{display:block}
+</style>
+</head>
+<body>
+<canvas id="c" width="720" height="540"></canvas>
+<script>
+const C=document.getElementById('c'),X=C.getContext('2d');
+const W=720,H=540,FPS=12,DUR=16,PAUSE=2,TOTAL=(DUR+PAUSE)*FPS;
+let t=0;
+
+const BG='#0d1117',CARD='#16181a',BORDER='#21262d';
+const BLUE='#388bfd',GREEN='#3fb950',ORANGE='#f0883e',PURPLE='#bc8cff';
+const YELLOW='#e3b341',WHITE='#e6edf3',DIM='#8b949e',DIMMER='#484f58',CYAN='#38cbED';
+
+function lerp(a,b,t){return a+(b-a)*t}
+function ease(t){t=Math.max(0,Math.min(1,t));return 1-Math.pow(1-t,3)}
+function prog(f,s,e){if(f<=s)return 0;if(f>=e)return 1;return ease((f-s)/(e-s))}
+function ab(hex,a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  const br=parseInt(BG.slice(1,3),16),bg=parseInt(BG.slice(3,5),16),bb=parseInt(BG.slice(5,7),16);
+  return `rgb(${Math.round(br+(r-br)*a)},${Math.round(bg+(g-bg)*a)},${Math.round(bb+(b-bb)*a)})`;
+}
+
+function rr(x0,y0,x1,y1,r,fill,stroke,sw=1){
+  X.beginPath();X.roundRect(x0,y0,x1-x0,y1-y0,r);
+  if(fill){X.fillStyle=fill;X.fill();}
+  if(stroke){X.strokeStyle=stroke;X.lineWidth=sw;X.stroke();}
+}
+
+function tc(cx,y,txt,size,fill){
+  X.font=`${size}px monospace`;X.fillStyle=fill;X.textAlign='center';
+  X.fillText(txt,cx,y);X.textAlign='left';
+}
+
+function dashed(x0,y0,x1,y1,col,ratio=1,w=2){
+  if(ratio<=0)return;
+  const ex=x0+(x1-x0)*ratio,ey=y0+(y1-y0)*ratio;
+  X.save();X.strokeStyle=col;X.lineWidth=w;X.setLineDash([7,4]);
+  X.beginPath();X.moveTo(x0,y0);X.lineTo(ex,ey);X.stroke();
+  X.setLineDash([]);X.restore();
+}
+
+function pkt(x0,y0,x1,y1,p,col,label=''){
+  if(p<=0||p>=1)return;
+  const px=x0+(x1-x0)*p,py=y0+(y1-y0)*p;
+  X.beginPath();X.arc(px,py,5,0,Math.PI*2);X.fillStyle=col;X.fill();
+  if(label){X.font='8px monospace';X.fillStyle=col;X.fillText(label,px+8,py+3);}
+}
+
+function node(cx,cy,w,h,title,sub,col,a,badge=''){
+  if(a<=0)return;
+  const x0=cx-w/2,y0=cy-h/2,x1=cx+w/2,y1=cy+h/2;
+  rr(x0,y0,x1,y1,6,ab(CARD,a),ab(col,a),2);
+  X.font='11px monospace';X.fillStyle=ab(col,a);X.textAlign='center';
+  X.fillText(title,cx,y0+16);
+  X.font='9px monospace';X.fillStyle=ab(DIM,a);
+  X.fillText(sub,cx,y0+29);
+  X.textAlign='left';
+  if(badge){
+    const bw=badge.length*6+8;
+    rr(x1-bw-2,y0+2,x1-2,y0+14,3,ab(col,a),null);
+    X.font='8px monospace';X.fillStyle=ab(BG,a);X.textAlign='center';
+    X.fillText(badge,x1-bw/2-2,y0+11);X.textAlign='left';
+  }
+}
+
+function draw(f){
+  X.fillStyle=BG;X.fillRect(0,0,W,H);
+
+  // título
+  const ta=prog(f,0,8);
+  tc(W/2,28,'ToggleMaster GitOps',20,ab(WHITE,ta));
+  tc(W/2,44,'AKS · ArgoCD · Prometheus · Loki · Grafana',9,ab(DIM,ta));
+
+  // labels seção
+  const la=prog(f,6,14);
+  X.font='9px monospace';X.fillStyle=ab(DIM,la);
+  X.fillText('GITHUB',18,62);
+  X.fillText('ARGOCD',200,62);
+  X.fillText('AKS CLUSTER',390,62);
+  X.fillText('OBSERVABILIDADE',565,62);
+
+  // separadores
+  const sa=prog(f,8,16);
+  [185,375,558].forEach(sx=>{
+    X.strokeStyle=ab(BORDER,sa);X.lineWidth=1;
+    X.beginPath();X.moveTo(sx,54);X.lineTo(sx,H-28);X.stroke();
+  });
+
+  // GITHUB
+  const ga=prog(f,8,18);
+  node(92,105,144,42,'ToggleMaster-gitops','github.com/AXMEDUSA',BLUE,ga);
+  node(92,167,144,42,'ToggleMaster-AppRepo','CI/CD · Docker · ACR',CYAN,ga);
+
+  // ARGOCD
+  const aa=prog(f,12,22);
+  node(285,105,144,42,'ArgoCD','sync · selfHeal · prune',ORANGE,aa,'prd');
+  const apps=[['observability',PURPLE],['flag-service',GREEN],['auth-service',GREEN],
+               ['eval-service',GREEN],['analytics',YELLOW],['targeting',GREEN]];
+  apps.forEach(([name,col],i)=>{
+    node(285,162+i*46,134,34,name,'Synced ✓',col,aa*prog(f,14+i,22+i));
+  });
+
+  // AKS microsserviços
+  const ka=prog(f,16,26);
+  const svcs=[['flag-service-prd',GREEN,8002],['auth-service-prd',GREEN,8001],
+              ['eval-service-prd',GREEN,8004],['analytics-prd',YELLOW,8005],
+              ['targeting-prd',GREEN,8003]];
+  svcs.forEach(([ns,col,port],i)=>{
+    node(468,102+i*54,152,40,ns,`:${port} · 2 replicas`,col,ka*prog(f,16+i,24+i));
+  });
+
+  // OBSERVABILIDADE
+  const oa=prog(f,20,30);
+  [['Prometheus','métricas · 15d retention',ORANGE,0],
+   ['Loki','logs · promtail',PURPLE,90],
+   ['Grafana','dashboards · alertas',BLUE,180]
+  ].forEach(([name,sub,col,dy])=>{
+    const ya=oa*prog(f,20+dy/45,30+dy/45);
+    node(638,112+dy,130,44,name,sub,col,ya);
+  });
+
+  // LINHAS
+  const p1=prog(f,10,20);
+  dashed(162,105,215,105,ab(BLUE,p1),1,2);
+  pkt(162,105,215,105,((prog(f,20,56)*2)%1.0),CYAN,'push');
+
+  const p2=prog(f,18,28);
+  for(let i=0;i<5;i++) dashed(350,162+i*46,392,102+i*54,ab(GREEN,p2),1,1);
+
+  const p3=prog(f,22,32);
+  dashed(350,105,572,112,ab(ORANGE,p3),1,2);
+  dashed(350,105,572,202,ab(PURPLE,p3*0.8),1,2);
+  dashed(350,105,572,292,ab(BLUE,p3*0.6),1,2);
+
+  const p4=prog(f,30,40);
+  dashed(638,154,638,222,ab(DIM,p4),1,1);
+  dashed(638,246,638,270,ab(DIM,p4),1,1);
+  pkt(638,154,638,268,((prog(f,38,60)*2)%1.0),ORANGE,'scrape');
+
+  const p5=prog(f,28,38);
+  dashed(468,300,572,246,ab(PURPLE,p5),1,1);
+  pkt(468,300,572,246,((prog(f,36,58)*2)%1.0),PURPLE,'logs');
+
+  // terminal
+  const term=prog(f,34,44);
+  rr(10,H-88,W-10,H-8,6,ab(CARD,term),ab(BORDER,term),1);
+  const lines=[
+    [BLUE,'$ ','argocd app list'],
+    [GREEN,'● ','observability   Synced   Healthy'],
+    [GREEN,'● ','flag-service    Synced   Healthy'],
+    [DIM,'$ ','kubectl get pods -n observability'],
+    [GREEN,'  ','prometheus-server 2/2 Running   grafana 3/3 Running'],
+  ];
+  lines.forEach(([col,pre,txt],i)=>{
+    const ya=term*prog(f,34+i*2,44+i*2);
+    X.font='9px monospace';
+    X.fillStyle=ab(col,ya);X.fillText(pre,18,H-80+i*14);
+    X.fillStyle=ab(col===BLUE?WHITE:col,ya);X.fillText(txt,34,H-80+i*14);
+  });
+
+  // watermark
+  X.font='8px monospace';X.fillStyle=DIMMER;
+  X.fillText('fxshell | togglemaster-gitops',W-175,H-12);
+}
+
+function loop(){
+  draw(t%TOTAL);
+  t++;
+  setTimeout(()=>requestAnimationFrame(loop),1000/FPS);
+}
+loop();
+</script>
+</body>
+</html>
