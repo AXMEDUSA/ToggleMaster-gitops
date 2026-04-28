@@ -32,9 +32,10 @@ spec:
             enabled: true
             ingressClassName: nginx
             hosts:
-              - prometheus.togglemaster.internal
-            paths:
-              - /
+              - host: prometheus.togglemaster.internal
+                paths:
+                  - path: /
+                    pathType: Prefix
 
         alertmanager:
           enabled: true
@@ -51,9 +52,10 @@ spec:
             enabled: true
             ingressClassName: nginx
             hosts:
-              - alertmanager.togglemaster.internal
-            paths:
-              - /
+              - host: alertmanager.togglemaster.internal
+                paths:
+                  - path: /
+                    pathType: Prefix
 
         nodeExporter:
           enabled: true
