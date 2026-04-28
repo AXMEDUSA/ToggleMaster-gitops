@@ -286,7 +286,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 15 },
           "id": 200,
-          "title": "Microsserviços ToggleMaster — Taxa de Requisições",
+          "title": "Microsserviços ToggleMaster — Recursos e Saúde",
           "type": "row"
         },
         {
@@ -295,14 +295,14 @@ data:
             "defaults": {
               "color": { "mode": "palette-classic" },
               "custom": {
-                "axisLabel": "req/s",
+                "axisLabel": "CPU cores",
                 "axisPlacement": "auto",
                 "fillOpacity": 15,
                 "lineWidth": 2,
                 "showPoints": "never",
                 "spanNulls": true
               },
-              "unit": "reqps"
+              "unit": "short"
             }
           },
           "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
@@ -311,12 +311,12 @@ data:
             "legend": { "displayMode": "list", "placement": "bottom" },
             "tooltip": { "mode": "multi" }
           },
-          "title": "Requisições por Serviço (req/s)",
+          "title": "CPU por Microsserviço (millicores)",
           "type": "timeseries",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_requests_total{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"}[5m])) by (namespace)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\",container!=\"\",container!=\"POD\"}[5m])) by (namespace) * 1000",
               "legendFormat": "{{namespace}}",
               "refId": "A"
             }
@@ -328,14 +328,14 @@ data:
             "defaults": {
               "color": { "mode": "palette-classic" },
               "custom": {
-                "axisLabel": "latência (s)",
+                "axisLabel": "memória",
                 "axisPlacement": "auto",
                 "fillOpacity": 15,
                 "lineWidth": 2,
                 "showPoints": "never",
                 "spanNulls": true
               },
-              "unit": "s"
+              "unit": "bytes"
             }
           },
           "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
@@ -344,13 +344,13 @@ data:
             "legend": { "displayMode": "list", "placement": "bottom" },
             "tooltip": { "mode": "multi" }
           },
-          "title": "Latência P99 por Serviço",
+          "title": "Memória por Microsserviço",
           "type": "timeseries",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"}[5m])) by (namespace, le))",
-              "legendFormat": "p99 {{namespace}}",
+              "expr": "sum(container_memory_working_set_bytes{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\",container!=\"\",container!=\"POD\"}) by (namespace)",
+              "legendFormat": "{{namespace}}",
               "refId": "A"
             }
           ]
@@ -359,38 +359,33 @@ data:
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "fieldConfig": {
             "defaults": {
-              "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "erros/s",
-                "axisPlacement": "auto",
-                "fillOpacity": 15,
-                "lineWidth": 2,
-                "showPoints": "never",
-                "spanNulls": true
+              "color": { "mode": "thresholds" },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
               },
-              "custom": { "lineWidth": 2 },
-              "unit": "reqps"
+              "mappings": []
             },
-            "overrides": [
-              {
-                "matcher": { "id": "byRegexp", "options": ".*" },
-                "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": { "h": 6, "w": 12, "x": 0, "y": 24 },
           "id": 22,
           "options": {
-            "legend": { "displayMode": "list", "placement": "bottom" },
-            "tooltip": { "mode": "multi" }
+            "displayMode": "lcd",
+            "orientation": "horizontal",
+            "reduceOptions": { "calcs": ["lastNotNull"] },
+            "showUnfilled": true
           },
-          "title": "Taxa de Erros 5xx por Serviço",
-          "type": "timeseries",
+          "title": "Pods Disponíveis por Serviço",
+          "type": "bargauge",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_requests_total{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\",status=~\"5..\"}[5m])) by (namespace)",
-              "legendFormat": "5xx {{namespace}}",
+              "expr": "sum(kube_deployment_status_replicas_available{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"}) by (namespace)",
+              "legendFormat": "{{namespace}}",
               "refId": "A"
             }
           ]
@@ -404,11 +399,10 @@ data:
                 "mode": "absolute",
                 "steps": [
                   { "color": "green", "value": null },
-                  { "color": "yellow", "value": 80 },
-                  { "color": "red", "value": 95 }
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
                 ]
-              },
-              "unit": "percent"
+              }
             },
             "overrides": []
           },
@@ -420,13 +414,13 @@ data:
             "reduceOptions": { "calcs": ["lastNotNull"] },
             "showUnfilled": true
           },
-          "title": "CPU por Pod (microsserviços)",
+          "title": "Restarts por Pod (última 1h)",
           "type": "bargauge",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "100 * sum(rate(container_cpu_usage_seconds_total{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\",container!=\"\"}[5m])) by (pod) / sum(kube_pod_container_resource_limits{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\",resource=\"cpu\"}) by (pod)",
-              "legendFormat": "{{pod}}",
+              "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"}[1h])) by (namespace)",
+              "legendFormat": "{{namespace}}",
               "refId": "A"
             }
           ]
