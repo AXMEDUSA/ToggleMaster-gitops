@@ -10,6 +10,10 @@ spec:
       app: flag-service
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8002"
+        prometheus.io/path: "/metrics"
       labels:
         app: flag-service
     spec:

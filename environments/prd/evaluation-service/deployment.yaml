@@ -10,6 +10,10 @@ spec:
       app: evaluation-service
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8004"
+        prometheus.io/path: "/metrics"
       labels:
         app: evaluation-service
     spec:

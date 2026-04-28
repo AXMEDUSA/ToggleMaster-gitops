@@ -10,6 +10,10 @@ spec:
       app: analytics-service
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8005"
+        prometheus.io/path: "/metrics"
       labels:
         app: analytics-service
     spec:

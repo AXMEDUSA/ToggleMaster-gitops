@@ -8,3 +8,5 @@ resources:
   - grafana-app.yaml
   - grafana-secret.yaml
   - grafana-dashboard-configmap.yaml
+
+# loki-app.yaml contém também o Application do promtail (dois documentos no mesmo arquivo)
