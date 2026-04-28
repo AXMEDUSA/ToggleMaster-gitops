@@ -29,13 +29,7 @@ spec:
               cpu: 500m
               memory: 1Gi
           ingress:
-            enabled: true
-            ingressClassName: nginx
-            hosts:
-              - host: prometheus.togglemaster.internal
-                paths:
-                  - path: /
-                    pathType: Prefix
+            enabled: false
 
         alertmanager:
           enabled: true
@@ -49,13 +43,7 @@ spec:
               cpu: 200m
               memory: 256Mi
           ingress:
-            enabled: true
-            ingressClassName: nginx
-            hosts:
-              - host: alertmanager.togglemaster.internal
-                paths:
-                  - path: /
-                    pathType: Prefix
+            enabled: false
 
         nodeExporter:
           enabled: true
