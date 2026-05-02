@@ -21,7 +21,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: analytics-service
-          image: toggleacrfase4.azurecr.io/analytics-service:fb3d99b
+          image: toggleacrfase4.azurecr.io/analytics-service:c592a4a
           ports:
             - containerPort: 8005
           envFrom:
