@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
+  - otel-collector.yaml
   - prometheus-app.yaml
   - loki-app.yaml
   - grafana-app.yaml
@@ -10,3 +11,4 @@ resources:
   - grafana-dashboard-configmap.yaml
 
 # loki-app.yaml contém também o Application do promtail (dois documentos no mesmo arquivo)
+# otel-collector.yaml: ConfigMap + Deployment + Service do OTel Collector

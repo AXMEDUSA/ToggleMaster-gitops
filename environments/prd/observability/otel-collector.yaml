@@ -1,0 +1,196 @@
+---
+# ConfigMap com a configuração do OpenTelemetry Collector
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+  namespace: observability
+data:
+  config.yaml: |
+    receivers:
+      # Recebe telemetria dos microsserviços via OTLP (gRPC e HTTP)
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:4317"
+          http:
+            endpoint: "0.0.0.0:4318"
+
+      # Scrape de métricas do próprio Collector (auto-monitoramento)
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: "otel-collector"
+              scrape_interval: 30s
+              static_configs:
+                - targets: ["localhost:8888"]
+
+    processors:
+      # Envia em lotes para reduzir overhead de rede
+      batch:
+        timeout: 5s
+        send_batch_size: 1024
+
+      # Detecta atributos de recursos do ambiente Kubernetes
+      resourcedetection:
+        detectors: [env, system]
+        timeout: 5s
+        override: false
+
+      # Adiciona atributos comuns a todos os dados
+      resource:
+        attributes:
+          - key: deployment.environment
+            value: "production"
+            action: upsert
+          - key: service.namespace
+            value: "togglemaster"
+            action: upsert
+
+      # Filtro de memória para evitar OOM
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 256
+        spike_limit_mib: 64
+
+    exporters:
+      # Exporta métricas para o Prometheus (formato Prometheus Remote Write)
+      prometheusremotewrite:
+        endpoint: "http://prometheus-server.observability.svc.cluster.local:80/api/v1/write"
+        tls:
+          insecure: true
+
+      # Exporta logs para o Loki
+      loki:
+        endpoint: "http://loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+        tls:
+          insecure: true
+        default_labels_enabled:
+          exporter: false
+          job: true
+          instance: false
+          level: true
+
+      # Debug (desabilitar em produção estável)
+      debug:
+        verbosity: basic
+        sampling_initial: 5
+        sampling_thereafter: 200
+
+    service:
+      pipelines:
+        # Pipeline de métricas: OTLP → processamento → Prometheus
+        metrics:
+          receivers: [otlp, prometheus]
+          processors: [memory_limiter, resourcedetection, resource, batch]
+          exporters: [prometheusremotewrite]
+
+        # Pipeline de logs: OTLP → processamento → Loki
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, resourcedetection, resource, batch]
+          exporters: [loki]
+
+        # Pipeline de traces (futuro: adicionar Tempo/Jaeger como exporter)
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, resourcedetection, resource, batch]
+          exporters: [debug]
+
+      telemetry:
+        logs:
+          level: "info"
+        metrics:
+          address: "0.0.0.0:8888"
+
+---
+# Deployment do OTel Collector
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: observability
+  labels:
+    app: otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8888"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.115.0
+          args:
+            - "--config=/etc/otel/config.yaml"
+          ports:
+            - name: otlp-grpc
+              containerPort: 4317
+              protocol: TCP
+            - name: otlp-http
+              containerPort: 4318
+              protocol: TCP
+            - name: metrics
+              containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otel
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 13133
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 13133
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector-config
+
+---
+# Service do OTel Collector (ClusterIP — acessível internamente)
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: observability
+  labels:
+    app: otel-collector
+spec:
+  selector:
+    app: otel-collector
+  ports:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
+    - name: metrics
+      port: 8888
+      targetPort: 8888
+      protocol: TCP
+  type: ClusterIP

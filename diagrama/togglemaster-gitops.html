@@ -4,180 +4,621 @@
 <meta charset="UTF-8">
 <title>ToggleMaster GitOps — Diagrama</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1117;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'DejaVu Sans Mono',monospace}
-  canvas{display:block}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#0d1117;
+    font-family:'Courier New',monospace;
+    color:#e6edf3;
+    width:1100px; height:760px;
+    overflow:hidden;
+  }
+  #cv { width:1100px; height:760px; position:relative; }
+
+  #ttl {
+    position:absolute; top:10px; left:50%;
+    transform:translateX(-50%);
+    font-size:14px; font-weight:bold; letter-spacing:3px;
+    white-space:nowrap; opacity:0; color:#e6edf3;
+  }
+  #sub {
+    position:absolute; top:32px; left:50%;
+    transform:translateX(-50%);
+    font-size:9px; color:#8b949e; white-space:nowrap; opacity:0; letter-spacing:1px;
+  }
+
+  /* Colunas */
+  .col-bg {
+    position:absolute; top:52px; bottom:6px;
+    border:1px solid #21262d; border-radius:10px; opacity:0;
+  }
+  #col-github  { left:6px;   width:220px; background:rgba(56,139,253,.04); }
+  #col-argocd  { left:234px; width:200px; background:rgba(247,120,186,.04); }
+  #col-aks     { left:442px; width:390px; background:rgba(63,185,80,.04); }
+  #col-obs     { left:840px; width:254px; background:rgba(188,140,255,.04); }
+
+  .col-lbl {
+    position:absolute; top:59px; font-size:8px; font-weight:bold;
+    letter-spacing:2px; opacity:0;
+  }
+  #lbl-github { left:16px;  color:#388bfd; }
+  #lbl-argocd { left:244px; color:#f778ba; }
+  #lbl-aks    { left:452px; color:#3fb950; }
+  #lbl-obs    { left:850px; color:#bc8cff; }
+
+  .nd {
+    position:absolute; border-radius:8px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    opacity:0; transition:box-shadow .4s; padding:6px 5px;
+  }
+  .ni { font-size:16px; margin-bottom:3px; }
+  .nt { font-size:9px; font-weight:bold; text-align:center; }
+  .ns { font-size:7.5px; color:#8b949e; text-align:center; margin-top:2px; line-height:1.4; }
+
+  /* GitHub col */
+  #gh-app  { top:78px;  left:14px; width:200px; height:68px; background:#161b22; border:2px solid #388bfd; color:#388bfd; }
+  #gh-gitops { top:162px; left:14px; width:200px; height:68px; background:#161b22; border:2px solid #bc8cff; color:#bc8cff; }
+  #gh-acr  { top:246px; left:14px; width:200px; height:68px; background:#161b22; border:2px solid #f08030; color:#f08030; }
+  #gh-ci   { top:330px; left:14px; width:200px; height:68px; background:#161b22; border:2px solid #e3b342; color:#e3b342; }
+
+  /* ArgoCD col */
+  #argo-main { top:78px; left:242px; width:182px; height:68px; background:#161b22; border:2px solid #f778ba; color:#f778ba; }
+
+  .argo-app {
+    position:absolute; left:242px; width:182px; height:46px;
+    background:#161b22; border:2px solid #3fb950; color:#3fb950;
+    border-radius:8px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; opacity:0; transition:box-shadow .3s;
+  }
+  .argo-app .nt { font-size:8.5px; }
+  .argo-app .ns { font-size:7px; }
+  #app-obs   { top:162px; border-color:#bc8cff; color:#bc8cff; }
+  #app-flag  { top:216px; }
+  #app-auth  { top:270px; }
+  #app-eval  { top:324px; }
+  #app-anal  { top:378px; border-color:#e3b342; color:#e3b342; }
+  #app-targ  { top:432px; }
+
+  /* AKS col */
+  #aks-ingress { top:78px; left:450px; width:160px; height:58px; background:#161b22; border:2px solid #58a6ff; color:#58a6ff; }
+
+  .k8s-ns {
+    position:absolute; left:450px; width:368px; height:50px;
+    background:#161b22; border-radius:8px;
+    display:flex; flex-direction:row; align-items:center;
+    justify-content:space-between; padding:0 10px;
+    opacity:0; transition:box-shadow .3s;
+  }
+  .k8s-ns .ns-name { font-size:8px; font-weight:bold; white-space:nowrap; }
+  .k8s-ns .ns-detail { font-size:7px; color:#8b949e; text-align:right; line-height:1.5; white-space:nowrap; }
+
+  #ns-obs   { top:152px; border:2px solid #bc8cff; }
+  #ns-obs   .ns-name { color:#bc8cff; }
+  #ns-flag  { top:210px; border:2px solid #3fb950; }
+  #ns-flag  .ns-name { color:#3fb950; }
+  #ns-auth  { top:268px; border:2px solid #3fb950; }
+  #ns-auth  .ns-name { color:#3fb950; }
+  #ns-eval  { top:326px; border:2px solid #3fb950; }
+  #ns-eval  .ns-name { color:#3fb950; }
+  #ns-anal  { top:384px; border:2px solid #e3b342; }
+  #ns-anal  .ns-name { color:#e3b342; }
+  #ns-targ  { top:442px; border:2px solid #3fb950; }
+  #ns-targ  .ns-name { color:#3fb950; }
+
+  /* badges HPA */
+  .hpa-b {
+    position:absolute; font-size:6.5px; font-weight:bold;
+    padding:1px 4px; border-radius:6px;
+    background:#0d1a33; color:#58a6ff; border:1px solid #1f6feb;
+    opacity:0;
+  }
+  #hb-eval { top:342px; left:790px; }
+  #hb-anal { top:400px; left:790px; }
+
+  /* Observability col */
+  .obs-nd {
+    position:absolute; left:848px; width:238px; height:56px;
+    background:#161b22; border-radius:8px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    opacity:0; transition:box-shadow .3s; padding:4px;
+  }
+  #obs-prom { top:78px;  border:2px solid #f08030; color:#f08030; }
+  #obs-loki { top:144px; border:2px solid #bc8cff; color:#bc8cff; }
+  #obs-pt   { top:210px; border:2px solid #8b949e; color:#8b949e; }
+  #obs-graf { top:276px; border:2px solid #f778ba; color:#f778ba; }
+
+  svg#sv { position:absolute; top:0; left:0; width:1100px; height:760px; pointer-events:none; }
+
+  .pk { position:absolute; border-radius:50%; opacity:0; z-index:20; }
+  .bg { position:absolute; font-size:7px; font-weight:bold; padding:2px 6px; border-radius:10px; opacity:0; }
+  .step { position:absolute; font-size:7.5px; color:#8b949e; opacity:0; white-space:nowrap; }
+
+  #term {
+    position:absolute; bottom:4px; left:6px; right:6px; height:115px;
+    background:#090d12; border:1px solid #30363d; border-radius:8px;
+    overflow:hidden; opacity:0;
+  }
+  #tbar {
+    height:18px; background:#21262d; border-radius:8px 8px 0 0;
+    display:flex; align-items:center; padding-left:10px;
+    font-size:8px; color:#8b949e;
+  }
+  #tbar::before { content:"● ● ●"; color:#3d444d; margin-right:10px; }
+  #tbody { padding:3px 10px; }
+  .tl { font-size:8px; margin-bottom:1px; opacity:0; transition:opacity .3s; white-space:nowrap; }
+  .tl.cmd  { color:#8b949e; }
+  .tl.ok   { color:#3fb950; }
+  .tl.argo { color:#f778ba; }
+  .tl.dim  { color:#484f58; }
+  .tl.obs  { color:#bc8cff; }
+
+  #wm { position:absolute; bottom:6px; right:10px; font-size:7.5px; color:#30363d; opacity:0; }
+
+  @keyframes pulse-ok {
+    0%,100% { box-shadow: 0 0 5px currentColor; }
+    50%      { box-shadow: 0 0 18px currentColor, 0 0 35px rgba(63,185,80,.2); }
+  }
+  .synced { animation: pulse-ok 2.4s ease-in-out infinite; }
+
+  #sync-badge {
+    position:absolute; top:510px; left:242px;
+    font-size:7px; color:#f778ba; opacity:0;
+    border:1px solid #f778ba; border-radius:6px;
+    padding:2px 7px; background:#1a0d1f;
+  }
+  #health-badge {
+    position:absolute; top:510px; left:450px;
+    font-size:7px; color:#3fb950; opacity:0;
+    border:1px solid #3fb950; border-radius:6px;
+    padding:2px 7px; background:#0d2b14;
+  }
 </style>
 </head>
 <body>
-<canvas id="c" width="720" height="540"></canvas>
+<div id="cv">
+
+  <div id="ttl">TOGGLEMASTER — GITOPS PIPELINE</div>
+  <div id="sub">GitHub Actions → ACR → GitOps Repo → ArgoCD → AKS → Observabilidade</div>
+
+  <div class="col-bg" id="col-github"></div>
+  <div class="col-bg" id="col-argocd"></div>
+  <div class="col-bg" id="col-aks"></div>
+  <div class="col-bg" id="col-obs"></div>
+
+  <div class="col-lbl" id="lbl-github">▸ GITHUB</div>
+  <div class="col-lbl" id="lbl-argocd">▸ ARGOCD</div>
+  <div class="col-lbl" id="lbl-aks">▸ AKS CLUSTER · aks-togglemaster</div>
+  <div class="col-lbl" id="lbl-obs">▸ OBSERVABILIDADE</div>
+
+  <!-- GitHub col -->
+  <div class="nd" id="gh-app">
+    <div class="ni">⚙️</div>
+    <div class="nt">ToggleMaster-AppRepo</div>
+    <div class="ns">GitHub Actions · shared-ci.yml<br>build · test · lint · gosec · trivy</div>
+  </div>
+  <div class="nd" id="gh-gitops">
+    <div class="ni">📂</div>
+    <div class="nt">ToggleMaster-gitops</div>
+    <div class="ns">environments/prd/**<br>sed image tag → commit → push</div>
+  </div>
+  <div class="nd" id="gh-acr">
+    <div class="ni">📦</div>
+    <div class="nt">Azure ACR</div>
+    <div class="ns">toggleacrfase4.azurecr.io<br>:&lt;SHORT_SHA&gt;</div>
+  </div>
+  <div class="nd" id="gh-ci">
+    <div class="ni">🛡️</div>
+    <div class="nt">CI Security</div>
+    <div class="ns">Trivy SAST + SCA<br>gosec · bandit · pylint</div>
+  </div>
+
+  <!-- ArgoCD -->
+  <div class="nd" id="argo-main">
+    <div class="ni">🔄</div>
+    <div class="nt">ArgoCD</div>
+    <div class="ns">auto-sync · prune:true<br>selfHeal:true · prd</div>
+  </div>
+
+  <div class="argo-app" id="app-obs">
+    <div class="nt">observability</div>
+    <div class="ns">Helm · Synced ✓</div>
+  </div>
+  <div class="argo-app" id="app-flag">
+    <div class="nt">flag-service</div>
+    <div class="ns">manifests · Synced ✓</div>
+  </div>
+  <div class="argo-app" id="app-auth">
+    <div class="nt">auth-service</div>
+    <div class="ns">manifests · Synced ✓</div>
+  </div>
+  <div class="argo-app" id="app-eval">
+    <div class="nt">evaluation-service</div>
+    <div class="ns">manifests + HPA · Synced ✓</div>
+  </div>
+  <div class="argo-app" id="app-anal">
+    <div class="nt">analytics-service</div>
+    <div class="ns">manifests + HPA · Synced ✓</div>
+  </div>
+  <div class="argo-app" id="app-targ">
+    <div class="nt">targeting-service</div>
+    <div class="ns">manifests · Synced ✓</div>
+  </div>
+
+  <!-- AKS -->
+  <div class="nd" id="aks-ingress">
+    <div class="ni" style="font-size:14px">🌐</div>
+    <div class="nt">Nginx Ingress</div>
+    <div class="ns">4.249.138.4 · nip.io</div>
+  </div>
+
+  <div class="k8s-ns" id="ns-obs">
+    <div class="ns-name">📊 observability</div>
+    <div class="ns-detail">Prometheus 29.3.0 · Loki 6.55.0<br>Promtail 6.17.1 · Grafana 8.0.0</div>
+  </div>
+  <div class="k8s-ns" id="ns-flag">
+    <div class="ns-name">🚩 flag-service-prd</div>
+    <div class="ns-detail">Python/Flask · :8002<br>2 replicas · ClusterIP</div>
+  </div>
+  <div class="k8s-ns" id="ns-auth">
+    <div class="ns-name">🔐 auth-service-prd</div>
+    <div class="ns-detail">Go · :8001<br>2 replicas · ClusterIP</div>
+  </div>
+  <div class="k8s-ns" id="ns-eval">
+    <div class="ns-name">⚡ evaluation-svc-prd</div>
+    <div class="ns-detail">Go · :8004 · HPA<br>2+ replicas · hot path</div>
+  </div>
+  <div class="k8s-ns" id="ns-anal">
+    <div class="ns-name">📊 analytics-svc-prd</div>
+    <div class="ns-detail">Python · :8005 · HPA<br>2+ replicas · queue worker</div>
+  </div>
+  <div class="k8s-ns" id="ns-targ">
+    <div class="ns-name">🎯 targeting-svc-prd</div>
+    <div class="ns-detail">Python/Flask · :8003<br>2 replicas · ClusterIP</div>
+  </div>
+
+  <div class="hpa-b" id="hb-eval">HPA · CPU/Mem</div>
+  <div class="hpa-b" id="hb-anal">HPA · CPU/Mem</div>
+
+  <!-- Observability -->
+  <div class="obs-nd" id="obs-prom">
+    <div class="nt">🔥 Prometheus</div>
+    <div class="ns">prometheus-community/prometheus 29.3.0<br>scrape interval · 15d retention</div>
+  </div>
+  <div class="obs-nd" id="obs-loki">
+    <div class="nt">📝 Loki</div>
+    <div class="ns">grafana/loki 6.55.0<br>log aggregation + indexing</div>
+  </div>
+  <div class="obs-nd" id="obs-pt">
+    <div class="nt">🐾 Promtail</div>
+    <div class="ns">grafana/promtail 6.17.1 · DaemonSet<br>coleta logs de todos os pods</div>
+  </div>
+  <div class="obs-nd" id="obs-graf">
+    <div class="nt">📈 Grafana</div>
+    <div class="ns">grafana/grafana 8.0.0<br>dashboards · alertas · port:3000</div>
+  </div>
+
+  <div id="sync-badge">ArgoCD · 6/6 Synced</div>
+  <div id="health-badge">Cluster · All Healthy</div>
+
+  <!-- SVG -->
+  <svg id="sv" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="a-bl" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#388bfd"/></marker>
+      <marker id="a-gr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#3fb950"/></marker>
+      <marker id="a-or" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f08030"/></marker>
+      <marker id="a-pu" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#bc8cff"/></marker>
+      <marker id="a-pk" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f778ba"/></marker>
+      <marker id="a-yl" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#e3b342"/></marker>
+      <marker id="a-cy" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#58a6ff"/></marker>
+      <marker id="a-gy" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#8b949e"/></marker>
+    </defs>
+
+    <!-- AppRepo → ACR (image push) -->
+    <line id="l-app-acr"     x1="114" y1="196" x2="114" y2="246"  stroke="#f08030" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+    <!-- AppRepo → GitOps (update tag) -->
+    <line id="l-app-gitops"  x1="114" y1="112" x2="114" y2="162"  stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pu)" opacity="0"/>
+    <!-- AppRepo → CI security -->
+    <line id="l-app-ci"      x1="114" y1="280" x2="114" y2="330"  stroke="#e3b342" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-yl)" opacity="0"/>
+    <!-- GitOps → ArgoCD (watch) -->
+    <line id="l-gitops-argo" x1="214" y1="196" x2="240" y2="196"  stroke="#f778ba" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pk)" opacity="0"/>
+    <!-- ACR → AKS -->
+    <line id="l-acr-aks"     x1="214" y1="280" x2="448" y2="280"  stroke="#f08030" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+
+    <!-- ArgoCD → each namespace -->
+    <line id="l-argo-obs"  x1="424" y1="178" x2="448" y2="178"  stroke="#bc8cff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-pu)" opacity="0"/>
+    <line id="l-argo-flag" x1="424" y1="238" x2="448" y2="236"  stroke="#3fb950" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-gr)" opacity="0"/>
+    <line id="l-argo-auth" x1="424" y1="296" x2="448" y2="294"  stroke="#3fb950" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-gr)" opacity="0"/>
+    <line id="l-argo-eval" x1="424" y1="354" x2="448" y2="352"  stroke="#3fb950" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-gr)" opacity="0"/>
+    <line id="l-argo-anal" x1="424" y1="412" x2="448" y2="410"  stroke="#e3b342" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-yl)" opacity="0"/>
+    <line id="l-argo-targ" x1="424" y1="458" x2="448" y2="468"  stroke="#3fb950" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-gr)" opacity="0"/>
+
+    <!-- AKS → Observability (métricas + logs) -->
+    <line id="l-aks-prom"  x1="820" y1="178" x2="846" y2="106"  stroke="#f08030" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-or)" opacity="0"/>
+    <line id="l-aks-loki"  x1="820" y1="350" x2="846" y2="172"  stroke="#bc8cff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-pu)" opacity="0"/>
+    <line id="l-prom-graf" x1="967" y1="134" x2="967" y2="276"  stroke="#f08030" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-or)" opacity="0"/>
+    <line id="l-loki-graf" x1="950" y1="200" x2="950" y2="276"  stroke="#bc8cff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-pu)" opacity="0"/>
+
+    <!-- Ingress → namespaces -->
+    <line id="l-ing-ns"    x1="530" y1="136" x2="530" y2="152"  stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-cy)" opacity="0"/>
+  </svg>
+
+  <!-- Step labels -->
+  <div class="step" id="st-push"   style="top:122px;left:120px">CI push</div>
+  <div class="step" id="st-tag"    style="top:220px;left:120px">tag update</div>
+  <div class="step" id="st-watch"  style="top:188px;left:218px">watch</div>
+  <div class="step" id="st-pull"   style="top:270px;left:310px">image pull</div>
+  <div class="step" id="st-scrape" style="top:148px;left:822px">métricas</div>
+  <div class="step" id="st-logs"   style="top:340px;left:822px">logs</div>
+
+  <!-- Badges -->
+  <div class="bg" id="bd-ci"   style="top:420px;left:14px;background:#0d1a2d;color:#388bfd;border:1px solid #388bfd">CI PASS ✓</div>
+  <div class="bg" id="bd-acr"  style="top:420px;left:90px;background:#1a1400;color:#f08030;border:1px solid #f08030">PUSHED</div>
+
+  <!-- Packets -->
+  <div class="pk" id="pk-push"   style="width:8px;height:8px;background:#bc8cff"></div>
+  <div class="pk" id="pk-img"    style="width:8px;height:8px;background:#f08030"></div>
+  <div class="pk" id="pk-sync1"  style="width:8px;height:8px;background:#f778ba"></div>
+  <div class="pk" id="pk-sync2"  style="width:8px;height:8px;background:#f778ba"></div>
+  <div class="pk" id="pk-dep1"   style="width:7px;height:7px;background:#3fb950"></div>
+  <div class="pk" id="pk-dep2"   style="width:7px;height:7px;background:#3fb950"></div>
+  <div class="pk" id="pk-dep3"   style="width:7px;height:7px;background:#3fb950"></div>
+  <div class="pk" id="pk-scr1"   style="width:6px;height:6px;background:#f08030"></div>
+  <div class="pk" id="pk-log1"   style="width:6px;height:6px;background:#bc8cff"></div>
+
+  <!-- Terminal -->
+  <div id="term">
+    <div id="tbar">terminal — argocd / kubectl / helm</div>
+    <div id="tbody">
+      <div class="tl cmd"  id="t0">$ argocd app list</div>
+      <div class="tl ok"   id="t1">● observability      Synced  Healthy   observability        (Helm)</div>
+      <div class="tl ok"   id="t2">● flag-service       Synced  Healthy   flag-service-prd     (manifests)</div>
+      <div class="tl ok"   id="t3">● auth-service       Synced  Healthy   auth-service-prd     (manifests)</div>
+      <div class="tl ok"   id="t4">● evaluation-service Synced  Healthy   evaluation-svc-prd   (manifests + HPA)</div>
+      <div class="tl obs"  id="t5">$ kubectl get pods -n observability | grep Running</div>
+      <div class="tl ok"   id="t6">prometheus-server  2/2 Running   loki-0 1/1 Running   grafana-xxx 3/3 Running</div>
+    </div>
+  </div>
+
+  <div id="wm">fxshell | togglemaster-gitops · ArgoCD · AKS 1.34.4</div>
+</div>
+
 <script>
-const C=document.getElementById('c'),X=C.getContext('2d');
-const W=720,H=540,FPS=12,DUR=16,PAUSE=2,TOTAL=(DUR+PAUSE)*FPS;
-let t=0;
+const $ = id => document.getElementById(id);
+const W = ms => new Promise(r => setTimeout(r, ms));
 
-const BG='#0d1117',CARD='#16181a',BORDER='#21262d';
-const BLUE='#388bfd',GREEN='#3fb950',ORANGE='#f0883e',PURPLE='#bc8cff';
-const YELLOW='#e3b341',WHITE='#e6edf3',DIM='#8b949e',DIMMER='#484f58',CYAN='#38cbED';
-
-function lerp(a,b,t){return a+(b-a)*t}
-function ease(t){t=Math.max(0,Math.min(1,t));return 1-Math.pow(1-t,3)}
-function prog(f,s,e){if(f<=s)return 0;if(f>=e)return 1;return ease((f-s)/(e-s))}
-function ab(hex,a){
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  const br=parseInt(BG.slice(1,3),16),bg=parseInt(BG.slice(3,5),16),bb=parseInt(BG.slice(5,7),16);
-  return `rgb(${Math.round(br+(r-br)*a)},${Math.round(bg+(g-bg)*a)},${Math.round(bb+(b-bb)*a)})`;
-}
-
-function rr(x0,y0,x1,y1,r,fill,stroke,sw=1){
-  X.beginPath();X.roundRect(x0,y0,x1-x0,y1-y0,r);
-  if(fill){X.fillStyle=fill;X.fill();}
-  if(stroke){X.strokeStyle=stroke;X.lineWidth=sw;X.stroke();}
-}
-
-function tc(cx,y,txt,size,fill){
-  X.font=`${size}px monospace`;X.fillStyle=fill;X.textAlign='center';
-  X.fillText(txt,cx,y);X.textAlign='left';
-}
-
-function dashed(x0,y0,x1,y1,col,ratio=1,w=2){
-  if(ratio<=0)return;
-  const ex=x0+(x1-x0)*ratio,ey=y0+(y1-y0)*ratio;
-  X.save();X.strokeStyle=col;X.lineWidth=w;X.setLineDash([7,4]);
-  X.beginPath();X.moveTo(x0,y0);X.lineTo(ex,ey);X.stroke();
-  X.setLineDash([]);X.restore();
-}
-
-function pkt(x0,y0,x1,y1,p,col,label=''){
-  if(p<=0||p>=1)return;
-  const px=x0+(x1-x0)*p,py=y0+(y1-y0)*p;
-  X.beginPath();X.arc(px,py,5,0,Math.PI*2);X.fillStyle=col;X.fill();
-  if(label){X.font='8px monospace';X.fillStyle=col;X.fillText(label,px+8,py+3);}
-}
-
-function node(cx,cy,w,h,title,sub,col,a,badge=''){
-  if(a<=0)return;
-  const x0=cx-w/2,y0=cy-h/2,x1=cx+w/2,y1=cy+h/2;
-  rr(x0,y0,x1,y1,6,ab(CARD,a),ab(col,a),2);
-  X.font='11px monospace';X.fillStyle=ab(col,a);X.textAlign='center';
-  X.fillText(title,cx,y0+16);
-  X.font='9px monospace';X.fillStyle=ab(DIM,a);
-  X.fillText(sub,cx,y0+29);
-  X.textAlign='left';
-  if(badge){
-    const bw=badge.length*6+8;
-    rr(x1-bw-2,y0+2,x1-2,y0+14,3,ab(col,a),null);
-    X.font='8px monospace';X.fillStyle=ab(BG,a);X.textAlign='center';
-    X.fillText(badge,x1-bw/2-2,y0+11);X.textAlign='left';
-  }
-}
-
-function draw(f){
-  X.fillStyle=BG;X.fillRect(0,0,W,H);
-
-  // título
-  const ta=prog(f,0,8);
-  tc(W/2,28,'ToggleMaster GitOps',20,ab(WHITE,ta));
-  tc(W/2,44,'AKS · ArgoCD · Prometheus · Loki · Grafana',9,ab(DIM,ta));
-
-  // labels seção
-  const la=prog(f,6,14);
-  X.font='9px monospace';X.fillStyle=ab(DIM,la);
-  X.fillText('GITHUB',18,62);
-  X.fillText('ARGOCD',200,62);
-  X.fillText('AKS CLUSTER',390,62);
-  X.fillText('OBSERVABILIDADE',565,62);
-
-  // separadores
-  const sa=prog(f,8,16);
-  [185,375,558].forEach(sx=>{
-    X.strokeStyle=ab(BORDER,sa);X.lineWidth=1;
-    X.beginPath();X.moveTo(sx,54);X.lineTo(sx,H-28);X.stroke();
+function fade(id, to, dur, delay=0) {
+  return new Promise(res => {
+    setTimeout(() => {
+      const e=$(id); if(!e){res();return;}
+      e.style.transition=`opacity ${dur}ms`;
+      e.style.opacity=to;
+      setTimeout(res,dur);
+    }, delay);
   });
+}
 
-  // GITHUB
-  const ga=prog(f,8,18);
-  node(92,105,144,42,'ToggleMaster-gitops','github.com/AXMEDUSA',BLUE,ga);
-  node(92,167,144,42,'ToggleMaster-AppRepo','CI/CD · Docker · ACR',CYAN,ga);
+function slide(id, dx, dy, dur, delay=0) {
+  setTimeout(() => {
+    const e=$(id); if(!e) return;
+    e.style.transform=`translate(${dx}px,${dy}px)`; e.style.opacity=0;
+    requestAnimationFrame(()=>{
+      e.style.transition=`opacity ${dur}ms,transform ${dur}ms cubic-bezier(.25,.8,.25,1)`;
+      e.style.opacity=1; e.style.transform='translate(0,0)';
+    });
+  }, delay);
+}
 
-  // ARGOCD
-  const aa=prog(f,12,22);
-  node(285,105,144,42,'ArgoCD','sync · selfHeal · prune',ORANGE,aa,'prd');
-  const apps=[['observability',PURPLE],['flag-service',GREEN],['auth-service',GREEN],
-               ['eval-service',GREEN],['analytics',YELLOW],['targeting',GREEN]];
-  apps.forEach(([name,col],i)=>{
-    node(285,162+i*46,134,34,name,'Synced ✓',col,aa*prog(f,14+i,22+i));
-  });
+function drawLine(id, dur, delay=0) {
+  setTimeout(() => {
+    const e=$(id); if(!e) return;
+    e.style.strokeDasharray=500;
+    e.style.strokeDashoffset=500;
+    e.style.opacity=1;
+    e.style.transition=`stroke-dashoffset ${dur}ms linear`;
+    requestAnimationFrame(()=>{ e.style.strokeDashoffset=0; });
+  }, delay);
+}
 
-  // AKS microsserviços
-  const ka=prog(f,16,26);
-  const svcs=[['flag-service-prd',GREEN,8002],['auth-service-prd',GREEN,8001],
-              ['eval-service-prd',GREEN,8004],['analytics-prd',YELLOW,8005],
-              ['targeting-prd',GREEN,8003]];
-  svcs.forEach(([ns,col,port],i)=>{
-    node(468,102+i*54,152,40,ns,`:${port} · 2 replicas`,col,ka*prog(f,16+i,24+i));
-  });
+function pkt(id, x1,y1, x2,y2, dur, delay=0) {
+  setTimeout(() => {
+    const e=$(id); if(!e) return;
+    e.style.left=x1+'px'; e.style.top=y1+'px'; e.style.opacity=1;
+    e.style.transition=`left ${dur}ms linear,top ${dur}ms linear`;
+    requestAnimationFrame(()=>{ e.style.left=x2+'px'; e.style.top=y2+'px'; });
+    setTimeout(()=>{ e.style.opacity=0; }, dur+80);
+  }, delay);
+}
 
-  // OBSERVABILIDADE
-  const oa=prog(f,20,30);
-  [['Prometheus','métricas · 15d retention',ORANGE,0],
-   ['Loki','logs · promtail',PURPLE,90],
-   ['Grafana','dashboards · alertas',BLUE,180]
-  ].forEach(([name,sub,col,dy])=>{
-    const ya=oa*prog(f,20+dy/45,30+dy/45);
-    node(638,112+dy,130,44,name,sub,col,ya);
-  });
+function tline(id,delay){ setTimeout(()=>{ const e=$(id); if(e) e.style.opacity=1; },delay); }
+function glow(id,col,delay){ setTimeout(()=>{ const e=$(id); if(!e)return; e.style.boxShadow=`0 0 16px ${col}`; },delay); }
+function synced(id,delay){ setTimeout(()=>{ const e=$(id); if(!e)return; e.classList.add('synced'); },delay); }
 
-  // LINHAS
-  const p1=prog(f,10,20);
-  dashed(162,105,215,105,ab(BLUE,p1),1,2);
-  pkt(162,105,215,105,((prog(f,20,56)*2)%1.0),CYAN,'push');
-
-  const p2=prog(f,18,28);
-  for(let i=0;i<5;i++) dashed(350,162+i*46,392,102+i*54,ab(GREEN,p2),1,1);
-
-  const p3=prog(f,22,32);
-  dashed(350,105,572,112,ab(ORANGE,p3),1,2);
-  dashed(350,105,572,202,ab(PURPLE,p3*0.8),1,2);
-  dashed(350,105,572,292,ab(BLUE,p3*0.6),1,2);
-
-  const p4=prog(f,30,40);
-  dashed(638,154,638,222,ab(DIM,p4),1,1);
-  dashed(638,246,638,270,ab(DIM,p4),1,1);
-  pkt(638,154,638,268,((prog(f,38,60)*2)%1.0),ORANGE,'scrape');
-
-  const p5=prog(f,28,38);
-  dashed(468,300,572,246,ab(PURPLE,p5),1,1);
-  pkt(468,300,572,246,((prog(f,36,58)*2)%1.0),PURPLE,'logs');
-
-  // terminal
-  const term=prog(f,34,44);
-  rr(10,H-88,W-10,H-8,6,ab(CARD,term),ab(BORDER,term),1);
-  const lines=[
-    [BLUE,'$ ','argocd app list'],
-    [GREEN,'● ','observability   Synced   Healthy'],
-    [GREEN,'● ','flag-service    Synced   Healthy'],
-    [DIM,'$ ','kubectl get pods -n observability'],
-    [GREEN,'  ','prometheus-server 2/2 Running   grafana 3/3 Running'],
+function reset() {
+  const nodes=[
+    'ttl','sub',
+    'col-github','col-argocd','col-aks','col-obs',
+    'lbl-github','lbl-argocd','lbl-aks','lbl-obs',
+    'gh-app','gh-gitops','gh-acr','gh-ci',
+    'argo-main',
+    'app-obs','app-flag','app-auth','app-eval','app-anal','app-targ',
+    'aks-ingress',
+    'ns-obs','ns-flag','ns-auth','ns-eval','ns-anal','ns-targ',
+    'hb-eval','hb-anal',
+    'obs-prom','obs-loki','obs-pt','obs-graf',
+    'sync-badge','health-badge',
+    'bd-ci','bd-acr',
+    'pk-push','pk-img','pk-sync1','pk-sync2',
+    'pk-dep1','pk-dep2','pk-dep3','pk-scr1','pk-log1',
+    'st-push','st-tag','st-watch','st-pull','st-scrape','st-logs',
+    'term','wm',
+    't0','t1','t2','t3','t4','t5','t6'
   ];
-  lines.forEach(([col,pre,txt],i)=>{
-    const ya=term*prog(f,34+i*2,44+i*2);
-    X.font='9px monospace';
-    X.fillStyle=ab(col,ya);X.fillText(pre,18,H-80+i*14);
-    X.fillStyle=ab(col===BLUE?WHITE:col,ya);X.fillText(txt,34,H-80+i*14);
+  nodes.forEach(id=>{ const e=$(id); if(!e)return;
+    e.style.transition='none'; e.style.opacity=0;
+    e.style.boxShadow='none'; e.style.transform='';
+    e.classList.remove('synced');
   });
-
-  // watermark
-  X.font='8px monospace';X.fillStyle=DIMMER;
-  X.fillText('fxshell | togglemaster-gitops',W-175,H-12);
+  [
+    'l-app-acr','l-app-gitops','l-app-ci','l-gitops-argo','l-acr-aks',
+    'l-argo-obs','l-argo-flag','l-argo-auth','l-argo-eval','l-argo-anal','l-argo-targ',
+    'l-aks-prom','l-aks-loki','l-prom-graf','l-loki-graf','l-ing-ns'
+  ].forEach(id=>{ const e=$(id); if(!e)return;
+    e.style.transition='none'; e.style.opacity=0; e.style.strokeDashoffset='';
+  });
 }
 
-function loop(){
-  draw(t%TOTAL);
-  t++;
-  setTimeout(()=>requestAnimationFrame(loop),1000/FPS);
+async function run() {
+  fade('ttl',1,600,100);
+  await fade('sub',1,600,500);
+
+  // Columns
+  fade('col-github',1,500,700);
+  fade('col-argocd',1,500,800);
+  fade('col-aks',1,500,900);
+  fade('col-obs',1,500,1000);
+  fade('lbl-github',1,500,1100);
+  fade('lbl-argocd',1,500,1200);
+  fade('lbl-aks',1,500,1300);
+  await fade('lbl-obs',1,500,1400);
+
+  // GitHub nodes
+  slide('gh-app',-16,0,420,1600);
+  slide('gh-acr',-16,0,420,1800);
+  slide('gh-gitops',-16,0,420,2000);
+  slide('gh-ci',-16,0,420,2200);
+  await W(2900);
+
+  // CI flow: AppRepo → GitOps → ACR
+  drawLine('l-app-gitops',380,0);
+  fade('st-push',1,300,100);
+  pkt('pk-push',109,147,109,162,380,50);
+  await W(580);
+
+  drawLine('l-app-acr',380,0);
+  pkt('pk-img',109,230,109,246,380,50);
+  fade('st-tag',1,300,100);
+  await W(580);
+  glow('gh-app','#388bfd',0);
+  fade('bd-ci',1,300,100);
+  fade('bd-acr',1,300,200);
+
+  drawLine('l-app-ci',380,0);
+  await W(480);
+  glow('gh-acr','#f08030',0);
+  glow('gh-ci','#e3b342',0);
+
+  // GitOps → ArgoCD
+  drawLine('l-gitops-argo',380,0);
+  fade('st-watch',1,300,100);
+  pkt('pk-sync1',214,192,236,192,360,50);
+  await W(560);
+
+  // ACR → AKS
+  drawLine('l-acr-aks',480,0);
+  fade('st-pull',1,300,100);
+  pkt('pk-img',214,276,444,276,520,100);
+  await W(700);
+
+  // ArgoCD main
+  slide('argo-main',-14,0,400,0);
+  await W(600);
+  glow('argo-main','#f778ba',300);
+
+  // ArgoCD apps appear
+  slide('app-obs',0,-14,380,0);
+  slide('app-flag',0,-14,380,100);
+  slide('app-auth',0,-14,380,200);
+  slide('app-eval',0,-14,380,300);
+  slide('app-anal',0,-14,380,400);
+  slide('app-targ',0,-14,380,500);
+  await W(900);
+
+  // ArgoCD → namespaces
+  drawLine('l-argo-obs',340,0);
+  drawLine('l-argo-flag',340,80);
+  drawLine('l-argo-auth',340,160);
+  drawLine('l-argo-eval',340,240);
+  drawLine('l-argo-anal',340,320);
+  drawLine('l-argo-targ',340,400);
+  pkt('pk-dep1',424,236,444,233,360,80);
+  pkt('pk-dep2',424,354,444,351,360,280);
+  pkt('pk-dep3',424,458,444,466,360,480);
+  await W(800);
+
+  // AKS Ingress
+  slide('aks-ingress',0,-14,380,0);
+  drawLine('l-ing-ns',340,200);
+  await W(600);
+
+  // Namespaces appear
+  slide('ns-obs',14,0,360,0);
+  slide('ns-flag',14,0,360,100);
+  slide('ns-auth',14,0,360,200);
+  slide('ns-eval',14,0,360,300);
+  slide('ns-anal',14,0,360,400);
+  slide('ns-targ',14,0,360,500);
+  fade('hb-eval',1,400,600);
+  fade('hb-anal',1,400,700);
+  await W(1000);
+
+  // Sync badges + glow
+  synced('app-obs',0);
+  synced('app-flag',100);
+  synced('app-auth',200);
+  synced('app-eval',300);
+  synced('app-anal',400);
+  synced('app-targ',500);
+  synced('ns-obs',100);
+  synced('ns-flag',200);
+  synced('ns-auth',300);
+  synced('ns-eval',400);
+  synced('ns-anal',500);
+  synced('ns-targ',600);
+  fade('sync-badge',1,400,400);
+  fade('health-badge',1,400,600);
+  await W(900);
+
+  // Terminal
+  fade('term',1,400,0);
+  tline('t0',200); tline('t1',600); tline('t2',900);
+  tline('t3',1200); tline('t4',1500); tline('t5',1900); tline('t6',2200);
+  await W(2700);
+
+  // Observability
+  slide('obs-prom',14,0,360,0);
+  slide('obs-loki',14,0,360,150);
+  slide('obs-pt',14,0,360,300);
+  slide('obs-graf',14,0,360,450);
+  await W(900);
+
+  drawLine('l-aks-prom',460,0);
+  drawLine('l-aks-loki',460,180);
+  fade('st-scrape',1,300,90); fade('st-logs',1,300,270);
+  pkt('pk-scr1',820,176,847,104,520,100);
+  pkt('pk-log1',820,348,847,170,520,280);
+  await W(900);
+
+  drawLine('l-prom-graf',440,0);
+  drawLine('l-loki-graf',440,200);
+  glow('obs-prom','#f08030',100);
+  glow('obs-loki','#bc8cff',300);
+  glow('obs-graf','#f778ba',500);
+  await W(800);
+
+  // Continuous packet flow (periodic sync)
+  pkt('pk-sync2',214,192,236,192,360,200);
+  await W(600);
+
+  fade('wm',1,600,0);
+  await W(5500);
+
+  reset();
+  await W(600);
+  run();
 }
-loop();
+
+window.addEventListener('load', ()=>setTimeout(run,300));
 </script>
 </body>
 </html>

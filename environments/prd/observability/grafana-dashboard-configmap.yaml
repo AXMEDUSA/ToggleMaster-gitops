@@ -23,18 +23,660 @@ data:
           }
         ]
       },
-      "description": "Dashboard centralizado de saúde do ecossistema ToggleMaster: recursos do cluster, requisições dos microsserviços e logs em tempo real",
+      "description": "ToggleMaster — Pipeline CI/CD, OTel Collector, Microsserviços, Cluster e Logs",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
       "id": null,
       "links": [],
       "panels": [
+
         {
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "id": 500,
+          "title": "🚀 CI/CD Pipeline — Deploy & Imagens",
+          "type": "row"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 3 }
+                ]
+              },
+              "mappings": []
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+          "id": 501,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": { "calcs": ["lastNotNull"] },
+            "text": {}
+          },
+          "title": "Pods em ImagePullBackOff",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "count(kube_pod_container_status_waiting_reason{reason=\"ImagePullBackOff\", namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}) or vector(0)",
+              "legendFormat": "ImagePullBackOff",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 3 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+          "id": 502,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Pods em CrashLoopBackOff",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "count(kube_pod_container_status_waiting_reason{reason=\"CrashLoopBackOff\", namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}) or vector(0)",
+              "legendFormat": "CrashLoopBackOff",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 5 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+          "id": 503,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Pods Running (Total TM)",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "count(kube_pod_status_phase{phase=\"Running\", namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"})",
+              "legendFormat": "Running",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "red", "value": 1 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+          "id": 504,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Pods Pending",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "count(kube_pod_status_phase{phase=\"Pending\", namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}) or vector(0)",
+              "legendFormat": "Pending",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "red", "value": 1 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+          "id": 505,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "area",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Restarts (última 30min)",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}[30m]))",
+              "legendFormat": "Restarts",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true }
+            }
+          },
+          "gridPos": { "h": 7, "w": 12, "x": 0, "y": 5 },
+          "id": 506,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Replicas Disponíveis vs Desejadas por Deployment",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "kube_deployment_status_replicas_available{namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}",
+              "legendFormat": "available · {{namespace}}",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "kube_deployment_spec_replicas{namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}",
+              "legendFormat": "desired · {{namespace}}",
+              "refId": "B"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true }
+            }
+          },
+          "gridPos": { "h": 7, "w": 12, "x": 12, "y": 5 },
+          "id": 507,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Restarts por Pod — Histórico",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "increase(kube_pod_container_status_restarts_total{namespace=~\"auth-service-prd|flag-service-prd|targeting-service-prd|evaluation-service-prd|analytics-service-prd\"}[5m])",
+              "legendFormat": "{{namespace}} / {{pod}}",
+              "refId": "A"
+            }
+          ]
+        },
+
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 12 },
+          "id": 600,
+          "title": "🔭 OpenTelemetry Collector — Saúde e Throughput",
+          "type": "row"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "mappings": [
+                { "options": { "0": { "color": "red", "index": 0, "text": "DOWN" }, "1": { "color": "green", "index": 1, "text": "UP" } }, "type": "value" }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 0, "y": 13 },
+          "id": 601,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "OTel Collector — Status",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "up{job=\"otel-collector\"}",
+              "legendFormat": "Collector",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "unit": "short",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 100 },
+                  { "color": "red", "value": 500 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 4, "y": 13 },
+          "id": 602,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "area",
+            "justifyMode": "center",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Spans Recebidos/s",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_spans_total[1m])",
+              "legendFormat": "spans/s",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "unit": "short",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1000 },
+                  { "color": "red", "value": 5000 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 8, "y": 13 },
+          "id": 603,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "area",
+            "justifyMode": "center",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Métricas Recebidas/s",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_metric_points_total[1m])",
+              "legendFormat": "metrics/s",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "unit": "short",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 500 },
+                  { "color": "red", "value": 2000 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 12, "y": 13 },
+          "id": 604,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "area",
+            "justifyMode": "center",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Logs Recebidos/s",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_log_records_total[1m])",
+              "legendFormat": "logs/s",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "thresholds" },
+              "unit": "short",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "red", "value": 1 }
+                ]
+              }
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 16, "y": 13 },
+          "id": 605,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "area",
+            "justifyMode": "center",
+            "reduceOptions": { "calcs": ["lastNotNull"] }
+          },
+          "title": "Spans Recusados/s (erros export)",
+          "type": "stat",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_refused_spans_total[1m]) + rate(otelcol_exporter_send_failed_spans_total[1m])",
+              "legendFormat": "refused+failed/s",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 12, "x": 0, "y": 17 },
+          "id": 610,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "OTel — Throughput de Spans, Métricas e Logs",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_spans_total[1m])",
+              "legendFormat": "spans/s",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_metric_points_total[1m])",
+              "legendFormat": "metrics/s",
+              "refId": "B"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_log_records_total[1m])",
+              "legendFormat": "logs/s",
+              "refId": "C"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "bytes"
+            }
+          },
+          "gridPos": { "h": 7, "w": 12, "x": 12, "y": 17 },
+          "id": 611,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "OTel Collector — Uso de Memória e CPU",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "container_memory_working_set_bytes{namespace=\"observability\", pod=~\"otel-collector.*\", container=\"otel-collector\"}",
+              "legendFormat": "Memória (bytes)",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(container_cpu_usage_seconds_total{namespace=\"observability\", pod=~\"otel-collector.*\", container=\"otel-collector\"}[5m]) * 1000",
+              "legendFormat": "CPU (millicores)",
+              "refId": "B"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 24, "x": 0, "y": 24 },
+          "id": 612,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "OTel — Spans por Serviço de Origem (service.name)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(otelcol_receiver_accepted_spans_total[1m])",
+              "legendFormat": "{{service_name}}",
+              "refId": "A"
+            }
+          ]
+        },
+
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 31 },
+          "id": 700,
+          "title": "⚡ Microsserviços — HTTP e Latência (via OTel)",
+          "type": "row"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "reqps"
+            }
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 32 },
+          "id": 701,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Requisições HTTP por Serviço (req/s)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(rate(http_server_duration_milliseconds_count[1m])) by (job)",
+              "legendFormat": "{{job}}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "ms"
+            }
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 32 },
+          "id": 702,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Latência HTTP p99 / p50 por Serviço (ms)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket[1m])) by (job, le))",
+              "legendFormat": "p99 · {{job}}",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket[1m])) by (job, le))",
+              "legendFormat": "p50 · {{job}}",
+              "refId": "B"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "percentunit"
+            }
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 40 },
+          "id": 703,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Taxa de Erros HTTP 4xx/5xx por Serviço",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(rate(http_server_duration_milliseconds_count{http_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_duration_milliseconds_count[1m])) by (job)",
+              "legendFormat": "error rate · {{job}}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "ms"
+            }
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 40 },
+          "id": 704,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Latência evaluation-service — /evaluate p99/p50 (hot path)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
+              "legendFormat": "p99",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
+              "legendFormat": "p50",
+              "refId": "B"
+            }
+          ]
+        },
+
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 48 },
           "id": 100,
-          "title": "Recursos do Cluster",
+          "title": "🖥️ Cluster AKS — Recursos",
           "type": "row"
         },
         {
@@ -54,7 +696,7 @@ data:
               "unit": "percent"
             }
           },
-          "gridPos": { "h": 6, "w": 4, "x": 0, "y": 1 },
+          "gridPos": { "h": 6, "w": 4, "x": 0, "y": 49 },
           "id": 1,
           "options": {
             "orientation": "auto",
@@ -78,7 +720,6 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "thresholds" },
-              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -90,7 +731,7 @@ data:
               "unit": "percent"
             }
           },
-          "gridPos": { "h": 6, "w": 4, "x": 4, "y": 1 },
+          "gridPos": { "h": 6, "w": 4, "x": 4, "y": 49 },
           "id": 2,
           "options": {
             "orientation": "auto",
@@ -114,7 +755,6 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "thresholds" },
-              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -126,7 +766,7 @@ data:
               "unit": "percent"
             }
           },
-          "gridPos": { "h": 6, "w": 4, "x": 8, "y": 1 },
+          "gridPos": { "h": 6, "w": 4, "x": 8, "y": 49 },
           "id": 3,
           "options": {
             "orientation": "auto",
@@ -162,7 +802,7 @@ data:
               }
             }
           },
-          "gridPos": { "h": 6, "w": 4, "x": 12, "y": 1 },
+          "gridPos": { "h": 6, "w": 4, "x": 12, "y": 49 },
           "id": 4,
           "options": {
             "colorMode": "background",
@@ -196,7 +836,7 @@ data:
               }
             }
           },
-          "gridPos": { "h": 6, "w": 4, "x": 16, "y": 1 },
+          "gridPos": { "h": 6, "w": 4, "x": 16, "y": 49 },
           "id": 5,
           "options": {
             "colorMode": "background",
@@ -205,7 +845,7 @@ data:
             "orientation": "horizontal",
             "reduceOptions": { "calcs": ["lastNotNull"] }
           },
-          "title": "Pods Reiniciando",
+          "title": "Pods Reiniciando (1h)",
           "type": "stat",
           "targets": [
             {
@@ -221,18 +861,11 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "fillOpacity": 20,
-                "lineWidth": 2,
-                "showPoints": "never",
-                "spanNulls": true
-              },
+              "custom": { "fillOpacity": 20, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
               "unit": "percent"
             }
           },
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 7 },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 55 },
           "id": 10,
           "options": {
             "legend": { "displayMode": "list", "placement": "bottom" },
@@ -254,18 +887,11 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "fillOpacity": 20,
-                "lineWidth": 2,
-                "showPoints": "never",
-                "spanNulls": true
-              },
+              "custom": { "fillOpacity": 20, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
               "unit": "bytes"
             }
           },
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 7 },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 55 },
           "id": 11,
           "options": {
             "legend": { "displayMode": "list", "placement": "bottom" },
@@ -282,11 +908,12 @@ data:
             }
           ]
         },
+
         {
           "collapsed": false,
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 15 },
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 63 },
           "id": 200,
-          "title": "Microsserviços ToggleMaster — Recursos e Saúde",
+          "title": "📦 Microsserviços — Recursos e Saúde",
           "type": "row"
         },
         {
@@ -294,18 +921,11 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "CPU cores",
-                "axisPlacement": "auto",
-                "fillOpacity": 15,
-                "lineWidth": 2,
-                "showPoints": "never",
-                "spanNulls": true
-              },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
               "unit": "short"
             }
           },
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 64 },
           "id": 20,
           "options": {
             "legend": { "displayMode": "list", "placement": "bottom" },
@@ -327,18 +947,11 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "memória",
-                "axisPlacement": "auto",
-                "fillOpacity": 15,
-                "lineWidth": 2,
-                "showPoints": "never",
-                "spanNulls": true
-              },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
               "unit": "bytes"
             }
           },
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 64 },
           "id": 21,
           "options": {
             "legend": { "displayMode": "list", "placement": "bottom" },
@@ -368,10 +981,9 @@ data:
                 ]
               },
               "mappings": []
-            },
-            "overrides": []
+            }
           },
-          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 24 },
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 72 },
           "id": 22,
           "options": {
             "displayMode": "lcd",
@@ -403,10 +1015,9 @@ data:
                   { "color": "red", "value": 5 }
                 ]
               }
-            },
-            "overrides": []
+            }
           },
-          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 24 },
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 72 },
           "id": 23,
           "options": {
             "displayMode": "lcd",
@@ -425,16 +1036,83 @@ data:
             }
           ]
         },
+
         {
           "collapsed": false,
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 },
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 78 },
+          "id": 800,
+          "title": "🔴 Redis & Azure Queue — Estado do Cache e Fila",
+          "type": "row"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 12, "x": 0, "y": 79 },
+          "id": 801,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Redis — Comandos por Segundo",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(redis_commands_processed_total[1m])",
+              "legendFormat": "cmds/s",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
+              "unit": "percentunit"
+            }
+          },
+          "gridPos": { "h": 7, "w": 12, "x": 12, "y": 79 },
+          "id": 802,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Redis — Taxa de Hit vs Miss do Cache",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(redis_keyspace_hits_total[1m]) / (rate(redis_keyspace_hits_total[1m]) + rate(redis_keyspace_misses_total[1m]))",
+              "legendFormat": "hit rate",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "rate(redis_keyspace_misses_total[1m]) / (rate(redis_keyspace_hits_total[1m]) + rate(redis_keyspace_misses_total[1m]))",
+              "legendFormat": "miss rate",
+              "refId": "B"
+            }
+          ]
+        },
+
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 86 },
           "id": 300,
-          "title": "Logs em Tempo Real",
+          "title": "📋 Logs em Tempo Real",
           "type": "row"
         },
         {
           "datasource": { "type": "loki", "uid": "loki" },
-          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 31 },
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 87 },
           "id": 30,
           "options": {
             "dedupStrategy": "none",
@@ -452,14 +1130,13 @@ data:
             {
               "datasource": { "type": "loki", "uid": "loki" },
               "expr": "{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"}",
-              "legendFormat": "",
               "refId": "A"
             }
           ]
         },
         {
           "datasource": { "type": "loki", "uid": "loki" },
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 41 },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 97 },
           "id": 31,
           "options": {
             "dedupStrategy": "none",
@@ -471,13 +1148,12 @@ data:
             "sortOrder": "Descending",
             "wrapLogMessage": false
           },
-          "title": "Logs de Erro — Filtrado por ERROR/WARN",
+          "title": "Logs de Erro — ERROR / WARN / FATAL",
           "type": "logs",
           "targets": [
             {
               "datasource": { "type": "loki", "uid": "loki" },
               "expr": "{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"} |~ \"(?i)(error|warn|exception|fatal)\"",
-              "legendFormat": "",
               "refId": "A"
             }
           ]
@@ -487,15 +1163,11 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": { "mode": "palette-classic" },
-              "custom": {
-                "fillOpacity": 15,
-                "lineWidth": 2,
-                "showPoints": "never"
-              },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never" },
               "unit": "short"
             }
           },
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 41 },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 97 },
           "id": 32,
           "options": {
             "legend": { "displayMode": "list", "placement": "bottom" },
@@ -511,17 +1183,66 @@ data:
               "refId": "A"
             }
           ]
+        },
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 105 },
+          "id": 33,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "showLabels": true,
+            "showTime": true,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "title": "Logs OTel Collector",
+          "type": "logs",
+          "targets": [
+            {
+              "datasource": { "type": "loki", "uid": "loki" },
+              "expr": "{namespace=\"observability\", pod=~\"otel-collector.*\"}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never" },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 105 },
+          "id": 34,
+          "options": {
+            "legend": { "displayMode": "list", "placement": "bottom" },
+            "tooltip": { "mode": "multi" }
+          },
+          "title": "Volume de Erros por Serviço (logs/min)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "datasource": { "type": "loki", "uid": "loki" },
+              "expr": "sum(count_over_time({namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"} |~ \"(?i)(error|warn|fatal)\"[1m])) by (namespace)",
+              "legendFormat": "erros · {{namespace}}",
+              "refId": "A"
+            }
+          ]
         }
+
       ],
       "refresh": "30s",
       "schemaVersion": 36,
       "style": "dark",
-      "tags": ["togglemaster", "kubernetes", "observabilidade"],
+      "tags": ["togglemaster", "kubernetes", "observabilidade", "otel", "cicd"],
       "templating": { "list": [] },
       "time": { "from": "now-1h", "to": "now" },
       "timepicker": {},
       "timezone": "America/Sao_Paulo",
       "title": "ToggleMaster — Saúde do Ecossistema",
       "uid": "togglemaster-ecosystem",
-      "version": 1
+      "version": 2
     }
