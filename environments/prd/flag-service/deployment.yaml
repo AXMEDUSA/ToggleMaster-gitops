@@ -21,7 +21,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: flag-service
-          image: toggleacrfase4.azurecr.io/flag-service:20843ca
+          image: toggleacrfase4.azurecr.io/flag-service:eaff068
           ports:
             - containerPort: 8002
           envFrom:
