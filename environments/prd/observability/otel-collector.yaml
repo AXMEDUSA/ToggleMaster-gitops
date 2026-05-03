@@ -7,6 +7,10 @@ metadata:
   namespace: observability
 data:
   config.yaml: |
+    extensions:
+      health_check:
+        endpoint: "0.0.0.0:13133"
+
     receivers:
       # Recebe telemetria dos microsserviços via OTLP (gRPC e HTTP)
       otlp:
@@ -92,6 +96,7 @@ data:
           processors: [memory_limiter, resourcedetection, resource, batch]
           exporters: [debug]
 
+      extensions: [health_check]
       telemetry:
         logs:
           level: "info"
