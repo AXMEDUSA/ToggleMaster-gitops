@@ -548,7 +548,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_server_request_duration_seconds_count[1m])) by (job)",
+              "expr": "sum(rate(http_server_duration_milliseconds_count[1m])) by (job)",
               "legendFormat": "{{job}}",
               "refId": "A"
             }
@@ -574,13 +574,13 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (job, le))",
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket[1m])) by (job, le))",
               "legendFormat": "p99 · {{job}}",
               "refId": "A"
             },
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (job, le))",
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket[1m])) by (job, le))",
               "legendFormat": "p50 · {{job}}",
               "refId": "B"
             }
@@ -606,7 +606,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_request_duration_seconds_count[1m])) by (job)",
+              "expr": "sum(rate(http_server_duration_milliseconds_count{http_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_duration_milliseconds_count[1m])) by (job)",
               "legendFormat": "error rate · {{job}}",
               "refId": "A"
             }
@@ -1178,5 +1178,5 @@ data:
       "timezone": "America/Sao_Paulo",
       "title": "ToggleMaster — Saúde do Ecossistema",
       "uid": "togglemaster-ecosystem",
-      "version": 4
+      "version": 5
     }
