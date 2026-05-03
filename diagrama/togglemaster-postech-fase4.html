@@ -9,354 +9,724 @@ body {
   background:#0d1117;
   font-family:'Courier New',monospace;
   color:#e6edf3;
-  width:780px; height:820px;
+  width:1200px; height:960px;
   overflow:hidden;
 }
-#cv { width:780px; height:820px; position:relative; }
+#cv { width:1200px; height:960px; position:relative; }
 
-/* título */
-#ttl { position:absolute; top:10px; left:50%; transform:translateX(-50%);
-  font-size:14px; font-weight:bold; letter-spacing:3px; white-space:nowrap;
-  opacity:0; color:#e6edf3; }
-#sub { position:absolute; top:32px; left:50%; transform:translateX(-50%);
-  font-size:9px; color:#8b949e; white-space:nowrap; opacity:0; letter-spacing:1px; }
+#ttl {
+  position:absolute; top:10px; left:50%; transform:translateX(-50%);
+  font-size:15px; font-weight:bold; letter-spacing:3px; white-space:nowrap;
+  opacity:0; color:#e6edf3;
+}
+#sub {
+  position:absolute; top:32px; left:50%; transform:translateX(-50%);
+  font-size:9px; color:#8b949e; white-space:nowrap;
+  opacity:0; letter-spacing:1px;
+}
 
-/* bandas de seção */
-.band { position:absolute; left:4px; right:4px; border-radius:8px; opacity:0; }
-#b-ci  { top:50px;  height:110px; background:rgba(56,139,253,.04);  border:1px solid rgba(56,139,253,.2); }
-#b-aks { top:170px; height:130px; background:rgba(63,185,80,.04);   border:1px solid rgba(63,185,80,.2); }
-#b-obs { top:312px; height:100px; background:rgba(188,140,255,.04); border:1px solid rgba(188,140,255,.2); }
-#b-dat { top:424px; height:100px; background:rgba(240,136,62,.04);  border:1px solid rgba(240,136,62,.2); }
-#b-alr { top:536px; height:110px; background:rgba(56,203,237,.04);  border:1px solid rgba(56,203,237,.2); }
+/* bandas */
+#bg-ci   { position:absolute; top:54px;  left:6px; right:6px; height:138px; background:rgba(56,139,253,.04);  border:1px solid #21262d; border-radius:10px; opacity:0; }
+#bg-aks  { position:absolute; top:204px; left:6px; right:6px; height:188px; background:rgba(63,185,80,.04);   border:1px solid #21262d; border-radius:10px; opacity:0; }
+#bg-obs  { position:absolute; top:406px; left:6px; right:6px; height:138px; background:rgba(188,140,255,.04); border:1px solid #21262d; border-radius:10px; opacity:0; }
+#bg-data { position:absolute; top:558px; left:6px; right:6px; height:118px; background:rgba(240,128,48,.04);  border:1px solid #21262d; border-radius:10px; opacity:0; }
+#bg-alr  { position:absolute; top:690px; left:6px; right:6px; height:118px; background:rgba(248,81,73,.04);   border:1px solid #21262d; border-radius:10px; opacity:0; }
 
 /* labels */
-.lbl { position:absolute; font-size:7px; font-weight:bold; letter-spacing:2px; opacity:0; }
-#lci  { top:58px;  left:14px; color:#388bfd; }
-#laks { top:178px; left:14px; color:#3fb950; }
-#lobs { top:320px; left:14px; color:#bc8cff; }
-#ldat { top:432px; left:14px; color:#f08830; }
-#lalr { top:544px; left:14px; color:#38cbed; }
+.lbl { position:absolute; font-size:8px; font-weight:bold; letter-spacing:2px; opacity:0; }
+#lbl-ci   { top:61px;  left:16px; color:#388bfd; }
+#lbl-aks  { top:211px; left:16px; color:#3fb950; }
+#lbl-obs  { top:413px; left:16px; color:#bc8cff; }
+#lbl-data { top:565px; left:16px; color:#f08030; }
+#lbl-alr  { top:697px; left:16px; color:#f85149; }
 
-/* nodos */
+/* nodos genéricos */
 .nd {
   position:absolute; border-radius:8px;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  opacity:0; padding:6px 4px; cursor:default;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  opacity:0; transition:box-shadow .4s;
+  padding:6px 4px;
 }
-.ni { font-size:16px; margin-bottom:2px; }
-.nt { font-size:8px; font-weight:bold; text-align:center; line-height:1.3; }
-.ns { font-size:7px; text-align:center; line-height:1.3; }
+.ni  { font-size:18px; margin-bottom:3px; }
+.nt  { font-size:9px; font-weight:bold; text-align:center; }
+.ns  { font-size:7.5px; color:#8b949e; text-align:center; margin-top:2px; line-height:1.4; }
 
-/* SVG */
-#svg { position:absolute; top:0; left:0; width:780px; height:820px; pointer-events:none; }
+/* CI/CD */
+#dev    { top:66px; left:16px;  width:82px;  height:112px; background:#161b22; border:2px solid #8b949e; color:#8b949e; }
+#gh     { top:66px; left:140px; width:108px; height:112px; background:#161b22; border:2px solid #388bfd; color:#388bfd; }
+#trivy  { top:66px; left:296px; width:92px;  height:112px; background:#161b22; border:2px solid #e3b342; color:#e3b342; }
+#acr    { top:66px; left:436px; width:100px; height:112px; background:#161b22; border:2px solid #f08030; color:#f08030; }
+#gitops { top:66px; left:584px; width:100px; height:112px; background:#161b22; border:2px solid #bc8cff; color:#bc8cff; }
+#argo   { top:66px; left:732px; width:100px; height:112px; background:#161b22; border:2px solid #f778ba; color:#f778ba; }
+#tf     { top:66px; left:882px; width:100px; height:112px; background:#161b22; border:2px solid #7b54c9; color:#7b54c9; }
+#hpa    { top:66px; left:1032px;width:88px;  height:112px; background:#161b22; border:2px solid #58a6ff; color:#58a6ff; }
+
+/* AKS pods */
+#ingress { top:218px; left:16px;  width:90px; height:70px; background:#161b22; border:2px solid #58a6ff; color:#58a6ff; }
+.svc { width:114px; height:72px; background:#161b22; border:2px solid #3fb950; color:#3fb950; }
+#svc-auth { top:218px; left:150px; }
+#svc-flag { top:218px; left:306px; }
+#svc-targ { top:218px; left:462px; }
+#svc-eval { top:218px; left:618px; }
+#svc-anal { top:218px; left:774px; }
+/* OTel no AKS */
+#otel-nd  { top:218px; left:930px; width:120px; height:72px; background:#161b22; border:2px solid #bc8cff; color:#bc8cff; }
+
+/* namespaces */
+.ns-b { width:114px; height:56px; background:#161b22; border:2px solid #1f6feb; color:#58a6ff; }
+#ns-auth { top:300px; left:150px; }
+#ns-flag { top:300px; left:306px; }
+#ns-targ { top:300px; left:462px; }
+#ns-eval { top:300px; left:618px; }
+#ns-anal { top:300px; left:774px; }
+
+.hpa-badge {
+  position:absolute; font-size:7px; font-weight:bold;
+  padding:1px 5px; border-radius:8px;
+  background:#0d1a33; color:#58a6ff; border:1px solid #1f6feb; opacity:0;
+}
+#hpa-eval { top:358px; left:620px; }
+#hpa-anal { top:358px; left:776px; }
+#aks-label { position:absolute; top:388px; left:50%; transform:translateX(-50%); font-size:8px; color:#3fb950; letter-spacing:1px; opacity:0; white-space:nowrap; }
+
+/* Observabilidade */
+#prom     { top:420px; left:80px;  width:130px; height:108px; background:#161b22; border:2px solid #f08030; color:#f08030; }
+#loki     { top:420px; left:256px; width:130px; height:108px; background:#161b22; border:2px solid #bc8cff; color:#bc8cff; }
+#promtail { top:420px; left:432px; width:130px; height:108px; background:#161b22; border:2px solid #8b949e; color:#8b949e; }
+#grafana  { top:420px; left:608px; width:130px; height:108px; background:#161b22; border:2px solid #f778ba; color:#f778ba; }
+#otel-col { top:420px; left:800px; width:144px; height:108px; background:#161b22; border:2px solid #38cbed; color:#38cbed; }
+
+/* Data */
+.db { width:120px; height:94px; background:#161b22; border:2px solid #f08030; color:#f08030; }
+#db-auth { top:572px; left:20px;  }
+#db-flag { top:572px; left:158px; }
+#db-targ { top:572px; left:296px; }
+#redis   { top:572px; left:440px; width:110px; height:94px; background:#161b22; border:2px solid #da3b3b; color:#da3b3b; }
+#queue   { top:572px; left:568px; width:120px; height:94px; background:#161b22; border:2px solid #e3b342; color:#e3b342; }
+#cosmos  { top:572px; left:710px; width:120px; height:94px; background:#161b22; border:2px solid #58a6ff; color:#58a6ff; }
+
+/* Alertas */
+#alertmgr { top:704px; left:20px;  width:130px; height:94px; background:#161b22; border:2px solid #f85149; color:#f85149; }
+#opsgenie  { top:704px; left:172px; width:130px; height:94px; background:#161b22; border:2px solid #f08030; color:#f08030; }
+#slack     { top:704px; left:324px; width:130px; height:94px; background:#161b22; border:2px solid #3fb950; color:#3fb950; }
+#selfheal  { top:704px; left:490px; width:160px; height:94px; background:#161b22; border:2px solid #38cbed; color:#38cbed; }
+
+/* evt counter */
+#evt-counter {
+  position:absolute; top:385px; right:14px;
+  font-size:8px; color:#e3b342; opacity:0;
+  border:1px solid #e3b342; border-radius:6px;
+  padding:2px 8px; background:#1a1400;
+}
+
+/* badges */
+.bg { position:absolute; font-size:7.5px; font-weight:bold; padding:2px 6px; border-radius:10px; opacity:0; }
+.step { position:absolute; font-size:7.5px; color:#8b949e; opacity:0; white-space:nowrap; }
+
+/* packets */
+.pk { position:absolute; border-radius:50%; opacity:0; z-index:20; }
 
 /* terminal */
 #term {
-  position:absolute; right:4px; top:312px; width:310px; height:96px;
-  background:#161b22; border:1px solid #30363d; border-radius:6px;
-  padding:6px 8px; font-size:7px; opacity:0; overflow:hidden;
+  position:absolute; bottom:4px; right:6px; width:480px; height:92px;
+  background:#090d12; border:1px solid #30363d; border-radius:8px;
+  overflow:hidden; opacity:0;
 }
-#term .th { color:#8b949e; margin-bottom:4px; letter-spacing:2px; }
-.tl { opacity:0; margin:2px 0; }
+#tbar { height:18px; background:#21262d; border-radius:8px 8px 0 0; display:flex; align-items:center; padding-left:10px; font-size:8px; color:#8b949e; }
+#tbar::before { content:"● ● ●"; color:#3d444d; margin-right:10px; }
+#tbody { padding:3px 10px; }
+.tl { font-size:8px; margin-bottom:1px; opacity:0; transition:opacity .3s; white-space:nowrap; }
+.tl.cmd  { color:#8b949e; }
+.tl.ok   { color:#3fb950; }
+.tl.ci   { color:#388bfd; }
+.tl.argo { color:#f778ba; }
+.tl.sec  { color:#e3b342; }
+.tl.alr  { color:#f85149; }
+.tl.heal { color:#38cbed; }
 
-/* watermark */
-#wm { position:absolute; bottom:6px; right:8px; font-size:7px; color:#484f58; letter-spacing:1px; }
+#wm { position:absolute; bottom:6px; left:10px; font-size:7.5px; color:#30363d; opacity:0; }
+
+@keyframes pulse-green {
+  0%,100% { box-shadow: 0 0 6px #3fb950; }
+  50%      { box-shadow: 0 0 22px #3fb950, 0 0 40px rgba(63,185,80,.25); }
+}
+@keyframes pulse-red {
+  0%,100% { box-shadow: 0 0 6px #f85149; }
+  50%      { box-shadow: 0 0 28px #f85149, 0 0 50px rgba(248,81,73,.3); }
+}
+@keyframes pulse-cyan {
+  0%,100% { box-shadow: 0 0 6px #38cbed; }
+  50%      { box-shadow: 0 0 22px #38cbed, 0 0 40px rgba(56,203,237,.3); }
+}
+.healthy { animation: pulse-green 2.2s ease-in-out infinite; }
+.alerting { animation: pulse-red  1.4s ease-in-out infinite; }
+.healing  { animation: pulse-cyan 1.8s ease-in-out infinite; }
+
+svg#sv { position:absolute; top:0; left:0; width:1200px; height:960px; pointer-events:none; }
 </style>
 </head>
 <body>
 <div id="cv">
 
-  <!-- bandas -->
-  <div class="band" id="b-ci"></div>
-  <div class="band" id="b-aks"></div>
-  <div class="band" id="b-obs"></div>
-  <div class="band" id="b-dat"></div>
-  <div class="band" id="b-alr"></div>
+<div id="ttl">TOGGLEMASTER — POSTECH FASE 4 — OBSERVABILIDADE TOTAL</div>
+<div id="sub">FIAP PosTech DevOps · CI/CD · GitOps · AKS · OpenTelemetry · Alertas · Self-Healing</div>
 
-  <!-- labels seção -->
-  <div class="lbl" id="lci">CI/CD  PIPELINE  →  DEVSECOPS</div>
-  <div class="lbl" id="laks">AKS  KUBERNETES  —  5  MICROSSERVIÇOS</div>
-  <div class="lbl" id="lobs">OBSERVABILIDADE  —  PROMETHEUS · LOKI · GRAFANA</div>
-  <div class="lbl" id="ldat">DATA  LAYER  —  POSTGRESQL · REDIS · AZURE</div>
-  <div class="lbl" id="lalr">ALERTAS  &amp;  SELF-HEALING</div>
+<div id="bg-ci"></div>
+<div id="bg-aks"></div>
+<div id="bg-obs"></div>
+<div id="bg-data"></div>
+<div id="bg-alr"></div>
 
-  <!-- título -->
-  <div id="ttl">TOGGLEMASTER — POSTECH FASE 4</div>
-  <div id="sub">FIAP  |  DevSecOps · Observabilidade · GitOps · AKS · OpenTelemetry</div>
+<div class="lbl" id="lbl-ci">▸ CI/CD PIPELINE — GitHub Actions + DevSecOps</div>
+<div class="lbl" id="lbl-aks">▸ AKS CLUSTER — aks-togglemaster · Standard_D2_v4 × 2 nodes + OTel Collector</div>
+<div class="lbl" id="lbl-obs">▸ OBSERVABILIDADE — namespace: observability · Prometheus · Loki · Grafana · OTel Collector</div>
+<div class="lbl" id="lbl-data">▸ AZURE MANAGED SERVICES — Data Layer</div>
+<div class="lbl" id="lbl-alr">▸ ALERTAS INTELIGENTES &amp; SELF-HEALING — OpsGenie · Slack · GitHub Actions Webhook</div>
 
-  <!-- ── CI/CD ─────────────────────────────────── -->
-  <div class="nd" id="n-gh"  style="left:10px;  top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #388bfd44;">
-    <div class="ni">⚙️</div><div class="nt" style="color:#388bfd">GitHub</div><div class="ns" style="color:#8b949e">AppRepo</div>
-  </div>
-  <div class="nd" id="n-sec" style="left:104px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #f8514944;">
-    <div class="ni">🔒</div><div class="nt" style="color:#f85149">Security</div><div class="ns" style="color:#8b949e">Trivy/SAST/Bandit</div>
-  </div>
-  <div class="nd" id="n-dok" style="left:198px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #38cbed44;">
-    <div class="ni">🐳</div><div class="nt" style="color:#38cbed">Docker</div><div class="ns" style="color:#8b949e">Build + Push</div>
-  </div>
-  <div class="nd" id="n-acr" style="left:292px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #0078d444;">
-    <div class="ni">📦</div><div class="nt" style="color:#0078d4">ACR</div><div class="ns" style="color:#8b949e">Azure Registry</div>
-  </div>
-  <div class="nd" id="n-argo" style="left:386px; top:65px; width:84px; height:80px; background:#161b22; border:1px solid #3fb95044;">
-    <div class="ni">🔁</div><div class="nt" style="color:#3fb950">ArgoCD</div><div class="ns" style="color:#8b949e">GitOps Sync</div>
-  </div>
-  <div class="nd" id="n-gops" style="left:480px; top:65px; width:84px; height:80px; background:#161b22; border:1px solid #e3b34144;">
-    <div class="ni">🌿</div><div class="nt" style="color:#e3b341">GitOps</div><div class="ns" style="color:#8b949e">Repo Manifests</div>
-  </div>
-  <div class="nd" id="n-tf"  style="left:574px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #bc8cff44;">
-    <div class="ni">🏗️</div><div class="nt" style="color:#bc8cff">Terraform</div><div class="ns" style="color:#8b949e">IaC AKS/ACR</div>
-  </div>
+<!-- CI/CD -->
+<div class="nd" id="dev">
+  <div class="ni">👨‍💻</div><div class="nt">Developer</div>
+  <div class="ns">git push<br>main branch</div>
+</div>
+<div class="nd" id="gh">
+  <div class="ni">⚙️</div><div class="nt">GitHub Actions</div>
+  <div class="ns">shared-ci.yml<br>build · test<br>lint · gosec</div>
+</div>
+<div class="nd" id="trivy">
+  <div class="ni">🛡️</div><div class="nt">Trivy + SAST</div>
+  <div class="ns">SCA CRITICAL<br>gosec · bandit</div>
+</div>
+<div class="nd" id="acr">
+  <div class="ni">📦</div><div class="nt">Azure ACR</div>
+  <div class="ns">toggleacrfase4<br>.azurecr.io<br>:&lt;SHORT_SHA&gt;</div>
+</div>
+<div class="nd" id="gitops">
+  <div class="ni">📂</div><div class="nt">GitOps Repo</div>
+  <div class="ns">ToggleMaster<br>-gitops<br>sed image tag</div>
+</div>
+<div class="nd" id="argo">
+  <div class="ni">🔄</div><div class="nt">ArgoCD</div>
+  <div class="ns">auto-sync<br>prune + selfHeal</div>
+</div>
+<div class="nd" id="tf">
+  <div class="ni">🏗️</div><div class="nt">Terraform</div>
+  <div class="ns">IaC · AKS<br>ACR · Azure</div>
+</div>
+<div class="nd" id="hpa">
+  <div class="ni">📈</div><div class="nt">HPA</div>
+  <div class="ns">eval + analytics<br>CPU / Memory</div>
+</div>
 
-  <!-- ── AKS microsserviços ─────────────────────── -->
-  <div class="nd" id="n-auth" style="left:10px;  top:185px; width:100px; height:80px; background:#161b22; border:1px solid #388bfd44;">
-    <div class="ni">🔑</div><div class="nt" style="color:#388bfd">auth-service</div><div class="ns" style="color:#8b949e">Go · 8001</div>
-  </div>
-  <div class="nd" id="n-flag" style="left:120px; top:185px; width:100px; height:80px; background:#161b22; border:1px solid #3fb95044;">
-    <div class="ni">🚩</div><div class="nt" style="color:#3fb950">flag-service</div><div class="ns" style="color:#8b949e">Python · 8002</div>
-  </div>
-  <div class="nd" id="n-tgt" style="left:230px; top:185px;  width:100px; height:80px; background:#161b22; border:1px solid #f0883e44;">
-    <div class="ni">🎯</div><div class="nt" style="color:#f0883e">targeting</div><div class="ns" style="color:#8b949e">Python · 8003</div>
-  </div>
-  <div class="nd" id="n-eval" style="left:340px; top:185px; width:100px; height:80px; background:#161b22; border:1px solid #bc8cff44;">
-    <div class="ni">⚖️</div><div class="nt" style="color:#bc8cff">eval-service</div><div class="ns" style="color:#8b949e">Go · 8004</div>
-  </div>
-  <div class="nd" id="n-ana" style="left:450px; top:185px;  width:100px; height:80px; background:#161b22; border:1px solid #38cbed44;">
-    <div class="ni">📊</div><div class="nt" style="color:#38cbed">analytics</div><div class="ns" style="color:#8b949e">Python · 8005</div>
-  </div>
-  <div class="nd" id="n-otel" style="left:568px; top:185px; width:110px; height:80px; background:#161b22; border:1px solid #bc8cff88;">
-    <div class="ni">🔭</div><div class="nt" style="color:#bc8cff">OTel Collector</div><div class="ns" style="color:#8b949e">OTLP → Prom/Loki</div>
-  </div>
+<!-- AKS -->
+<div class="nd" id="ingress">
+  <div class="ni">🌐</div><div class="nt" style="font-size:8px">Nginx Ingress</div>
+  <div class="ns">nip.io DNS<br>4.249.138.4</div>
+</div>
+<div class="nd svc" id="svc-auth">
+  <div class="ni" style="font-size:13px">🔐</div><div class="nt">auth-service</div>
+  <div class="ns">Go · :8001<br>API keys</div>
+</div>
+<div class="nd svc" id="svc-flag">
+  <div class="ni" style="font-size:13px">🚩</div><div class="nt">flag-service</div>
+  <div class="ns">Python · :8002<br>CRUD flags</div>
+</div>
+<div class="nd svc" id="svc-targ">
+  <div class="ni" style="font-size:13px">🎯</div><div class="nt">targeting-svc</div>
+  <div class="ns">Python · :8003<br>segmentação</div>
+</div>
+<div class="nd svc" id="svc-eval">
+  <div class="ni" style="font-size:13px">⚡</div><div class="nt">evaluation-svc</div>
+  <div class="ns">Go · :8004<br>hot path</div>
+</div>
+<div class="nd svc" id="svc-anal">
+  <div class="ni" style="font-size:13px">📊</div><div class="nt">analytics-svc</div>
+  <div class="ns">Python · :8005<br>queue worker</div>
+</div>
+<div class="nd" id="otel-nd">
+  <div class="ni" style="font-size:13px">🔭</div><div class="nt">OTel Collector</div>
+  <div class="ns">OTLP :4317<br>→ Prom · Loki</div>
+</div>
 
-  <!-- ── Observabilidade ───────────────────────── -->
-  <div class="nd" id="n-prom" style="left:10px;  top:327px; width:110px; height:78px; background:#161b22; border:1px solid #f0883e44;">
-    <div class="ni">📈</div><div class="nt" style="color:#f0883e">Prometheus</div><div class="ns" style="color:#8b949e">Métricas · Remote Write</div>
-  </div>
-  <div class="nd" id="n-loki" style="left:130px; top:327px; width:110px; height:78px; background:#161b22; border:1px solid #3fb95044;">
-    <div class="ni">📋</div><div class="nt" style="color:#3fb950">Loki + Promtail</div><div class="ns" style="color:#8b949e">Logs · OTLP HTTP</div>
-  </div>
-  <div class="nd" id="n-graf" style="left:250px; top:327px; width:110px; height:78px; background:#161b22; border:1px solid #e3b34144;">
-    <div class="ni">📊</div><div class="nt" style="color:#e3b341">Grafana</div><div class="ns" style="color:#8b949e">Dashboard · Alertas</div>
-  </div>
+<!-- namespaces -->
+<div class="nd ns-b" id="ns-auth"><div class="nt" style="font-size:8px;color:#58a6ff">auth-service-prd</div><div class="ns">ClusterIP · 2 replicas</div></div>
+<div class="nd ns-b" id="ns-flag"><div class="nt" style="font-size:8px;color:#58a6ff">flag-service-prd</div><div class="ns">ClusterIP · 2 replicas</div></div>
+<div class="nd ns-b" id="ns-targ"><div class="nt" style="font-size:8px;color:#58a6ff">targeting-svc-prd</div><div class="ns">ClusterIP · 2 replicas</div></div>
+<div class="nd ns-b" id="ns-eval"><div class="nt" style="font-size:8px;color:#58a6ff">evaluation-svc-prd</div><div class="ns">ClusterIP · HPA ✓</div></div>
+<div class="nd ns-b" id="ns-anal"><div class="nt" style="font-size:8px;color:#58a6ff">analytics-svc-prd</div><div class="ns">ClusterIP · HPA ✓</div></div>
 
-  <!-- terminal -->
-  <div id="term">
-    <div class="th">▸ TERMINAL — self-healing</div>
-    <div class="tl" id="tl0" style="color:#3fb950">$ kubectl get pods -n flag-service-prd</div>
-    <div class="tl" id="tl1" style="color:#e6edf3">flag-service-xxx  1/1  Running  0  &nbsp;&nbsp;✓</div>
-    <div class="tl" id="tl2" style="color:#38cbed">$ kubectl rollout restart deploy/auth-service</div>
-    <div class="tl" id="tl3" style="color:#e3b341">deployment.apps/auth-service restarted ✓</div>
-    <div class="tl" id="tl4" style="color:#bc8cff">→ self-heal acionado em 00:00:04</div>
+<div class="hpa-badge" id="hpa-eval">HPA</div>
+<div class="hpa-badge" id="hpa-anal">HPA</div>
+<div id="aks-label">kubernetes.default.svc — Azure Kubernetes Service 1.34.4 · namespace: observability</div>
+<div id="evt-counter">spans/s: <span id="evt-n">0</span></div>
+
+<!-- Observabilidade -->
+<div class="nd" id="prom">
+  <div class="ni" style="font-size:13px">🔥</div><div class="nt">Prometheus</div>
+  <div class="ns">29.3.0 · scrape<br>remote write<br>15d retention</div>
+</div>
+<div class="nd" id="loki">
+  <div class="ni" style="font-size:13px">📝</div><div class="nt">Loki</div>
+  <div class="ns">6.55.0 · TSDB<br>OTLP HTTP<br>log indexing</div>
+</div>
+<div class="nd" id="promtail">
+  <div class="ni" style="font-size:13px">🐾</div><div class="nt">Promtail</div>
+  <div class="ns">6.17.1<br>DaemonSet<br>coleta logs pods</div>
+</div>
+<div class="nd" id="grafana">
+  <div class="ni" style="font-size:13px">📈</div><div class="nt">Grafana</div>
+  <div class="ns">8.0.0<br>dashboard custom<br>alertas 5xx</div>
+</div>
+<div class="nd" id="otel-col">
+  <div class="ni" style="font-size:13px">🔭</div><div class="nt">OTel Collector</div>
+  <div class="ns">metrics → Prom<br>logs → Loki<br>traces → debug</div>
+</div>
+
+<!-- Data -->
+<div class="nd db" id="db-auth"><div class="ni" style="font-size:14px">🐘</div><div class="nt">pg-auth</div><div class="ns">PostgreSQL 16<br>auth_db · api_keys</div></div>
+<div class="nd db" id="db-flag"><div class="ni" style="font-size:14px">🐘</div><div class="nt">pg-flag</div><div class="ns">PostgreSQL 16<br>flag_db · flags</div></div>
+<div class="nd db" id="db-targ"><div class="ni" style="font-size:14px">🐘</div><div class="nt">pg-targeting</div><div class="ns">PostgreSQL 16<br>targeting_rules</div></div>
+<div class="nd" id="redis"><div class="ni" style="font-size:14px">⚡</div><div class="nt">Redis</div><div class="ns">Azure Cache<br>TTL · eval cache</div></div>
+<div class="nd" id="queue"><div class="ni" style="font-size:14px">📬</div><div class="nt">Azure Queue</div><div class="ns">satogglemasterf4<br>eval events async</div></div>
+<div class="nd" id="cosmos"><div class="ni" style="font-size:14px">🌌</div><div class="nt">Azure SQL</div><div class="ns">Table API<br>analytics histórico</div></div>
+
+<!-- Alertas -->
+<div class="nd" id="alertmgr">
+  <div class="ni" style="font-size:14px">🔔</div><div class="nt">Alertmanager</div>
+  <div class="ns">5xx &gt; 5%<br>2min · P2</div>
+</div>
+<div class="nd" id="opsgenie">
+  <div class="ni" style="font-size:14px">📟</div><div class="nt">OpsGenie</div>
+  <div class="ns">incident mgmt<br>on-call routing</div>
+</div>
+<div class="nd" id="slack">
+  <div class="ni" style="font-size:14px">💬</div><div class="nt">Slack</div>
+  <div class="ns">#alerts ChatOps<br>runbook link</div>
+</div>
+<div class="nd" id="selfheal">
+  <div class="ni" style="font-size:14px">🔄</div><div class="nt">Self-Healing</div>
+  <div class="ns">GitHub Action webhook<br>kubectl rollout restart</div>
+</div>
+
+<!-- Badges -->
+<div class="bg" id="bd-ci"      style="top:182px;left:140px;background:#0d1a2d;color:#388bfd;border:1px solid #388bfd">CI PASS</div>
+<div class="bg" id="bd-scan"    style="top:182px;left:296px;background:#1a1500;color:#e3b342;border:1px solid #e3b342">SCAN OK</div>
+<div class="bg" id="bd-push"    style="top:182px;left:436px;background:#1a1400;color:#f08030;border:1px solid #f08030">PUSHED</div>
+<div class="bg" id="bd-sync"    style="top:182px;left:732px;background:#1a0d1f;color:#f778ba;border:1px solid #f778ba">SYNCED</div>
+<div class="bg" id="bd-healthy" style="top:370px;left:320px;background:#0d2b14;color:#3fb950;border:1px solid #3fb950">ALL HEALTHY · 5/5</div>
+<div class="bg" id="bd-alert"   style="top:670px;left:20px; background:#2b0d0d;color:#f85149;border:1px solid #f85149;display:none">⚡ ALERTA FIRING</div>
+<div class="bg" id="bd-healed"  style="top:670px;left:200px;background:#0d2b2b;color:#38cbed;border:1px solid #38cbed;display:none">✓ SELF-HEALED</div>
+
+<!-- Packets -->
+<div class="pk" id="pk-ci1"   style="width:9px;height:9px;background:#8b949e"></div>
+<div class="pk" id="pk-ci2"   style="width:9px;height:9px;background:#e3b342"></div>
+<div class="pk" id="pk-ci3"   style="width:9px;height:9px;background:#f08030"></div>
+<div class="pk" id="pk-ci4"   style="width:9px;height:9px;background:#bc8cff"></div>
+<div class="pk" id="pk-ci5"   style="width:9px;height:9px;background:#f778ba"></div>
+<div class="pk" id="pk-deploy"style="width:11px;height:11px;background:#f778ba"></div>
+<div class="pk" id="pk-pull"  style="width:9px;height:9px;background:#f08030"></div>
+<div class="pk" id="pk-ing1"  style="width:7px;height:7px;background:#58a6ff"></div>
+<div class="pk" id="pk-ing2"  style="width:7px;height:7px;background:#58a6ff"></div>
+<div class="pk" id="pk-otel1" style="width:7px;height:7px;background:#bc8cff"></div>
+<div class="pk" id="pk-otel2" style="width:7px;height:7px;background:#38cbed"></div>
+<div class="pk" id="pk-otel3" style="width:7px;height:7px;background:#38cbed"></div>
+<div class="pk" id="pk-db1"   style="width:7px;height:7px;background:#f08030"></div>
+<div class="pk" id="pk-db2"   style="width:7px;height:7px;background:#f08030"></div>
+<div class="pk" id="pk-db3"   style="width:7px;height:7px;background:#f08030"></div>
+<div class="pk" id="pk-redis" style="width:7px;height:7px;background:#da3b3b"></div>
+<div class="pk" id="pk-queue" style="width:7px;height:7px;background:#e3b342"></div>
+<div class="pk" id="pk-cosmos"style="width:7px;height:7px;background:#58a6ff"></div>
+<div class="pk" id="pk-evf1"  style="width:7px;height:7px;background:#e3b342"></div>
+<div class="pk" id="pk-sc1"   style="width:6px;height:6px;background:#f08030"></div>
+<div class="pk" id="pk-lg1"   style="width:6px;height:6px;background:#bc8cff"></div>
+<div class="pk" id="pk-alr1"  style="width:8px;height:8px;background:#f85149"></div>
+<div class="pk" id="pk-alr2"  style="width:8px;height:8px;background:#f08030"></div>
+<div class="pk" id="pk-alr3"  style="width:8px;height:8px;background:#3fb950"></div>
+<div class="pk" id="pk-heal"  style="width:9px;height:9px;background:#38cbed"></div>
+
+<!-- Step labels -->
+<div class="step" id="st-push"    style="top:96px; left:108px">git push</div>
+<div class="step" id="st-scan"    style="top:96px; left:252px">SAST/SCA</div>
+<div class="step" id="st-build"   style="top:96px; left:390px">docker push</div>
+<div class="step" id="st-tag"     style="top:144px;left:360px">sed image tag</div>
+<div class="step" id="st-sync"    style="top:96px; left:690px">auto-sync</div>
+<div class="step" id="st-pull"    style="top:196px;left:440px">image pull</div>
+<div class="step" id="st-deploy"  style="top:196px;left:740px">deploy</div>
+<div class="step" id="st-otlp"    style="top:376px;left:780px">OTLP gRPC :4317</div>
+<div class="step" id="st-scrape"  style="top:520px;left:60px">métricas</div>
+<div class="step" id="st-logs"    style="top:520px;left:410px">logs coleta</div>
+<div class="step" id="st-consume" style="top:638px;left:600px">consume queue</div>
+<div class="step" id="st-alert"   style="top:676px;left:30px">5xx &gt; 5%</div>
+
+<!-- SVG -->
+<svg id="sv" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a-bl" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#388bfd"/></marker>
+    <marker id="a-gr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#3fb950"/></marker>
+    <marker id="a-or" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f08030"/></marker>
+    <marker id="a-pu" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#bc8cff"/></marker>
+    <marker id="a-pk" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f778ba"/></marker>
+    <marker id="a-gy" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#8b949e"/></marker>
+    <marker id="a-rd" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#da3b3b"/></marker>
+    <marker id="a-yl" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#e3b342"/></marker>
+    <marker id="a-cy" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#58a6ff"/></marker>
+    <marker id="a-cb" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#38cbed"/></marker>
+    <marker id="a-rr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f85149"/></marker>
+  </defs>
+
+  <!-- CI/CD -->
+  <line id="l-dev-gh"      x1="98"  y1="122" x2="138" y2="122" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-gy)" opacity="0"/>
+  <line id="l-gh-trivy"    x1="248" y1="122" x2="294" y2="122" stroke="#e3b342" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-yl)" opacity="0"/>
+  <line id="l-trivy-acr"   x1="388" y1="122" x2="434" y2="122" stroke="#f08030" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-gh-gitops"   x1="248" y1="138" x2="582" y2="138" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pu)" opacity="0"/>
+  <line id="l-gitops-argo" x1="684" y1="122" x2="730" y2="122" stroke="#f778ba" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pk)" opacity="0"/>
+  <!-- ArgoCD + ACR → AKS -->
+  <line id="l-argo-aks"    x1="782" y1="178" x2="782" y2="214" stroke="#f778ba" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pk)" opacity="0"/>
+  <line id="l-acr-aks"     x1="486" y1="178" x2="486" y2="214" stroke="#f08030" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+  <!-- HPA -->
+  <line id="l-hpa-eval"    x1="1076" y1="138" x2="732" y2="214" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-cy)" opacity="0"/>
+  <line id="l-hpa-anal"    x1="1076" y1="154" x2="888" y2="214" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#a-cy)" opacity="0"/>
+  <!-- Ingress → svcs -->
+  <line id="l-ing-auth"    x1="106" y1="254" x2="148" y2="254" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-cy)" opacity="0"/>
+  <line id="l-ing-flag"    x1="106" y1="254" x2="304" y2="254" stroke="#58a6ff" stroke-width="1"   stroke-dasharray="5,4" marker-end="url(#a-cy)" opacity="0"/>
+  <line id="l-ing-targ"    x1="106" y1="254" x2="460" y2="254" stroke="#58a6ff" stroke-width="1"   stroke-dasharray="5,4" marker-end="url(#a-cy)" opacity="0"/>
+  <line id="l-ing-eval"    x1="106" y1="254" x2="616" y2="254" stroke="#58a6ff" stroke-width="1"   stroke-dasharray="5,4" marker-end="url(#a-cy)" opacity="0"/>
+  <line id="l-ing-anal"    x1="106" y1="254" x2="772" y2="254" stroke="#58a6ff" stroke-width="1"   stroke-dasharray="5,4" marker-end="url(#a-cy)" opacity="0"/>
+  <!-- svcs → OTel -->
+  <line id="l-svc-otel1"   x1="207" y1="254" x2="930" y2="254" stroke="#bc8cff" stroke-width="1"   stroke-dasharray="3,5" marker-end="url(#a-pu)" opacity="0"/>
+  <line id="l-svc-otel2"   x1="363" y1="260" x2="930" y2="260" stroke="#bc8cff" stroke-width="1"   stroke-dasharray="3,5" opacity="0"/>
+  <line id="l-svc-otel3"   x1="519" y1="266" x2="930" y2="266" stroke="#bc8cff" stroke-width="1"   stroke-dasharray="3,5" opacity="0"/>
+  <!-- eval internal -->
+  <line id="l-eval-flag"   x1="675" y1="252" x2="422" y2="252" stroke="#3fb950" stroke-width="1"   stroke-dasharray="3,4" marker-end="url(#a-gr)" opacity="0"/>
+  <line id="l-eval-targ"   x1="675" y1="264" x2="578" y2="264" stroke="#3fb950" stroke-width="1"   stroke-dasharray="3,4" marker-end="url(#a-gr)" opacity="0"/>
+  <!-- OTel → Prom/Loki -->
+  <line id="l-otel-prom"   x1="872" y1="360" x2="145" y2="416" stroke="#f08030" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-otel-loki"   x1="900" y1="360" x2="321" y2="416" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pu)" opacity="0"/>
+  <!-- Promtail → pods -->
+  <line id="l-pt-pods"     x1="497" y1="406" x2="400" y2="368" stroke="#8b949e" stroke-width="1"   stroke-dasharray="3,4" marker-end="url(#a-gy)" opacity="0"/>
+  <line id="l-pt-loki"     x1="432" y1="474" x2="388" y2="474" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-pu)" opacity="0"/>
+  <!-- Prom + Loki → Grafana -->
+  <line id="l-prom-graf"   x1="210" y1="474" x2="606" y2="474" stroke="#f08030" stroke-width="1"   stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-loki-graf"   x1="386" y1="486" x2="606" y2="486" stroke="#bc8cff" stroke-width="1"   stroke-dasharray="5,4" marker-end="url(#a-pu)" opacity="0"/>
+  <!-- Services → DBs -->
+  <line id="l-auth-db"     x1="207" y1="368" x2="80"  y2="568" stroke="#f08030" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-flag-db"     x1="363" y1="368" x2="218" y2="568" stroke="#f08030" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-targ-db"     x1="519" y1="368" x2="356" y2="568" stroke="#f08030" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-eval-redis"  x1="675" y1="368" x2="495" y2="568" stroke="#da3b3b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-rd)" opacity="0"/>
+  <line id="l-eval-queue"  x1="720" y1="368" x2="628" y2="568" stroke="#e3b342" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-yl)" opacity="0"/>
+  <line id="l-anal-cosmos" x1="831" y1="368" x2="770" y2="568" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-cy)" opacity="0"/>
+  <line id="l-queue-anal"  x1="688" y1="568" x2="838" y2="368" stroke="#e3b342" stroke-width="1"   stroke-dasharray="3,5" marker-end="url(#a-yl)" opacity="0"/>
+  <!-- Grafana → Alertmanager -->
+  <line id="l-graf-alm"    x1="673" y1="528" x2="85"  y2="700" stroke="#f85149" stroke-width="2"   stroke-dasharray="5,3" marker-end="url(#a-rr)" opacity="0"/>
+  <!-- Alert chain -->
+  <line id="l-alm-ops"     x1="150" y1="751" x2="170" y2="751" stroke="#f08030" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-or)" opacity="0"/>
+  <line id="l-ops-slk"     x1="302" y1="751" x2="322" y2="751" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-gr)" opacity="0"/>
+  <line id="l-slk-sh"      x1="454" y1="751" x2="488" y2="751" stroke="#38cbed" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-cb)" opacity="0"/>
+  <!-- Self-heal → AKS -->
+  <line id="l-sh-aks"      x1="570" y1="700" x2="460" y2="368" stroke="#38cbed" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#a-cb)" opacity="0"/>
+</svg>
+
+<!-- Terminal -->
+<div id="term">
+  <div id="tbar">terminal — github-actions · argocd · otel · alertmanager · self-healing</div>
+  <div id="tbody">
+    <div class="tl cmd"  id="t0">$ git push origin main — evaluation-service/**</div>
+    <div class="tl ci"   id="t1">GitHub Actions: gosec ✓  trivy CRITICAL:0 ✓  image pushed :a3f9c12</div>
+    <div class="tl argo" id="t2">ArgoCD: evaluation-service synced → 2/2 replicas READY ✓</div>
+    <div class="tl sec"  id="t3">OTel: spans/s=142  metrics/s=890  logs/s=340  collector UP</div>
+    <div class="tl alr"  id="t4">ALERT FIRING: auth-service 5xx=8.3% &gt; 5% threshold · P2</div>
+    <div class="tl heal" id="t5">Self-Heal: kubectl rollout restart deploy/auth-service → DONE ✓</div>
   </div>
+</div>
 
-  <!-- ── Data Layer ────────────────────────────── -->
-  <div class="nd" id="n-pg"  style="left:10px;  top:440px; width:110px; height:78px; background:#161b22; border:1px solid #f0883e44;">
-    <div class="ni">🗄️</div><div class="nt" style="color:#f0883e">PostgreSQL</div><div class="ns" style="color:#8b949e">Auth · Flags · Target</div>
-  </div>
-  <div class="nd" id="n-red" style="left:130px; top:440px; width:110px; height:78px; background:#161b22; border:1px solid #f8514944;">
-    <div class="ni">⚡</div><div class="nt" style="color:#f85149">Redis</div><div class="ns" style="color:#8b949e">Cache Evaluation</div>
-  </div>
-  <div class="nd" id="n-asql" style="left:250px; top:440px; width:110px; height:78px; background:#161b22; border:1px solid #0078d444;">
-    <div class="ni">🔵</div><div class="nt" style="color:#0078d4">Azure SQL</div><div class="ns" style="color:#8b949e">Analytics Service</div>
-  </div>
-  <div class="nd" id="n-azq" style="left:370px; top:440px; width:120px; height:78px; background:#161b22; border:1px solid #bc8cff44;">
-    <div class="ni">📨</div><div class="nt" style="color:#bc8cff">Azure Queue</div><div class="ns" style="color:#8b949e">Async Evaluation</div>
-  </div>
-
-  <!-- ── Alertas / Self-Healing ─────────────────── -->
-  <div class="nd" id="n-alm" style="left:10px;  top:550px; width:115px; height:82px; background:#161b22; border:1px solid #f8514988;">
-    <div class="ni">🔔</div><div class="nt" style="color:#f85149">Alertmanager</div><div class="ns" style="color:#8b949e">Grafana Alerts<br>5xx &gt; 5%</div>
-  </div>
-  <div class="nd" id="n-ops" style="left:135px; top:550px; width:115px; height:82px; background:#161b22; border:1px solid #f0883e44;">
-    <div class="ni">📟</div><div class="nt" style="color:#f0883e">OpsGenie</div><div class="ns" style="color:#8b949e">Incident Management</div>
-  </div>
-  <div class="nd" id="n-slk" style="left:260px; top:550px; width:115px; height:82px; background:#161b22; border:1px solid #3fb95044;">
-    <div class="ni">💬</div><div class="nt" style="color:#3fb950">Slack</div><div class="ns" style="color:#8b949e">ChatOps · #alerts</div>
-  </div>
-  <div class="nd" id="n-sh"  style="left:385px; top:550px; width:135px; height:82px; background:#161b22; border:1px solid #38cbed88;">
-    <div class="ni">🔄</div><div class="nt" style="color:#38cbed">Self-Healing</div><div class="ns" style="color:#8b949e">GitHub Action Webhook<br>kubectl rollout restart</div>
-  </div>
-
-  <!-- SVG linhas -->
-  <svg id="svg">
-    <defs>
-      <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="#388bfd88"/>
-      </marker>
-      <marker id="arr-g" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="#3fb95088"/>
-      </marker>
-      <marker id="arr-p" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="#bc8cff88"/>
-      </marker>
-      <marker id="arr-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="#f8514988"/>
-      </marker>
-      <marker id="arr-y" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="#e3b34188"/>
-      </marker>
-    </defs>
-    <!-- CI/CD chain -->
-    <line id="l-gh-sec"  x1="94"  y1="105" x2="104" y2="105" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
-    <line id="l-sec-dok" x1="188" y1="105" x2="198" y2="105" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-r)"/>
-    <line id="l-dok-acr" x1="282" y1="105" x2="292" y2="105" stroke="#38cbed" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
-    <line id="l-acr-arg" x1="376" y1="105" x2="386" y2="105" stroke="#0078d4" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
-    <line id="l-arg-gop" x1="470" y1="105" x2="480" y2="105" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-g)"/>
-    <line id="l-gop-tf"  x1="564" y1="105" x2="574" y2="105" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-y)"/>
-
-    <!-- svc → OTel (fan-in) -->
-    <line id="l-auth-otel" x1="60"  y1="265" x2="623" y2="265" stroke="#388bfd" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
-    <line id="l-flag-otel" x1="170" y1="265" x2="623" y2="265" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
-    <line id="l-tgt-otel"  x1="280" y1="265" x2="623" y2="265" stroke="#f0883e" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
-    <line id="l-eval-otel" x1="390" y1="265" x2="623" y2="265" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
-    <line id="l-ana-otel"  x1="500" y1="265" x2="623" y2="265" stroke="#38cbed" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
-
-    <!-- OTel → Prometheus e Loki -->
-    <line id="l-otel-prom" x1="590" y1="265" x2="65"  y2="327" stroke="#f0883e" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
-    <line id="l-otel-loki" x1="600" y1="265" x2="185" y2="327" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-g)"/>
-
-    <!-- Prometheus + Loki → Grafana -->
-    <line id="l-prom-graf" x1="120" y1="366" x2="250" y2="366" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-y)"/>
-    <line id="l-loki-graf" x1="240" y1="376" x2="250" y2="376" stroke="#e3b341" stroke-width="1"   stroke-dasharray="3,3" opacity="0"/>
-
-    <!-- Grafana → Alertmanager -->
-    <line id="l-graf-alm"  x1="305" y1="405" x2="65"  y2="550" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-r)"/>
-
-    <!-- alert chain -->
-    <line id="l-alm-ops"  x1="125" y1="591" x2="135" y2="591" stroke="#f0883e" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
-    <line id="l-ops-slk"  x1="250" y1="591" x2="260" y2="591" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-g)"/>
-    <line id="l-slk-sh"   x1="375" y1="591" x2="385" y2="591" stroke="#38cbed" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
-
-    <!-- packets -->
-    <circle id="pk1" r="4" fill="#388bfd" opacity="0"/>
-    <circle id="pk2" r="4" fill="#bc8cff" opacity="0"/>
-    <circle id="pk3" r="4" fill="#f85149" opacity="0"/>
-    <circle id="pk4" r="4" fill="#38cbed" opacity="0"/>
-  </svg>
-
-  <div id="wm">fxshell | togglemaster-postech-fase4</div>
+<div id="wm">fxshell | togglemaster-postech-fase4 · AKS 1.34.4 · FIAP PosTech</div>
 </div>
 
 <script>
-const ease = t => 1-(1-Math.max(0,Math.min(1,t)))**3;
-const fade = (el, t, d=0.5) => { el.style.opacity = ease(Math.max(0,(t-el._s)/(d||0.5))); };
+const $ = id => document.getElementById(id);
+const W = ms => new Promise(r => setTimeout(r, ms));
 
-function slide(el, t, from='bottom', d=0.5) {
-  const p = ease(Math.max(0, Math.min(1,(t-el._s)/d)));
-  el.style.opacity = p;
-  const off = (1-p)*18;
-  el.style.transform = from==='bottom' ? `translateY(${off}px)` :
-                        from==='left'   ? `translateX(${-off}px)` :
-                        from==='right'  ? `translateX(${off}px)` : `translateY(${-off}px)`;
-}
-
-function drawLine(el, t, d=0.7) {
-  const p = ease(Math.max(0, Math.min(1,(t-el._s)/d)));
-  el.style.opacity = p > 0.05 ? 0.6 : 0;
-  el.style.strokeDashoffset = (1-p)*300;
-}
-
-let startTime = null;
-const DUR = 20000;
-
-// pré-marcar _s em cada elemento
-const schedule = {
-  // título
-  'ttl': 0.2, 'sub': 0.6,
-  // bandas
-  'b-ci':0.4, 'b-aks':0.8, 'b-obs':1.2, 'b-dat':1.5, 'b-alr':1.8,
-  // labels
-  'lci':0.6,'laks':1.0,'lobs':1.4,'ldat':1.7,'lalr':2.0,
-  // CI/CD
-  'n-gh':0.8,'n-sec':1.2,'n-dok':1.6,'n-acr':2.0,'n-argo':2.4,'n-gops':2.8,'n-tf':3.2,
-  // linhas CI/CD
-  'l-gh-sec':1.2,'l-sec-dok':1.6,'l-dok-acr':2.0,'l-acr-arg':2.4,'l-arg-gop':2.8,'l-gop-tf':3.2,
-  // AKS
-  'n-auth':3.6,'n-flag':4.0,'n-tgt':4.4,'n-eval':4.8,'n-ana':5.2,'n-otel':5.6,
-  // svc→otel
-  'l-auth-otel':5.8,'l-flag-otel':6.0,'l-tgt-otel':6.2,'l-eval-otel':6.4,'l-ana-otel':6.6,
-  // obs
-  'n-prom':7.0,'n-loki':7.4,'n-graf':7.8,
-  // otel→backends
-  'l-otel-prom':7.0,'l-otel-loki':7.3,
-  'l-prom-graf':8.2,'l-loki-graf':8.5,
-  // terminal
-  'term':9.0,
-  // data
-  'n-pg':9.2,'n-red':9.6,'n-asql':10.0,'n-azq':10.4,
-  // alertas
-  'n-alm':11.0,'n-ops':11.4,'n-slk':11.8,'n-sh':12.2,
-  'l-graf-alm':12.0,
-  'l-alm-ops':12.6,'l-ops-slk':13.0,'l-slk-sh':13.4,
-};
-
-for (const [id, s] of Object.entries(schedule)) {
-  const el = document.getElementById(id);
-  if (el) el._s = s;
-}
-
-// terminal lines
-[['tl0',9.4],['tl1',10.0],['tl2',10.6],['tl3',11.2],['tl4',11.8]].forEach(([id,s])=>{
-  const el=document.getElementById(id); if(el) el._s=s;
-});
-
-// packet helpers
-function movePkt(el, t, s, dur, x0,y0,x1,y1) {
-  if (t < s || t > s+dur) { el.style.opacity=0; return; }
-  const p = (t-s)/dur;
-  el.cx.baseVal.value = x0+(x1-x0)*p;
-  el.cy.baseVal.value = y0+(y1-y0)*p;
-  el.style.opacity = Math.sin(p*Math.PI)*0.9;
-}
-
-function reset() { startTime = null; }
-
-function animate(ts) {
-  if (!startTime) startTime = ts;
-  const t = ((ts - startTime) % DUR) / 1000;
-
-  // título
-  const ttl=document.getElementById('ttl'), sub=document.getElementById('sub');
-  ttl.style.opacity = ease(Math.max(0,(t-0.2)/0.8));
-  sub.style.opacity = ease(Math.max(0,(t-0.6)/0.8));
-
-  // bandas + labels
-  ['b-ci','b-aks','b-obs','b-dat','b-alr','lci','laks','lobs','ldat','lalr'].forEach(id=>{
-    const el=document.getElementById(id); if(el&&el._s!==undefined) fade(el,t,0.6);
+function fade(id, to, dur, delay=0) {
+  return new Promise(res => {
+    setTimeout(() => {
+      const e=$(id); if(!e){res();return;}
+      e.style.transition=`opacity ${dur}ms`;
+      e.style.opacity=to;
+      setTimeout(res,dur);
+    }, delay);
   });
-
-  // nodos — slide in
-  ['n-gh','n-sec','n-dok','n-acr','n-argo','n-gops','n-tf',
-   'n-auth','n-flag','n-tgt','n-eval','n-ana','n-otel',
-   'n-prom','n-loki','n-graf',
-   'n-pg','n-red','n-asql','n-azq',
-   'n-alm','n-ops','n-slk','n-sh'].forEach(id=>{
-    const el=document.getElementById(id); if(el&&el._s!==undefined) slide(el,t,'bottom',0.5);
-  });
-
-  // linhas
-  ['l-gh-sec','l-sec-dok','l-dok-acr','l-acr-arg','l-arg-gop','l-gop-tf',
-   'l-auth-otel','l-flag-otel','l-tgt-otel','l-eval-otel','l-ana-otel',
-   'l-otel-prom','l-otel-loki','l-prom-graf','l-loki-graf',
-   'l-graf-alm','l-alm-ops','l-ops-slk','l-slk-sh'].forEach(id=>{
-    const el=document.getElementById(id); if(el&&el._s!==undefined) drawLine(el,t,0.6);
-  });
-
-  // terminal
-  const term=document.getElementById('term');
-  if(term&&term._s!==undefined) slide(term,t,'right',0.5);
-  ['tl0','tl1','tl2','tl3','tl4'].forEach(id=>{
-    const el=document.getElementById(id); if(el&&el._s!==undefined) fade(el,t,0.4);
-  });
-
-  // packets
-  movePkt(document.getElementById('pk1'),t, 8,1.5, 94,105, 386,105);
-  movePkt(document.getElementById('pk2'),t, 6.5,1.2, 623,265, 65,327);
-  movePkt(document.getElementById('pk3'),t, 12.5,1.5, 305,405, 65,550);
-  movePkt(document.getElementById('pk4'),t, 13.5,1.2, 125,591, 385,591);
-
-  requestAnimationFrame(animate);
 }
-requestAnimationFrame(animate);
+
+function slide(id, dy, dur, delay=0) {
+  setTimeout(() => {
+    const e=$(id); if(!e) return;
+    e.style.transform=`translateY(${dy}px)`; e.style.opacity=0;
+    requestAnimationFrame(()=>{
+      e.style.transition=`opacity ${dur}ms,transform ${dur}ms cubic-bezier(.25,.8,.25,1)`;
+      e.style.opacity=1; e.style.transform='translateY(0)';
+    });
+  }, delay);
+}
+
+function drawLine(id, dur, delay=0) {
+  setTimeout(() => {
+    const e=$(id); if(!e) return;
+    e.style.strokeDasharray=800;
+    e.style.strokeDashoffset=800;
+    e.style.opacity=1;
+    e.style.transition=`stroke-dashoffset ${dur}ms linear`;
+    requestAnimationFrame(()=>{ e.style.strokeDashoffset=0; });
+  }, delay);
+}
+
+function pkt(id, x1,y1, x2,y2, dur, delay=0) {
+  setTimeout(() => {
+    const e=$(id); if(!e) return;
+    e.style.left=x1+'px'; e.style.top=y1+'px'; e.style.opacity=1;
+    e.style.transition=`left ${dur}ms linear,top ${dur}ms linear`;
+    requestAnimationFrame(()=>{ e.style.left=x2+'px'; e.style.top=y2+'px'; });
+    setTimeout(()=>{ e.style.opacity=0; }, dur+80);
+  }, delay);
+}
+
+function tline(id,delay){ setTimeout(()=>{ const e=$(id); if(e) e.style.opacity=1; },delay); }
+function glow(id,col,delay){ setTimeout(()=>{ const e=$(id); if(!e)return; e.style.boxShadow=`0 0 18px ${col}`; },delay); }
+function glowPulse(id,cls,delay){ setTimeout(()=>{ const e=$(id); if(!e)return; e.classList.add(cls); },delay); }
+
+function startEventCounter() {
+  fade('evt-counter',1,400,0);
+  const n=$('evt-n');
+  setInterval(()=>{ if(n) n.textContent=Math.floor(Math.random()*120)+80; },700);
+}
+
+function showBadge(id, delay) {
+  setTimeout(()=>{ const e=$(id); if(e){ e.style.display=''; e.style.opacity=1; } }, delay);
+}
+
+function reset() {
+  const nodes=[
+    'ttl','sub','lbl-ci','lbl-aks','lbl-obs','lbl-data','lbl-alr',
+    'bg-ci','bg-aks','bg-obs','bg-data','bg-alr',
+    'dev','gh','trivy','acr','gitops','argo','tf','hpa',
+    'ingress','svc-auth','svc-flag','svc-targ','svc-eval','svc-anal','otel-nd',
+    'ns-auth','ns-flag','ns-targ','ns-eval','ns-anal',
+    'hpa-eval','hpa-anal','aks-label','evt-counter',
+    'prom','loki','promtail','grafana','otel-col',
+    'db-auth','db-flag','db-targ','redis','queue','cosmos',
+    'alertmgr','opsgenie','slack','selfheal',
+    'term','wm',
+    'bd-ci','bd-scan','bd-push','bd-sync','bd-healthy',
+    'pk-ci1','pk-ci2','pk-ci3','pk-ci4','pk-ci5',
+    'pk-deploy','pk-pull','pk-ing1','pk-ing2',
+    'pk-otel1','pk-otel2','pk-otel3',
+    'pk-db1','pk-db2','pk-db3','pk-redis','pk-queue','pk-cosmos',
+    'pk-evf1','pk-sc1','pk-lg1','pk-alr1','pk-alr2','pk-alr3','pk-heal',
+    'st-push','st-scan','st-build','st-tag','st-sync',
+    'st-pull','st-deploy','st-otlp','st-scrape','st-logs','st-consume','st-alert',
+    't0','t1','t2','t3','t4','t5'
+  ];
+  nodes.forEach(id=>{ const e=$(id); if(!e)return;
+    e.style.transition='none'; e.style.opacity=0;
+    e.style.boxShadow='none'; e.style.transform='';
+    e.classList.remove('healthy','alerting','healing');
+  });
+  ['bd-alert','bd-healed'].forEach(id=>{ const e=$(id); if(e){ e.style.display='none'; e.style.opacity=0; } });
+  [
+    'l-dev-gh','l-gh-trivy','l-trivy-acr','l-gh-gitops','l-gitops-argo',
+    'l-argo-aks','l-acr-aks','l-hpa-eval','l-hpa-anal',
+    'l-ing-auth','l-ing-flag','l-ing-targ','l-ing-eval','l-ing-anal',
+    'l-svc-otel1','l-svc-otel2','l-svc-otel3',
+    'l-eval-flag','l-eval-targ',
+    'l-otel-prom','l-otel-loki',
+    'l-pt-pods','l-pt-loki','l-prom-graf','l-loki-graf',
+    'l-auth-db','l-flag-db','l-targ-db',
+    'l-eval-redis','l-eval-queue','l-anal-cosmos','l-queue-anal',
+    'l-graf-alm','l-alm-ops','l-ops-slk','l-slk-sh','l-sh-aks'
+  ].forEach(id=>{ const e=$(id); if(!e)return;
+    e.style.transition='none'; e.style.opacity=0; e.style.strokeDashoffset='';
+  });
+}
+
+async function run() {
+  // Título
+  fade('ttl',1,600,100);
+  await fade('sub',1,600,500);
+
+  // Bandas
+  ['bg-ci','bg-aks','bg-obs','bg-data','bg-alr'].forEach((id,i)=>fade(id,1,500,700+i*100));
+  ['lbl-ci','lbl-aks','lbl-obs','lbl-data','lbl-alr'].forEach((id,i)=>fade(id,1,500,1100+i*100));
+  await W(1800);
+
+  // CI nodes
+  ['dev','gh','trivy','acr','gitops','argo','tf','hpa'].forEach((id,i)=>slide(id,-18,450,i*180));
+  await W(3000);
+
+  // CI pipeline flow
+  drawLine('l-dev-gh',380,0); fade('st-push',1,300,100);
+  pkt('pk-ci1',96,117,135,117,420,50);
+  await W(600);
+
+  drawLine('l-gh-trivy',380,0); fade('st-scan',1,300,100);
+  pkt('pk-ci2',248,117,291,117,420,50);
+  await W(600);
+  glow('gh','#388bfd',0); fade('bd-ci',1,300,100);
+
+  drawLine('l-trivy-acr',380,0);
+  pkt('pk-ci3',388,117,431,117,420,50);
+  await W(600);
+  glow('trivy','#e3b342',0); fade('bd-scan',1,300,100);
+
+  drawLine('l-gh-gitops',700,0); fade('st-tag',1,300,200);
+  pkt('pk-ci4',248,133,579,133,680,50);
+  await W(880);
+  glow('acr','#f08030',0); fade('bd-push',1,300,100);
+
+  drawLine('l-gitops-argo',380,0); fade('st-sync',1,300,100);
+  pkt('pk-ci5',684,117,727,117,420,50);
+  await W(620);
+
+  // Terminal aparece
+  fade('term',1,400,0);
+  tline('t0',200); tline('t1',800);
+  await W(1200);
+
+  // ArgoCD + ACR → AKS
+  drawLine('l-argo-aks',450,0); drawLine('l-acr-aks',450,200);
+  fade('st-deploy',1,300,100); fade('st-pull',1,300,300);
+  pkt('pk-deploy',777,182,777,210,530,50);
+  pkt('pk-pull',481,182,481,210,530,250);
+  await W(800);
+  glow('argo','#f778ba',0); fade('bd-sync',1,300,100);
+  tline('t2',200);
+  await W(500);
+
+  // HPA
+  drawLine('l-hpa-eval',380,0); drawLine('l-hpa-anal',380,200);
+  await W(500);
+
+  // AKS pods
+  ['svc-auth','svc-flag','svc-targ','svc-eval','svc-anal','otel-nd'].forEach((id,i)=>slide(id,18,360,i*110));
+  await W(1000);
+
+  ['ns-auth','ns-flag','ns-targ','ns-eval','ns-anal'].forEach((id,i)=>slide(id,13,320,i*70));
+  fade('hpa-eval',1,400,450); fade('hpa-anal',1,400,550); fade('aks-label',1,400,650);
+  await W(900);
+
+  // Ingress
+  slide('ingress',-12,360,0); await W(280);
+  drawLine('l-ing-auth',360,0); drawLine('l-ing-flag',420,70);
+  drawLine('l-ing-targ',490,140); drawLine('l-ing-eval',560,210); drawLine('l-ing-anal',630,280);
+  pkt('pk-ing1',106,249,145,249,420,90);
+  pkt('pk-ing2',106,249,769,249,760,380);
+  await W(1100);
+
+  // Eval internal
+  drawLine('l-eval-flag',460,0); drawLine('l-eval-targ',380,180);
+  await W(650);
+
+  // Healthy
+  ['svc-auth','svc-flag','svc-targ','svc-eval','svc-anal'].forEach((id,i)=>glowPulse(id,'healthy',i*130));
+  fade('bd-healthy',1,400,450);
+  await W(900);
+
+  // OTel → svcs fan-in
+  drawLine('l-svc-otel1',600,0); drawLine('l-svc-otel2',600,120); drawLine('l-svc-otel3',600,240);
+  fade('st-otlp',1,300,200);
+  pkt('pk-otel1',207,249,927,249,680,100);
+  await W(900);
+
+  // Observabilidade
+  ['prom','loki','promtail','grafana','otel-col'].forEach((id,i)=>slide(id,15,360,i*130));
+  await W(1000);
+
+  // OTel Collector → Prom/Loki
+  drawLine('l-otel-prom',700,0); drawLine('l-otel-loki',700,200);
+  pkt('pk-otel2',869,355,140,411,760,100);
+  pkt('pk-otel3',897,355,316,411,760,300);
+  await W(900);
+
+  // Promtail
+  drawLine('l-pt-pods',500,0); drawLine('l-pt-loki',380,180);
+  fade('st-logs',1,300,200);
+  pkt('pk-sc1',380,363,492,401,570,180);
+  await W(800);
+
+  drawLine('l-prom-graf',580,0); drawLine('l-loki-graf',480,180);
+  fade('st-scrape',1,300,200);
+  glow('grafana','#f778ba',580);
+  tline('t3',200);
+  await W(850);
+  startEventCounter();
+  glow('prom','#f08030',0); glow('loki','#bc8cff',200); glow('otel-col','#38cbed',400);
+  await W(800);
+
+  // Data layer
+  ['db-auth','db-flag','db-targ','redis','queue','cosmos'].forEach((id,i)=>slide(id,15,360,i*110));
+  await W(1100);
+
+  drawLine('l-auth-db',580,0); drawLine('l-flag-db',580,110); drawLine('l-targ-db',580,220);
+  pkt('pk-db1',202,363,75,563,660,50);
+  pkt('pk-db2',358,363,213,563,660,160);
+  pkt('pk-db3',514,363,351,563,660,270);
+  await W(1000);
+
+  drawLine('l-eval-redis',480,0); drawLine('l-eval-queue',480,180);
+  pkt('pk-redis',670,363,490,563,560,50);
+  pkt('pk-queue',715,363,623,563,560,230);
+  await W(900);
+
+  drawLine('l-queue-anal',460,0); fade('st-consume',1,300,90);
+  pkt('pk-evf1',683,563,833,363,660,90);
+  await W(900);
+
+  drawLine('l-anal-cosmos',460,0);
+  pkt('pk-cosmos',826,363,765,563,560,50);
+  await W(900);
+
+  // ── FASE ALERTAS / SELF-HEALING ──
+  ['alertmgr','opsgenie','slack','selfheal'].forEach((id,i)=>slide(id,15,380,i*140));
+  await W(1000);
+
+  // Grafana → Alertmanager
+  drawLine('l-graf-alm',700,0); fade('st-alert',1,300,200);
+  pkt('pk-alr1',668,523,80,695,780,100);
+  await W(900);
+  glowPulse('alertmgr','alerting',0);
+  showBadge('bd-alert',200);
+  tline('t4',300);
+  await W(700);
+
+  // Alert chain
+  drawLine('l-alm-ops',380,0); pkt('pk-alr2',145,746,165,746,420,50);
+  await W(550);
+  drawLine('l-ops-slk',380,0); pkt('pk-alr3',297,746,317,746,420,50);
+  await W(550);
+  drawLine('l-slk-sh',380,0);
+  await W(600);
+
+  glowPulse('selfheal','healing',0);
+  drawLine('l-sh-aks',700,200);
+  pkt('pk-heal',565,695,455,363,760,200);
+  await W(900);
+
+  // Self-healed
+  ['svc-auth','svc-flag','svc-targ','svc-eval','svc-anal'].forEach(id=>{
+    const e=$(id); if(!e)return;
+    e.classList.remove('alerting'); e.classList.add('healthy');
+  });
+  showBadge('bd-healed',200);
+  tline('t5',300);
+  await W(600);
+
+  fade('wm',1,600,0);
+  await W(5000);
+
+  reset();
+  await W(600);
+  run();
+}
+
+window.addEventListener('load', ()=>setTimeout(run,300));
 </script>
 </body>
 </html>
