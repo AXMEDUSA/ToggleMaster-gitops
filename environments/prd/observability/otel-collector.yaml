@@ -60,16 +60,11 @@ data:
         tls:
           insecure: true
 
-      # Exporta logs para o Loki
-      loki:
-        endpoint: "http://loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+      # Exporta logs para o Loki via OTLP HTTP
+      otlphttp/loki:
+        endpoint: "http://loki.observability.svc.cluster.local:3100/otlp"
         tls:
           insecure: true
-        default_labels_enabled:
-          exporter: false
-          job: true
-          instance: false
-          level: true
 
       # Debug (desabilitar em produção estável)
       debug:
@@ -89,7 +84,7 @@ data:
         logs:
           receivers: [otlp]
           processors: [memory_limiter, resourcedetection, resource, batch]
-          exporters: [loki]
+          exporters: [otlphttp/loki]
 
         # Pipeline de traces (futuro: adicionar Tempo/Jaeger como exporter)
         traces:
@@ -101,7 +96,12 @@ data:
         logs:
           level: "info"
         metrics:
-          address: "0.0.0.0:8888"
+          readers:
+            - pull:
+                exporter:
+                  prometheus:
+                    host: "0.0.0.0"
+                    port: 8888
 
 ---
 # Deployment do OTel Collector
