@@ -522,33 +522,6 @@ data:
           ]
         },
         {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "fieldConfig": {
-            "defaults": {
-              "color": { "mode": "palette-classic" },
-              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
-              "unit": "short"
-            }
-          },
-          "gridPos": { "h": 7, "w": 24, "x": 0, "y": 24 },
-          "id": 612,
-          "options": {
-            "legend": { "displayMode": "list", "placement": "bottom" },
-            "tooltip": { "mode": "multi" }
-          },
-          "title": "OTel — Spans por Serviço de Origem (service.name)",
-          "type": "timeseries",
-          "targets": [
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(otelcol_receiver_accepted_spans_total[1m])",
-              "legendFormat": "{{service_name}}",
-              "refId": "A"
-            }
-          ]
-        },
-
-        {
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 31 },
           "id": 700,
@@ -633,45 +606,12 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_server_request_duration_seconds_count{http_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_request_duration_seconds_count[1m])) by (job)",
+              "expr": "sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_request_duration_seconds_count[1m])) by (job)",
               "legendFormat": "error rate · {{job}}",
               "refId": "A"
             }
           ]
         },
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "fieldConfig": {
-            "defaults": {
-              "color": { "mode": "palette-classic" },
-              "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
-              "unit": "ms"
-            }
-          },
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 40 },
-          "id": 704,
-          "options": {
-            "legend": { "displayMode": "list", "placement": "bottom" },
-            "tooltip": { "mode": "multi" }
-          },
-          "title": "Latência evaluation-service — /evaluate p99/p50 (hot path)",
-          "type": "timeseries",
-          "targets": [
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
-              "legendFormat": "p99",
-              "refId": "A"
-            },
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
-              "legendFormat": "p50",
-              "refId": "B"
-            }
-          ]
-        },
-
         {
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 48 },
@@ -1076,7 +1016,7 @@ data:
             "defaults": {
               "color": { "mode": "palette-classic" },
               "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "spanNulls": true },
-              "unit": "percentunit"
+              "unit": "bytes"
             }
           },
           "gridPos": { "h": 7, "w": 12, "x": 12, "y": 79 },
@@ -1238,5 +1178,5 @@ data:
       "timezone": "America/Sao_Paulo",
       "title": "ToggleMaster — Saúde do Ecossistema",
       "uid": "togglemaster-ecosystem",
-      "version": 2
+      "version": 4
     }
