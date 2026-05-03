@@ -47,9 +47,6 @@ data:
           - key: deployment.environment
             value: "production"
             action: upsert
-          - key: service.namespace
-            value: "togglemaster"
-            action: upsert
 
       # Filtro de memória para evitar OOM
       memory_limiter:
