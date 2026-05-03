@@ -411,7 +411,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(otelcol_receiver_accepted_log_records_total[1m])",
+              "expr": "rate(otelcol_receiver_accepted_logs_total[1m])",
               "legendFormat": "logs/s",
               "refId": "A"
             }
@@ -483,7 +483,7 @@ data:
             },
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(otelcol_receiver_accepted_log_records_total[1m])",
+              "expr": "rate(otelcol_receiver_accepted_logs_total[1m])",
               "legendFormat": "logs/s",
               "refId": "C"
             }
@@ -575,7 +575,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_server_duration_milliseconds_count[1m])) by (job)",
+              "expr": "sum(rate(http_server_request_duration_seconds_count[1m])) by (job)",
               "legendFormat": "{{job}}",
               "refId": "A"
             }
@@ -601,13 +601,13 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket[1m])) by (job, le))",
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (job, le))",
               "legendFormat": "p99 · {{job}}",
               "refId": "A"
             },
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket[1m])) by (job, le))",
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (job, le))",
               "legendFormat": "p50 · {{job}}",
               "refId": "B"
             }
@@ -633,7 +633,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(http_server_duration_milliseconds_count{http_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_duration_milliseconds_count[1m])) by (job)",
+              "expr": "sum(rate(http_server_request_duration_seconds_count{http_status_code=~\"4..|5..\"}[1m])) by (job) / sum(rate(http_server_request_duration_seconds_count[1m])) by (job)",
               "legendFormat": "error rate · {{job}}",
               "refId": "A"
             }
@@ -659,13 +659,13 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
               "legendFormat": "p99",
               "refId": "A"
             },
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket{job=\"evaluation-service\"}[1m])) by (le))",
               "legendFormat": "p50",
               "refId": "B"
             }
@@ -1059,13 +1059,13 @@ data:
             "legend": { "displayMode": "list", "placement": "bottom" },
             "tooltip": { "mode": "multi" }
           },
-          "title": "Redis — Comandos por Segundo",
+          "title": "Redis — CPU Usage",
           "type": "timeseries",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(redis_commands_processed_total[1m])",
-              "legendFormat": "cmds/s",
+              "expr": "rate(container_cpu_usage_seconds_total{container=\"redis\"}[1m]) * 1000",
+              "legendFormat": "CPU (mcores)",
               "refId": "A"
             }
           ]
@@ -1085,20 +1085,14 @@ data:
             "legend": { "displayMode": "list", "placement": "bottom" },
             "tooltip": { "mode": "multi" }
           },
-          "title": "Redis — Taxa de Hit vs Miss do Cache",
+          "title": "Redis — Memória em Uso",
           "type": "timeseries",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(redis_keyspace_hits_total[1m]) / (rate(redis_keyspace_hits_total[1m]) + rate(redis_keyspace_misses_total[1m]))",
-              "legendFormat": "hit rate",
+              "expr": "container_memory_working_set_bytes{container=\"redis\"}",
+              "legendFormat": "memória (bytes)",
               "refId": "A"
-            },
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(redis_keyspace_misses_total[1m]) / (rate(redis_keyspace_hits_total[1m]) + rate(redis_keyspace_misses_total[1m]))",
-              "legendFormat": "miss rate",
-              "refId": "B"
             }
           ]
         },

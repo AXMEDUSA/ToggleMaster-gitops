@@ -18,6 +18,8 @@ spec:
         server:
           fullnameOverride: prometheus-server
           retention: "15d"
+          extraArgs:
+            web.enable-remote-write-receiver: "true"
           persistentVolume:
             enabled: true
             size: 10Gi
