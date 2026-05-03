@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>ToggleMaster — POSTECH Fase 4</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#0d1117;
+  font-family:'Courier New',monospace;
+  color:#e6edf3;
+  width:780px; height:820px;
+  overflow:hidden;
+}
+#cv { width:780px; height:820px; position:relative; }
+
+/* título */
+#ttl { position:absolute; top:10px; left:50%; transform:translateX(-50%);
+  font-size:14px; font-weight:bold; letter-spacing:3px; white-space:nowrap;
+  opacity:0; color:#e6edf3; }
+#sub { position:absolute; top:32px; left:50%; transform:translateX(-50%);
+  font-size:9px; color:#8b949e; white-space:nowrap; opacity:0; letter-spacing:1px; }
+
+/* bandas de seção */
+.band { position:absolute; left:4px; right:4px; border-radius:8px; opacity:0; }
+#b-ci  { top:50px;  height:110px; background:rgba(56,139,253,.04);  border:1px solid rgba(56,139,253,.2); }
+#b-aks { top:170px; height:130px; background:rgba(63,185,80,.04);   border:1px solid rgba(63,185,80,.2); }
+#b-obs { top:312px; height:100px; background:rgba(188,140,255,.04); border:1px solid rgba(188,140,255,.2); }
+#b-dat { top:424px; height:100px; background:rgba(240,136,62,.04);  border:1px solid rgba(240,136,62,.2); }
+#b-alr { top:536px; height:110px; background:rgba(56,203,237,.04);  border:1px solid rgba(56,203,237,.2); }
+
+/* labels */
+.lbl { position:absolute; font-size:7px; font-weight:bold; letter-spacing:2px; opacity:0; }
+#lci  { top:58px;  left:14px; color:#388bfd; }
+#laks { top:178px; left:14px; color:#3fb950; }
+#lobs { top:320px; left:14px; color:#bc8cff; }
+#ldat { top:432px; left:14px; color:#f08830; }
+#lalr { top:544px; left:14px; color:#38cbed; }
+
+/* nodos */
+.nd {
+  position:absolute; border-radius:8px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  opacity:0; padding:6px 4px; cursor:default;
+}
+.ni { font-size:16px; margin-bottom:2px; }
+.nt { font-size:8px; font-weight:bold; text-align:center; line-height:1.3; }
+.ns { font-size:7px; text-align:center; line-height:1.3; }
+
+/* SVG */
+#svg { position:absolute; top:0; left:0; width:780px; height:820px; pointer-events:none; }
+
+/* terminal */
+#term {
+  position:absolute; right:4px; top:312px; width:310px; height:96px;
+  background:#161b22; border:1px solid #30363d; border-radius:6px;
+  padding:6px 8px; font-size:7px; opacity:0; overflow:hidden;
+}
+#term .th { color:#8b949e; margin-bottom:4px; letter-spacing:2px; }
+.tl { opacity:0; margin:2px 0; }
+
+/* watermark */
+#wm { position:absolute; bottom:6px; right:8px; font-size:7px; color:#484f58; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div id="cv">
+
+  <!-- bandas -->
+  <div class="band" id="b-ci"></div>
+  <div class="band" id="b-aks"></div>
+  <div class="band" id="b-obs"></div>
+  <div class="band" id="b-dat"></div>
+  <div class="band" id="b-alr"></div>
+
+  <!-- labels seção -->
+  <div class="lbl" id="lci">CI/CD  PIPELINE  →  DEVSECOPS</div>
+  <div class="lbl" id="laks">AKS  KUBERNETES  —  5  MICROSSERVIÇOS</div>
+  <div class="lbl" id="lobs">OBSERVABILIDADE  —  PROMETHEUS · LOKI · GRAFANA</div>
+  <div class="lbl" id="ldat">DATA  LAYER  —  POSTGRESQL · REDIS · AZURE</div>
+  <div class="lbl" id="lalr">ALERTAS  &amp;  SELF-HEALING</div>
+
+  <!-- título -->
+  <div id="ttl">TOGGLEMASTER — POSTECH FASE 4</div>
+  <div id="sub">FIAP  |  DevSecOps · Observabilidade · GitOps · AKS · OpenTelemetry</div>
+
+  <!-- ── CI/CD ─────────────────────────────────── -->
+  <div class="nd" id="n-gh"  style="left:10px;  top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #388bfd44;">
+    <div class="ni">⚙️</div><div class="nt" style="color:#388bfd">GitHub</div><div class="ns" style="color:#8b949e">AppRepo</div>
+  </div>
+  <div class="nd" id="n-sec" style="left:104px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #f8514944;">
+    <div class="ni">🔒</div><div class="nt" style="color:#f85149">Security</div><div class="ns" style="color:#8b949e">Trivy/SAST/Bandit</div>
+  </div>
+  <div class="nd" id="n-dok" style="left:198px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #38cbed44;">
+    <div class="ni">🐳</div><div class="nt" style="color:#38cbed">Docker</div><div class="ns" style="color:#8b949e">Build + Push</div>
+  </div>
+  <div class="nd" id="n-acr" style="left:292px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #0078d444;">
+    <div class="ni">📦</div><div class="nt" style="color:#0078d4">ACR</div><div class="ns" style="color:#8b949e">Azure Registry</div>
+  </div>
+  <div class="nd" id="n-argo" style="left:386px; top:65px; width:84px; height:80px; background:#161b22; border:1px solid #3fb95044;">
+    <div class="ni">🔁</div><div class="nt" style="color:#3fb950">ArgoCD</div><div class="ns" style="color:#8b949e">GitOps Sync</div>
+  </div>
+  <div class="nd" id="n-gops" style="left:480px; top:65px; width:84px; height:80px; background:#161b22; border:1px solid #e3b34144;">
+    <div class="ni">🌿</div><div class="nt" style="color:#e3b341">GitOps</div><div class="ns" style="color:#8b949e">Repo Manifests</div>
+  </div>
+  <div class="nd" id="n-tf"  style="left:574px; top:65px;  width:84px; height:80px; background:#161b22; border:1px solid #bc8cff44;">
+    <div class="ni">🏗️</div><div class="nt" style="color:#bc8cff">Terraform</div><div class="ns" style="color:#8b949e">IaC AKS/ACR</div>
+  </div>
+
+  <!-- ── AKS microsserviços ─────────────────────── -->
+  <div class="nd" id="n-auth" style="left:10px;  top:185px; width:100px; height:80px; background:#161b22; border:1px solid #388bfd44;">
+    <div class="ni">🔑</div><div class="nt" style="color:#388bfd">auth-service</div><div class="ns" style="color:#8b949e">Go · 8001</div>
+  </div>
+  <div class="nd" id="n-flag" style="left:120px; top:185px; width:100px; height:80px; background:#161b22; border:1px solid #3fb95044;">
+    <div class="ni">🚩</div><div class="nt" style="color:#3fb950">flag-service</div><div class="ns" style="color:#8b949e">Python · 8002</div>
+  </div>
+  <div class="nd" id="n-tgt" style="left:230px; top:185px;  width:100px; height:80px; background:#161b22; border:1px solid #f0883e44;">
+    <div class="ni">🎯</div><div class="nt" style="color:#f0883e">targeting</div><div class="ns" style="color:#8b949e">Python · 8003</div>
+  </div>
+  <div class="nd" id="n-eval" style="left:340px; top:185px; width:100px; height:80px; background:#161b22; border:1px solid #bc8cff44;">
+    <div class="ni">⚖️</div><div class="nt" style="color:#bc8cff">eval-service</div><div class="ns" style="color:#8b949e">Go · 8004</div>
+  </div>
+  <div class="nd" id="n-ana" style="left:450px; top:185px;  width:100px; height:80px; background:#161b22; border:1px solid #38cbed44;">
+    <div class="ni">📊</div><div class="nt" style="color:#38cbed">analytics</div><div class="ns" style="color:#8b949e">Python · 8005</div>
+  </div>
+  <div class="nd" id="n-otel" style="left:568px; top:185px; width:110px; height:80px; background:#161b22; border:1px solid #bc8cff88;">
+    <div class="ni">🔭</div><div class="nt" style="color:#bc8cff">OTel Collector</div><div class="ns" style="color:#8b949e">OTLP → Prom/Loki</div>
+  </div>
+
+  <!-- ── Observabilidade ───────────────────────── -->
+  <div class="nd" id="n-prom" style="left:10px;  top:327px; width:110px; height:78px; background:#161b22; border:1px solid #f0883e44;">
+    <div class="ni">📈</div><div class="nt" style="color:#f0883e">Prometheus</div><div class="ns" style="color:#8b949e">Métricas · Remote Write</div>
+  </div>
+  <div class="nd" id="n-loki" style="left:130px; top:327px; width:110px; height:78px; background:#161b22; border:1px solid #3fb95044;">
+    <div class="ni">📋</div><div class="nt" style="color:#3fb950">Loki + Promtail</div><div class="ns" style="color:#8b949e">Logs · OTLP HTTP</div>
+  </div>
+  <div class="nd" id="n-graf" style="left:250px; top:327px; width:110px; height:78px; background:#161b22; border:1px solid #e3b34144;">
+    <div class="ni">📊</div><div class="nt" style="color:#e3b341">Grafana</div><div class="ns" style="color:#8b949e">Dashboard · Alertas</div>
+  </div>
+
+  <!-- terminal -->
+  <div id="term">
+    <div class="th">▸ TERMINAL — self-healing</div>
+    <div class="tl" id="tl0" style="color:#3fb950">$ kubectl get pods -n flag-service-prd</div>
+    <div class="tl" id="tl1" style="color:#e6edf3">flag-service-xxx  1/1  Running  0  &nbsp;&nbsp;✓</div>
+    <div class="tl" id="tl2" style="color:#38cbed">$ kubectl rollout restart deploy/auth-service</div>
+    <div class="tl" id="tl3" style="color:#e3b341">deployment.apps/auth-service restarted ✓</div>
+    <div class="tl" id="tl4" style="color:#bc8cff">→ self-heal acionado em 00:00:04</div>
+  </div>
+
+  <!-- ── Data Layer ────────────────────────────── -->
+  <div class="nd" id="n-pg"  style="left:10px;  top:440px; width:110px; height:78px; background:#161b22; border:1px solid #f0883e44;">
+    <div class="ni">🗄️</div><div class="nt" style="color:#f0883e">PostgreSQL</div><div class="ns" style="color:#8b949e">Auth · Flags · Target</div>
+  </div>
+  <div class="nd" id="n-red" style="left:130px; top:440px; width:110px; height:78px; background:#161b22; border:1px solid #f8514944;">
+    <div class="ni">⚡</div><div class="nt" style="color:#f85149">Redis</div><div class="ns" style="color:#8b949e">Cache Evaluation</div>
+  </div>
+  <div class="nd" id="n-asql" style="left:250px; top:440px; width:110px; height:78px; background:#161b22; border:1px solid #0078d444;">
+    <div class="ni">🔵</div><div class="nt" style="color:#0078d4">Azure SQL</div><div class="ns" style="color:#8b949e">Analytics Service</div>
+  </div>
+  <div class="nd" id="n-azq" style="left:370px; top:440px; width:120px; height:78px; background:#161b22; border:1px solid #bc8cff44;">
+    <div class="ni">📨</div><div class="nt" style="color:#bc8cff">Azure Queue</div><div class="ns" style="color:#8b949e">Async Evaluation</div>
+  </div>
+
+  <!-- ── Alertas / Self-Healing ─────────────────── -->
+  <div class="nd" id="n-alm" style="left:10px;  top:550px; width:115px; height:82px; background:#161b22; border:1px solid #f8514988;">
+    <div class="ni">🔔</div><div class="nt" style="color:#f85149">Alertmanager</div><div class="ns" style="color:#8b949e">Grafana Alerts<br>5xx &gt; 5%</div>
+  </div>
+  <div class="nd" id="n-ops" style="left:135px; top:550px; width:115px; height:82px; background:#161b22; border:1px solid #f0883e44;">
+    <div class="ni">📟</div><div class="nt" style="color:#f0883e">OpsGenie</div><div class="ns" style="color:#8b949e">Incident Management</div>
+  </div>
+  <div class="nd" id="n-slk" style="left:260px; top:550px; width:115px; height:82px; background:#161b22; border:1px solid #3fb95044;">
+    <div class="ni">💬</div><div class="nt" style="color:#3fb950">Slack</div><div class="ns" style="color:#8b949e">ChatOps · #alerts</div>
+  </div>
+  <div class="nd" id="n-sh"  style="left:385px; top:550px; width:135px; height:82px; background:#161b22; border:1px solid #38cbed88;">
+    <div class="ni">🔄</div><div class="nt" style="color:#38cbed">Self-Healing</div><div class="ns" style="color:#8b949e">GitHub Action Webhook<br>kubectl rollout restart</div>
+  </div>
+
+  <!-- SVG linhas -->
+  <svg id="svg">
+    <defs>
+      <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#388bfd88"/>
+      </marker>
+      <marker id="arr-g" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#3fb95088"/>
+      </marker>
+      <marker id="arr-p" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#bc8cff88"/>
+      </marker>
+      <marker id="arr-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#f8514988"/>
+      </marker>
+      <marker id="arr-y" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#e3b34188"/>
+      </marker>
+    </defs>
+    <!-- CI/CD chain -->
+    <line id="l-gh-sec"  x1="94"  y1="105" x2="104" y2="105" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
+    <line id="l-sec-dok" x1="188" y1="105" x2="198" y2="105" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-r)"/>
+    <line id="l-dok-acr" x1="282" y1="105" x2="292" y2="105" stroke="#38cbed" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
+    <line id="l-acr-arg" x1="376" y1="105" x2="386" y2="105" stroke="#0078d4" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
+    <line id="l-arg-gop" x1="470" y1="105" x2="480" y2="105" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-g)"/>
+    <line id="l-gop-tf"  x1="564" y1="105" x2="574" y2="105" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-y)"/>
+
+    <!-- svc → OTel (fan-in) -->
+    <line id="l-auth-otel" x1="60"  y1="265" x2="623" y2="265" stroke="#388bfd" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
+    <line id="l-flag-otel" x1="170" y1="265" x2="623" y2="265" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
+    <line id="l-tgt-otel"  x1="280" y1="265" x2="623" y2="265" stroke="#f0883e" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
+    <line id="l-eval-otel" x1="390" y1="265" x2="623" y2="265" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
+    <line id="l-ana-otel"  x1="500" y1="265" x2="623" y2="265" stroke="#38cbed" stroke-width="1" stroke-dasharray="3,4" opacity="0"/>
+
+    <!-- OTel → Prometheus e Loki -->
+    <line id="l-otel-prom" x1="590" y1="265" x2="65"  y2="327" stroke="#f0883e" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
+    <line id="l-otel-loki" x1="600" y1="265" x2="185" y2="327" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-g)"/>
+
+    <!-- Prometheus + Loki → Grafana -->
+    <line id="l-prom-graf" x1="120" y1="366" x2="250" y2="366" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-y)"/>
+    <line id="l-loki-graf" x1="240" y1="376" x2="250" y2="376" stroke="#e3b341" stroke-width="1"   stroke-dasharray="3,3" opacity="0"/>
+
+    <!-- Grafana → Alertmanager -->
+    <line id="l-graf-alm"  x1="305" y1="405" x2="65"  y2="550" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-r)"/>
+
+    <!-- alert chain -->
+    <line id="l-alm-ops"  x1="125" y1="591" x2="135" y2="591" stroke="#f0883e" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
+    <line id="l-ops-slk"  x1="250" y1="591" x2="260" y2="591" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr-g)"/>
+    <line id="l-slk-sh"   x1="375" y1="591" x2="385" y2="591" stroke="#38cbed" stroke-width="1.5" stroke-dasharray="4,3" opacity="0" marker-end="url(#arr)"/>
+
+    <!-- packets -->
+    <circle id="pk1" r="4" fill="#388bfd" opacity="0"/>
+    <circle id="pk2" r="4" fill="#bc8cff" opacity="0"/>
+    <circle id="pk3" r="4" fill="#f85149" opacity="0"/>
+    <circle id="pk4" r="4" fill="#38cbed" opacity="0"/>
+  </svg>
+
+  <div id="wm">fxshell | togglemaster-postech-fase4</div>
+</div>
+
+<script>
+const ease = t => 1-(1-Math.max(0,Math.min(1,t)))**3;
+const fade = (el, t, d=0.5) => { el.style.opacity = ease(Math.max(0,(t-el._s)/(d||0.5))); };
+
+function slide(el, t, from='bottom', d=0.5) {
+  const p = ease(Math.max(0, Math.min(1,(t-el._s)/d)));
+  el.style.opacity = p;
+  const off = (1-p)*18;
+  el.style.transform = from==='bottom' ? `translateY(${off}px)` :
+                        from==='left'   ? `translateX(${-off}px)` :
+                        from==='right'  ? `translateX(${off}px)` : `translateY(${-off}px)`;
+}
+
+function drawLine(el, t, d=0.7) {
+  const p = ease(Math.max(0, Math.min(1,(t-el._s)/d)));
+  el.style.opacity = p > 0.05 ? 0.6 : 0;
+  el.style.strokeDashoffset = (1-p)*300;
+}
+
+let startTime = null;
+const DUR = 20000;
+
+// pré-marcar _s em cada elemento
+const schedule = {
+  // título
+  'ttl': 0.2, 'sub': 0.6,
+  // bandas
+  'b-ci':0.4, 'b-aks':0.8, 'b-obs':1.2, 'b-dat':1.5, 'b-alr':1.8,
+  // labels
+  'lci':0.6,'laks':1.0,'lobs':1.4,'ldat':1.7,'lalr':2.0,
+  // CI/CD
+  'n-gh':0.8,'n-sec':1.2,'n-dok':1.6,'n-acr':2.0,'n-argo':2.4,'n-gops':2.8,'n-tf':3.2,
+  // linhas CI/CD
+  'l-gh-sec':1.2,'l-sec-dok':1.6,'l-dok-acr':2.0,'l-acr-arg':2.4,'l-arg-gop':2.8,'l-gop-tf':3.2,
+  // AKS
+  'n-auth':3.6,'n-flag':4.0,'n-tgt':4.4,'n-eval':4.8,'n-ana':5.2,'n-otel':5.6,
+  // svc→otel
+  'l-auth-otel':5.8,'l-flag-otel':6.0,'l-tgt-otel':6.2,'l-eval-otel':6.4,'l-ana-otel':6.6,
+  // obs
+  'n-prom':7.0,'n-loki':7.4,'n-graf':7.8,
+  // otel→backends
+  'l-otel-prom':7.0,'l-otel-loki':7.3,
+  'l-prom-graf':8.2,'l-loki-graf':8.5,
+  // terminal
+  'term':9.0,
+  // data
+  'n-pg':9.2,'n-red':9.6,'n-asql':10.0,'n-azq':10.4,
+  // alertas
+  'n-alm':11.0,'n-ops':11.4,'n-slk':11.8,'n-sh':12.2,
+  'l-graf-alm':12.0,
+  'l-alm-ops':12.6,'l-ops-slk':13.0,'l-slk-sh':13.4,
+};
+
+for (const [id, s] of Object.entries(schedule)) {
+  const el = document.getElementById(id);
+  if (el) el._s = s;
+}
+
+// terminal lines
+[['tl0',9.4],['tl1',10.0],['tl2',10.6],['tl3',11.2],['tl4',11.8]].forEach(([id,s])=>{
+  const el=document.getElementById(id); if(el) el._s=s;
+});
+
+// packet helpers
+function movePkt(el, t, s, dur, x0,y0,x1,y1) {
+  if (t < s || t > s+dur) { el.style.opacity=0; return; }
+  const p = (t-s)/dur;
+  el.cx.baseVal.value = x0+(x1-x0)*p;
+  el.cy.baseVal.value = y0+(y1-y0)*p;
+  el.style.opacity = Math.sin(p*Math.PI)*0.9;
+}
+
+function reset() { startTime = null; }
+
+function animate(ts) {
+  if (!startTime) startTime = ts;
+  const t = ((ts - startTime) % DUR) / 1000;
+
+  // título
+  const ttl=document.getElementById('ttl'), sub=document.getElementById('sub');
+  ttl.style.opacity = ease(Math.max(0,(t-0.2)/0.8));
+  sub.style.opacity = ease(Math.max(0,(t-0.6)/0.8));
+
+  // bandas + labels
+  ['b-ci','b-aks','b-obs','b-dat','b-alr','lci','laks','lobs','ldat','lalr'].forEach(id=>{
+    const el=document.getElementById(id); if(el&&el._s!==undefined) fade(el,t,0.6);
+  });
+
+  // nodos — slide in
+  ['n-gh','n-sec','n-dok','n-acr','n-argo','n-gops','n-tf',
+   'n-auth','n-flag','n-tgt','n-eval','n-ana','n-otel',
+   'n-prom','n-loki','n-graf',
+   'n-pg','n-red','n-asql','n-azq',
+   'n-alm','n-ops','n-slk','n-sh'].forEach(id=>{
+    const el=document.getElementById(id); if(el&&el._s!==undefined) slide(el,t,'bottom',0.5);
+  });
+
+  // linhas
+  ['l-gh-sec','l-sec-dok','l-dok-acr','l-acr-arg','l-arg-gop','l-gop-tf',
+   'l-auth-otel','l-flag-otel','l-tgt-otel','l-eval-otel','l-ana-otel',
+   'l-otel-prom','l-otel-loki','l-prom-graf','l-loki-graf',
+   'l-graf-alm','l-alm-ops','l-ops-slk','l-slk-sh'].forEach(id=>{
+    const el=document.getElementById(id); if(el&&el._s!==undefined) drawLine(el,t,0.6);
+  });
+
+  // terminal
+  const term=document.getElementById('term');
+  if(term&&term._s!==undefined) slide(term,t,'right',0.5);
+  ['tl0','tl1','tl2','tl3','tl4'].forEach(id=>{
+    const el=document.getElementById(id); if(el&&el._s!==undefined) fade(el,t,0.4);
+  });
+
+  // packets
+  movePkt(document.getElementById('pk1'),t, 8,1.5, 94,105, 386,105);
+  movePkt(document.getElementById('pk2'),t, 6.5,1.2, 623,265, 65,327);
+  movePkt(document.getElementById('pk3'),t, 12.5,1.5, 305,405, 65,550);
+  movePkt(document.getElementById('pk4'),t, 13.5,1.2, 125,591, 385,591);
+
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
