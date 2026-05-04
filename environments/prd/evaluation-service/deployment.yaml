@@ -42,6 +42,20 @@ spec:
               value: "otlp"
             - name: OTEL_LOGS_EXPORTER
               value: "otlp"
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_ENV
+              value: "production"
+            - name: DD_SERVICE
+              value: "evaluation-service"
+            - name: DD_VERSION
+              value: "1.0.0"
+            - name: DD_TRACE_AGENT_PORT
+              value: "8126"
+            - name: DD_TRACE_SAMPLE_RATE
+              value: "1"
           resources:
             requests:
               cpu: 100m

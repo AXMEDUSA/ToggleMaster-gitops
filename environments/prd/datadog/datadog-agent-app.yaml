@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: datadog-agent
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://helm.datadoghq.com
+    targetRevision: 3.*
+    chart: datadog
+    helm:
+      releaseName: datadog
+      values: |
+        datadog:
+          apiKeyExistingSecret: datadog-secret
+          apiKeyExistingSecretKey: api-key
+          site: datadoghq.com
+
+          # APM — distributed tracing
+          apm:
+            portEnabled: true
+            port: 8126
+
+          # DogStatsD — métricas customizadas
+          dogstatsd:
+            useSocketVolume: false
+            useHostPort: true
+            port: 8125
+
+          # Service Map e runtime metrics
+          serviceMonitoring:
+            enabled: true
+
+          # Kubernetes integration
+          kubeStateMetricsEnabled: true
+          collectEvents: true
+
+          # Tags globais para todos os serviços
+          tags:
+            - "env:production"
+            - "project:togglemaster"
+
+          # Logs
+          logs:
+            enabled: true
+            containerCollectAll: true
+
+        agents:
+          rbac:
+            create: true
+
+        clusterAgent:
+          enabled: true
+          replicas: 1
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: datadog
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
