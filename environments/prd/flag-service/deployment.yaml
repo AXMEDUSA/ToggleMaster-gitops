@@ -56,3 +56,5 @@ spec:
               value: "8126"
             - name: DD_TRACE_SAMPLE_RATE
               value: "1"
+            - name: DD_TRACE_OTEL_ENABLED
+              value: "false"
