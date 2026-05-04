@@ -23,7 +23,7 @@ data:
           }
         ]
       },
-      "description": "ToggleMaster — Pipeline CI/CD, OTel Collector, Microsserviços, Cluster e Logs",
+      "description": "ToggleMaster — Pipeline CICD, OTel Collector, Microsservicos, Cluster e Logs",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
@@ -35,7 +35,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
           "id": 500,
-          "title": "🚀 CI/CD Pipeline — Deploy & Imagens",
+          "title": "CI/CD Pipeline — Deploy & Imagens",
           "type": "row"
         },
         {
@@ -273,7 +273,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 12 },
           "id": 600,
-          "title": "🔭 OpenTelemetry Collector — Saúde e Throughput",
+          "title": "OpenTelemetry Collector — Saúde e Throughput",
           "type": "row"
         },
         {
@@ -525,7 +525,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 31 },
           "id": 700,
-          "title": "⚡ Microsserviços — HTTP e Latência (via OTel)",
+          "title": "Microsserviços — HTTP e Latência (via OTel)",
           "type": "row"
         },
         {
@@ -616,7 +616,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 48 },
           "id": 100,
-          "title": "🖥️ Cluster AKS — Recursos",
+          "title": "Cluster AKS — Recursos",
           "type": "row"
         },
         {
@@ -853,7 +853,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 63 },
           "id": 200,
-          "title": "📦 Microsserviços — Recursos e Saúde",
+          "title": "Microsserviços — Recursos e Saúde",
           "type": "row"
         },
         {
@@ -981,7 +981,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 78 },
           "id": 800,
-          "title": "🔴 Redis & Azure Queue — Estado do Cache e Fila",
+          "title": "Redis & Azure Queue — Estado do Cache e Fila",
           "type": "row"
         },
         {
@@ -1041,7 +1041,7 @@ data:
           "collapsed": false,
           "gridPos": { "h": 1, "w": 24, "x": 0, "y": 86 },
           "id": 300,
-          "title": "📋 Logs em Tempo Real",
+          "title": "Logs em Tempo Real",
           "type": "row"
         },
         {
