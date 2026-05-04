@@ -306,7 +306,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "up{job=\"otel-collector\"}",
+              "expr": "up{job=\"kubernetes-pods\", pod=~\"otel-collector.*\"}",
               "legendFormat": "Collector",
               "refId": "A"
             }
@@ -406,13 +406,13 @@ data:
             "justifyMode": "center",
             "reduceOptions": { "calcs": ["lastNotNull"] }
           },
-          "title": "Logs Recebidos/s",
+          "title": "Métricas Exportadas/s",
           "type": "stat",
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(otelcol_receiver_accepted_logs_total[1m])",
-              "legendFormat": "logs/s",
+              "expr": "rate(otelcol_exporter_sent_metric_points_total[1m])",
+              "legendFormat": "metrics exported/s",
               "refId": "A"
             }
           ]
@@ -445,8 +445,8 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(otelcol_receiver_refused_spans_total[1m]) + rate(otelcol_exporter_send_failed_spans_total[1m])",
-              "legendFormat": "refused+failed/s",
+              "expr": "rate(otelcol_receiver_refused_spans_total[1m])",
+              "legendFormat": "refused/s",
               "refId": "A"
             }
           ]
@@ -466,7 +466,7 @@ data:
             "legend": { "displayMode": "list", "placement": "bottom" },
             "tooltip": { "mode": "multi" }
           },
-          "title": "OTel — Throughput de Spans, Métricas e Logs",
+          "title": "OTel — Throughput de Spans e Métricas",
           "type": "timeseries",
           "targets": [
             {
@@ -483,8 +483,8 @@ data:
             },
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(otelcol_receiver_accepted_logs_total[1m])",
-              "legendFormat": "logs/s",
+              "expr": "rate(otelcol_exporter_sent_metric_points_total[1m])",
+              "legendFormat": "metrics exported/s",
               "refId": "C"
             }
           ]
