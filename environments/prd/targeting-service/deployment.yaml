@@ -36,8 +36,6 @@ spec:
               value: "targeting-service"
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: "deployment.environment=production,service.namespace=togglemaster"
-            - name: OTEL_TRACES_EXPORTER
-              value: "none"
             - name: OTEL_METRICS_EXPORTER
               value: "otlp"
             - name: OTEL_LOGS_EXPORTER
