@@ -51,7 +51,7 @@ spec:
             - name: DD_TRACE_SAMPLE_RATE
               value: "1"
             - name: DD_TRACE_DEBUG
-              value: "true"
+              value: "false"
             - name: DD_TRACE_OTEL_ENABLED
               value: "false"
           resources:
