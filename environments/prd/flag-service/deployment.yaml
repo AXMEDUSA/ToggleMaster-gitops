@@ -10,10 +10,6 @@ spec:
       app: flag-service
   template:
     metadata:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8002"
-        prometheus.io/path: "/metrics"
       labels:
         app: flag-service
     spec:
@@ -55,6 +51,6 @@ spec:
             - name: DD_TRACE_SAMPLE_RATE
               value: "1"
             - name: DD_TRACE_DEBUG
-              value: "true"
+              value: "false"
             - name: DD_TRACE_OTEL_ENABLED
               value: "false"
