@@ -23,13 +23,58 @@ data:
           }
         ]
       },
-      "description": "ToggleMaster — Pipeline CICD, OTel Collector, Microsservicos, Cluster e Logs",
+      "description": "ToggleMaster — OTel Collector, Microsservicos, Cluster e Logs",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": null,
       "links": [],
       "panels": [
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 12
+          },
+          "id": 600,
+          "title": "OpenTelemetry Collector — Saúde e Throughput",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "DOWN"
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "UP"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": null
+                  },
                   {
                     "color": "green",
                     "value": 1
@@ -55,8 +100,6 @@ data:
               ]
             }
           },
-          "title": "OTel Collector — Status",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -67,7 +110,9 @@ data:
               "legendFormat": "Collector",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "OTel Collector — Status",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -79,7 +124,6 @@ data:
               "color": {
                 "mode": "thresholds"
               },
-              "unit": "short",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -96,7 +140,8 @@ data:
                     "value": 500
                   }
                 ]
-              }
+              },
+              "unit": "short"
             }
           },
           "gridPos": {
@@ -116,8 +161,6 @@ data:
               ]
             }
           },
-          "title": "Spans Recebidos/s",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -128,7 +171,9 @@ data:
               "legendFormat": "spans/s",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Spans Recebidos/s",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -140,7 +185,6 @@ data:
               "color": {
                 "mode": "thresholds"
               },
-              "unit": "short",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -157,7 +201,8 @@ data:
                     "value": 5000
                   }
                 ]
-              }
+              },
+              "unit": "short"
             }
           },
           "gridPos": {
@@ -177,8 +222,6 @@ data:
               ]
             }
           },
-          "title": "Métricas Recebidas/s",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -189,7 +232,9 @@ data:
               "legendFormat": "metrics/s",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Métricas Recebidas/s",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -201,7 +246,6 @@ data:
               "color": {
                 "mode": "thresholds"
               },
-              "unit": "short",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -218,7 +262,8 @@ data:
                     "value": 2000
                   }
                 ]
-              }
+              },
+              "unit": "short"
             }
           },
           "gridPos": {
@@ -238,8 +283,6 @@ data:
               ]
             }
           },
-          "title": "Métricas Exportadas/s",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -250,7 +293,9 @@ data:
               "legendFormat": "metrics exported/s",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Métricas Exportadas/s",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -262,7 +307,6 @@ data:
               "color": {
                 "mode": "thresholds"
               },
-              "unit": "short",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -275,7 +319,8 @@ data:
                     "value": 1
                   }
                 ]
-              }
+              },
+              "unit": "short"
             }
           },
           "gridPos": {
@@ -295,8 +340,6 @@ data:
               ]
             }
           },
-          "title": "Spans Recusados/s (erros export)",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -307,7 +350,9 @@ data:
               "legendFormat": "refused/s",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Spans Recusados/s (erros export)",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -344,8 +389,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "OTel — Throughput de Spans e Métricas",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -374,7 +417,9 @@ data:
               "legendFormat": "metrics exported/s",
               "refId": "C"
             }
-          ]
+          ],
+          "title": "OTel — Throughput de Spans e Métricas",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -411,8 +456,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "OTel Collector — Uso de Memória e CPU",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -432,7 +475,9 @@ data:
               "legendFormat": "CPU (millicores)",
               "refId": "B"
             }
-          ]
+          ],
+          "title": "OTel Collector — Uso de Memória e CPU",
+          "type": "timeseries"
         },
         {
           "collapsed": false,
@@ -481,8 +526,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Requisições HTTP por Serviço (req/s)",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -493,7 +536,9 @@ data:
               "legendFormat": "{{job}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Requisições HTTP por Serviço (req/s)",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -530,8 +575,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Latência HTTP p99 / p50 por Serviço (ms)",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -551,7 +594,9 @@ data:
               "legendFormat": "p50 · {{job}}",
               "refId": "B"
             }
-          ]
+          ],
+          "title": "Latência HTTP p99 / p50 por Serviço (ms)",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -588,8 +633,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Taxa de Erros HTTP 4xx/5xx por Serviço",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -600,7 +643,9 @@ data:
               "legendFormat": "error rate · {{job}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Taxa de Erros HTTP 4xx/5xx por Serviço",
+          "type": "timeseries"
         },
         {
           "collapsed": false,
@@ -662,8 +707,6 @@ data:
             "showThresholdLabels": false,
             "showThresholdMarkers": true
           },
-          "title": "CPU do Cluster (%)",
-          "type": "gauge",
           "targets": [
             {
               "datasource": {
@@ -674,7 +717,9 @@ data:
               "legendFormat": "CPU %",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "CPU do Cluster (%)",
+          "type": "gauge"
         },
         {
           "datasource": {
@@ -723,8 +768,6 @@ data:
             "showThresholdLabels": false,
             "showThresholdMarkers": true
           },
-          "title": "Memória do Cluster (%)",
-          "type": "gauge",
           "targets": [
             {
               "datasource": {
@@ -735,7 +778,9 @@ data:
               "legendFormat": "Memória %",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Memória do Cluster (%)",
+          "type": "gauge"
         },
         {
           "datasource": {
@@ -784,8 +829,6 @@ data:
             "showThresholdLabels": false,
             "showThresholdMarkers": true
           },
-          "title": "Disco do Cluster (%)",
-          "type": "gauge",
           "targets": [
             {
               "datasource": {
@@ -796,7 +839,9 @@ data:
               "legendFormat": "Disco %",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Disco do Cluster (%)",
+          "type": "gauge"
         },
         {
           "datasource": {
@@ -858,8 +903,6 @@ data:
               ]
             }
           },
-          "title": "Nodes Ativos",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -870,7 +913,9 @@ data:
               "legendFormat": "Nodes Ready",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Nodes Ativos",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -915,8 +960,6 @@ data:
               ]
             }
           },
-          "title": "Pods Reiniciando (1h)",
-          "type": "stat",
           "targets": [
             {
               "datasource": {
@@ -927,7 +970,9 @@ data:
               "legendFormat": "Restarts/1h",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Pods Reiniciando (1h)",
+          "type": "stat"
         },
         {
           "datasource": {
@@ -964,8 +1009,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "CPU por Node — Histórico",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -976,7 +1019,9 @@ data:
               "legendFormat": "{{instance}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "CPU por Node — Histórico",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -1013,8 +1058,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Memória por Node — Histórico",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1025,7 +1068,9 @@ data:
               "legendFormat": "{{instance}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Memória por Node — Histórico",
+          "type": "timeseries"
         },
         {
           "collapsed": false,
@@ -1074,8 +1119,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "CPU por Microsserviço (millicores)",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1086,7 +1129,9 @@ data:
               "legendFormat": "{{namespace}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "CPU por Microsserviço (millicores)",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -1123,8 +1168,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Memória por Microsserviço",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1135,7 +1178,9 @@ data:
               "legendFormat": "{{namespace}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Memória por Microsserviço",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -1147,6 +1192,7 @@ data:
               "color": {
                 "mode": "thresholds"
               },
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1159,8 +1205,7 @@ data:
                     "value": 1
                   }
                 ]
-              },
-              "mappings": []
+              }
             }
           },
           "gridPos": {
@@ -1180,8 +1225,6 @@ data:
             },
             "showUnfilled": true
           },
-          "title": "Pods Disponíveis por Serviço",
-          "type": "bargauge",
           "targets": [
             {
               "datasource": {
@@ -1192,7 +1235,9 @@ data:
               "legendFormat": "{{namespace}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Pods Disponíveis por Serviço",
+          "type": "bargauge"
         },
         {
           "datasource": {
@@ -1240,8 +1285,6 @@ data:
             },
             "showUnfilled": true
           },
-          "title": "Restarts por Pod (última 1h)",
-          "type": "bargauge",
           "targets": [
             {
               "datasource": {
@@ -1252,7 +1295,9 @@ data:
               "legendFormat": "{{namespace}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Restarts por Pod (última 1h)",
+          "type": "bargauge"
         },
         {
           "collapsed": false,
@@ -1301,8 +1346,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Redis — CPU Usage",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1313,7 +1356,9 @@ data:
               "legendFormat": "CPU (mcores)",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Redis — CPU Usage",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -1350,8 +1395,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Redis — Memória em Uso",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1362,7 +1405,9 @@ data:
               "legendFormat": "memória (bytes)",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Redis — Memória em Uso",
+          "type": "timeseries"
         },
         {
           "collapsed": false,
@@ -1398,8 +1443,6 @@ data:
             "sortOrder": "Descending",
             "wrapLogMessage": false
           },
-          "title": "Logs — Todos os Microsserviços (tempo real)",
-          "type": "logs",
           "targets": [
             {
               "datasource": {
@@ -1409,7 +1452,9 @@ data:
               "expr": "{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Logs — Todos os Microsserviços (tempo real)",
+          "type": "logs"
         },
         {
           "datasource": {
@@ -1433,8 +1478,6 @@ data:
             "sortOrder": "Descending",
             "wrapLogMessage": false
           },
-          "title": "Logs de Erro — ERROR / WARN / FATAL",
-          "type": "logs",
           "targets": [
             {
               "datasource": {
@@ -1444,7 +1487,9 @@ data:
               "expr": "{namespace=~\"flag-service-prd|auth-service-prd|evaluation-service-prd|analytics-service-prd|targeting-service-prd\"} |~ \"(?i)(error|warn|exception|fatal)\"",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Logs de Erro — ERROR / WARN / FATAL",
+          "type": "logs"
         },
         {
           "datasource": {
@@ -1480,8 +1525,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Volume de Logs por Serviço",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1492,7 +1535,9 @@ data:
               "legendFormat": "{{namespace}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Volume de Logs por Serviço",
+          "type": "timeseries"
         },
         {
           "datasource": {
@@ -1514,8 +1559,6 @@ data:
             "sortOrder": "Descending",
             "wrapLogMessage": false
           },
-          "title": "Logs OTel Collector",
-          "type": "logs",
           "targets": [
             {
               "datasource": {
@@ -1525,7 +1568,9 @@ data:
               "expr": "{namespace=\"observability\", pod=~\"otel-collector.*\"}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Logs OTel Collector",
+          "type": "logs"
         },
         {
           "datasource": {
@@ -1561,8 +1606,6 @@ data:
               "mode": "multi"
             }
           },
-          "title": "Volume de Erros por Serviço (logs/min)",
-          "type": "timeseries",
           "targets": [
             {
               "datasource": {
@@ -1573,7 +1616,9 @@ data:
               "legendFormat": "erros · {{namespace}}",
               "refId": "A"
             }
-          ]
+          ],
+          "title": "Volume de Erros por Serviço (logs/min)",
+          "type": "timeseries"
         }
       ],
       "refresh": "30s",
@@ -1583,8 +1628,7 @@ data:
         "togglemaster",
         "kubernetes",
         "observabilidade",
-        "otel",
-        "cicd"
+        "otel"
       ],
       "templating": {
         "list": []
@@ -1597,5 +1641,5 @@ data:
       "timezone": "America/Sao_Paulo",
       "title": "ToggleMaster — Saúde do Ecossistema",
       "uid": "togglemaster-ecosystem",
-      "version": 5
+      "version": 3
     }
