@@ -1,0 +1,82 @@
+name: Self-Healing - Auth Service
+
+on:
+  repository_dispatch:
+    types: [datadog-alert-auth-service]
+
+env:
+  NAMESPACE: auth-service-prd
+  DEPLOYMENT: auth-service
+
+jobs:
+  restart-auth-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log do alerta recebido
+        run: |
+          echo "Alerta: ${{ github.event.client_payload.alert_title }}"
+          echo "Status: ${{ github.event.client_payload.alert_status }}"
+          echo "Monitor: ${{ github.event.client_payload.monitor_url }}"
+
+      - name: Instalar kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configurar kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Reiniciar auth-service
+        run: |
+          kubectl rollout restart deployment/${{ env.DEPLOYMENT }} -n ${{ env.NAMESPACE }}
+
+      - name: Aguardar rollout completar
+        run: |
+          kubectl rollout status deployment/${{ env.DEPLOYMENT }} -n ${{ env.NAMESPACE }} --timeout=120s
+
+      - name: Verificar pods saudáveis
+        run: |
+          kubectl get pods -n ${{ env.NAMESPACE }} -l app=${{ env.DEPLOYMENT }}
+
+      - name: Notificar Discord - Self-Healing concluído
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": ":white_check_mark: Self-Healing Concluído",
+                "description": "O **auth-service** foi reiniciado automaticamente após alerta de taxa de erros 5xx > 5%.",
+                "color": 3066993,
+                "fields": [
+                  {"name": "Serviço", "value": "auth-service", "inline": true},
+                  {"name": "Namespace", "value": "auth-service-prd", "inline": true},
+                  {"name": "Ação", "value": "kubectl rollout restart", "inline": true},
+                  {"name": "Status", "value": "Rollout concluído com sucesso", "inline": false},
+                  {"name": "Monitor", "value": "[Ver no Datadog](https://app.datadoghq.com/monitors/279096570)", "inline": false}
+                ]
+              }]
+            }'
+
+      - name: Notificar Discord - Falha no Self-Healing
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": ":x: Self-Healing FALHOU — Intervenção Manual Necessária",
+                "description": "O restart automático do **auth-service** não funcionou. Verificar o cluster imediatamente.",
+                "color": 15158332,
+                "fields": [
+                  {"name": "Serviço", "value": "auth-service", "inline": true},
+                  {"name": "Namespace", "value": "auth-service-prd", "inline": true},
+                  {"name": "Monitor", "value": "[Ver no Datadog](https://app.datadoghq.com/monitors/279096570)", "inline": false}
+                ]
+              }]
+            }'
