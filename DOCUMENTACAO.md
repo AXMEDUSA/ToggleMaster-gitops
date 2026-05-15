@@ -436,12 +436,12 @@ Esse endpoint retorna HTTP 500 sempre que chamado. Ele só existe quando a vari�
 
 **Arquivo:** `generate-5xx-errors.sh` (na raiz do projeto)
 
-```bash
-#!/bin/bash
-# Gera erros HTTP 500 reais no auth-service via endpoint /simulate-error.
-# Habilita e desabilita ENABLE_ERROR_SIMULATION automaticamente.
+O script completo está no repositório AppRepo em:
+[`generate-5xx-errors.sh`](https://github.com/AXMEDUSA/ToggleMaster-AppRepo/blob/main/generate-5xx-errors.sh)
 
-bash /home/fxshell/Documentos/fxshell/site/app/generate-5xx-errors.sh 100
+Para executar (dentro da pasta do projeto):
+```bash
+bash generate-5xx-errors.sh 100
 ```
 
 **O que o script faz internamente:**
@@ -487,7 +487,7 @@ curl -s "https://api.datadoghq.com/api/v1/monitor/282578515" -H "DD-API-KEY: 090
 
 **Passo 2 — Rodar o script:**
 ```bash
-bash /home/fxshell/Documentos/fxshell/site/app/generate-5xx-errors.sh 100
+bash generate-5xx-errors.sh 100
 ```
 
 **Saída esperada:**
