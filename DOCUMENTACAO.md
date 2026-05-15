@@ -467,14 +467,23 @@ bash /home/fxshell/Documentos/fxshell/site/app/generate-5xx-errors.sh 100
 
 ### Executando o teste
 
+> ⚠️ **IMPORTANTE — Só rode o script se o monitor estiver em estado `OK`**
+>
+> O GitHub Actions só dispara na transição **OK → Alert**.
+> Se o monitor já estiver em Alert e você rodar o script, os erros chegam mas o workflow **não é acionado** — o alerta já estava disparado.
+>
+> ```
+> ✅ OK → gera 5xx → Alert  →  GitHub Actions DISPARA ✅
+> ❌ Alert → gera 5xx → Alert  →  GitHub Actions NÃO dispara ❌
+> ```
+>
+> Após cada teste, aguarde o monitor voltar para `OK` (~1 minuto) antes de rodar novamente.
+
 **Passo 1 — Verificar que o monitor está OK:**
 ```bash
-curl -s "https://api.datadoghq.com/api/v1/monitor/282578515" \
-  -H "DD-API-KEY: 09057c4d9225c2b72c600584a266e4fd" \
-  -H "DD-APPLICATION-KEY: ddapp_7xRyuzVM27tJT6qOObE8qQ45jGTH3btusK" \
-  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('overall_state'))"
-# Saída esperada: OK
+curl -s "https://api.datadoghq.com/api/v1/monitor/282578515" -H "DD-API-KEY: 09057c4d9225c2b72c600584a266e4fd" -H "DD-APPLICATION-KEY: ddapp_7xRyuzVM27tJT6qOObE8qQ45jGTH3btusK" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('overall_state'))"
 ```
+> Saída esperada: `OK` — se retornar `Alert`, aguarde ~1 minuto e rode o comando novamente.
 
 **Passo 2 — Rodar o script:**
 ```bash
