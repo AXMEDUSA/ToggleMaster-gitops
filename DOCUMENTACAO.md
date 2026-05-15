@@ -14,10 +14,11 @@
 5. [O Cluster Kubernetes (AKS)](#5-o-cluster-kubernetes-aks)
 6. [CI/CD — Do código ao deploy automático](#6-cicd--do-código-ao-deploy-automático)
 7. [GitOps com ArgoCD](#7-gitops-com-argocd)
-8. [Monitoramento com Datadog](#8-monitoramento-com-datadog)
-9. [Self-Healing — O sistema se cura sozinho](#9-self-healing--o-sistema-se-cura-sozinho)
-10. [Teste de Self-Healing — Passo a passo](#10-teste-de-self-healing--passo-a-passo)
-11. [Como verificar se tudo está funcionando](#11-como-verificar-se-tudo-está-funcionando)
+8. [ArgoCD — Evidências de Sincronização](#8-argocd--evidências-de-sincronização)
+9. [Monitoramento com Datadog](#9-monitoramento-com-datadog)
+10. [Self-Healing — O sistema se cura sozinho](#10-self-healing--o-sistema-se-cura-sozinho)
+11. [Teste de Self-Healing — Passo a passo](#11-teste-de-self-healing--passo-a-passo)
+12. [Como verificar se tudo está funcionando](#12-como-verificar-se-tudo-está-funcionando)
 
 ---
 
@@ -256,7 +257,37 @@ Para cada serviço, temos arquivos que descrevem:
 
 ---
 
-## 8. Monitoramento com Datadog
+## 8. ArgoCD — Evidências de Sincronização
+
+### Visão Geral dos Applications
+
+Todos os serviços e componentes de observabilidade sincronizados e saudáveis no ArgoCD:
+
+![ArgoCD — Visão Geral dos Applications](relatorio/prints/16-argocd-applications-visao-geral.png)
+
+### Namespace Observability (OTel Collector, Grafana, Loki, Prometheus, Promtail)
+
+![ArgoCD — Observability Tree](relatorio/prints/17-argocd-observability-tree.png)
+
+![ArgoCD — Observability Tree (detalhe)](relatorio/prints/19-argocd-observability-tree-2.png)
+
+### Loki — Sincronizado e Saudável
+
+![ArgoCD — Loki Tree](relatorio/prints/18-argocd-loki-tree.png)
+
+### Datadog — Agent e Cluster Agent
+
+![ArgoCD — Datadog Tree](relatorio/prints/21-argocd-datadog-tree.png)
+
+![ArgoCD — Datadog Agent Tree](relatorio/prints/22-argocd-datadog-agent-tree.png)
+
+### Prometheus / Targeting Service
+
+![ArgoCD — Prometheus Tree](relatorio/prints/20-argocd-prometheus-tree.png)
+
+---
+
+## 9. Monitoramento com Datadog
 
 ### O que é observabilidade?
 
@@ -341,7 +372,7 @@ sum(last_1m):(
 
 ---
 
-## 9. Self-Healing — O sistema se cura sozinho
+## 10. Self-Healing — O sistema se cura sozinho
 
 ### O conceito
 
@@ -411,7 +442,7 @@ jobs:
 
 ---
 
-## 10. Teste de Self-Healing — Passo a passo
+## 11. Teste de Self-Healing — Passo a passo
 
 ### Por que precisamos de um script de teste?
 
@@ -556,7 +587,7 @@ Script gerou: 400 erros HTTP 500 / 100 OK = 80% de taxa de erro
 
 ---
 
-## 11. Como verificar se tudo está funcionando
+## 12. Como verificar se tudo está funcionando
 
 ### Estado do cluster
 

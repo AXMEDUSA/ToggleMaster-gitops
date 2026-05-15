@@ -144,6 +144,11 @@ Este é o item mais importante. Roteiro:
 | Print do Self-Healing no GitHub Actions | ✅ Temos | `docs/prints/06-github-actions-selfhealing.png` |
 | Print do erro 500 no Datadog APM | ✅ Temos | `docs/prints/04-datadog-error-rate.png` |
 | Print dos pods reiniciando (Kubernetes) | ✅ Temos | `docs/prints/07-kubernetes-pods.png` |
+| Print ArgoCD — visão geral dos applications | ✅ Temos | `relatorio/prints/16-argocd-applications-visao-geral.png` |
+| Print ArgoCD — namespace observability (OTel/Grafana/Loki) | ✅ Temos | `relatorio/prints/17-argocd-observability-tree.png` |
+| Print ArgoCD — Loki tree | ✅ Temos | `relatorio/prints/18-argocd-loki-tree.png` |
+| Print ArgoCD — Datadog tree | ✅ Temos | `relatorio/prints/21-argocd-datadog-tree.png` |
+| Print ArgoCD — Datadog Agent tree | ✅ Temos | `relatorio/prints/22-argocd-datadog-agent-tree.png` |
 
 ### Justificativa Técnica (para o relatório)
 
@@ -195,6 +200,7 @@ O OTel Collector atua como roteador central: recebe dados das aplicações via p
 - [x] **Print do dashboard Grafana** — `08-grafana-dashboard-visao-geral.png` e `09-grafana-dashboard-logs-loki-metricas.png`
 - [x] **Print de trace distribuído no Datadog APM** — `10-datadog-apm-traces-lista.png` e `11-datadog-apm-trace-detalhe-auth-service.png`
 - [x] **Print do Service Map Datadog** — `14-datadog-service-map-completo.png`
+- [x] **Prints do ArgoCD** — applications, observability, loki, datadog, datadog-agent (`16` ao `22`)
 
 ### Pendências antes de gravar o vídeo
 1. ~~Tirar print do Grafana com dashboard aberto~~ ✅

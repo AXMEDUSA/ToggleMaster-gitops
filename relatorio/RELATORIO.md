@@ -262,7 +262,35 @@ jobs:
 
 ---
 
-## 5. CI/CD — Pipeline de Deploy
+## 5. GitOps — ArgoCD
+
+### 5.1 Visão Geral dos Applications
+
+![ArgoCD — Visão Geral dos Applications](prints/16-argocd-applications-visao-geral.png)
+
+### 5.2 ArgoCD — Namespace Observability (OTel, Grafana, Loki, Prometheus)
+
+![ArgoCD — Observability Tree](prints/17-argocd-observability-tree.png)
+
+![ArgoCD — Observability Tree (detalhe)](prints/19-argocd-observability-tree-2.png)
+
+### 5.3 ArgoCD — Loki
+
+![ArgoCD — Loki Tree](prints/18-argocd-loki-tree.png)
+
+### 5.4 ArgoCD — Datadog
+
+![ArgoCD — Datadog Tree](prints/21-argocd-datadog-tree.png)
+
+![ArgoCD — Datadog Agent Tree](prints/22-argocd-datadog-agent-tree.png)
+
+### 5.5 ArgoCD — Prometheus / Targeting Service
+
+![ArgoCD — Prometheus Tree](prints/20-argocd-prometheus-tree.png)
+
+---
+
+## 6. CI/CD — Pipeline de Deploy
 
 ### 5.1 Fluxo completo
 
@@ -302,7 +330,7 @@ spec:
 
 ---
 
-## 6. Justificativas Técnicas
+## 7. Justificativas Técnicas
 
 ### Por que Datadog e não New Relic?
 
@@ -327,7 +355,7 @@ spec:
 
 ---
 
-## 7. Script de Simulação de Incidente
+## 8. Script de Simulação de Incidente
 
 Para validar o Self-Healing em demonstrações, desenvolvemos o script `generate-5xx-errors.sh`:
 
@@ -344,7 +372,7 @@ O script:
 
 ---
 
-## 8. Conclusão
+## 9. Conclusão
 
 A Fase 4 do Tech Challenge foi implementada com sucesso, entregando:
 
