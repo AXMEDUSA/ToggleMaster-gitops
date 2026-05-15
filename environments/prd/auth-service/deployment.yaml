@@ -17,7 +17,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: auth-service
-          image: toggleacrfase4.azurecr.io/auth-service:664a021
+          image: toggleacrfase4.azurecr.io/auth-service:e3ef376
           ports:
             - containerPort: 8001
           envFrom:
