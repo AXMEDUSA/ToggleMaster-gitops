@@ -6,8 +6,8 @@
 POD_NAME="error-generator"
 NAMESPACE="auth-service-prd"
 DEPLOYMENT="auth-service"
-TOTAL=${1:-100}
-CONCURRENCY=20
+DURATION=${1:-300}  # duração em segundos (padrão: 5 minutos)
+CONCURRENCY=5
 
 AUTH_URL="http://auth-service.auth-service-prd.svc.cluster.local:80"
 
@@ -49,55 +49,60 @@ kubectl run "$POD_NAME" \
 kubectl wait pod "$POD_NAME" -n "$NAMESPACE" --for=condition=Ready --timeout=60s 2>/dev/null
 echo "      Pod pronto!"
 
-# ── [3] Gerar erros 5xx ───────────────────────────────────────────────────────
+# ── [3] Gerar erros 5xx em loop contínuo ─────────────────────────────────────
 echo ""
-echo "[3/3] Gerando $TOTAL ciclos (80% HTTP 500 / 20% HTTP 200)..."
-echo "      - /simulate-error → 500 x4 por ciclo"
-echo "      - /health         → 200 x1 por ciclo"
+echo "[3/3] Gerando erros contínuos por ${DURATION}s (80% HTTP 500 / 20% HTTP 200)..."
+echo "      - /simulate-error → 500"
+echo "      - /health         → 200"
 echo ""
 
 PYTHON_SCRIPT=$(cat <<PYEOF
-import urllib.request, urllib.error
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import urllib.request, urllib.error, time, sys
+from concurrent.futures import ThreadPoolExecutor
 
 AUTH_URL    = "${AUTH_URL}"
-TOTAL       = ${TOTAL}
+DURATION    = ${DURATION}
 CONCURRENCY = ${CONCURRENCY}
 
-requests_to_make = []
-for i in range(1, TOTAL + 1):
-    requests_to_make += [
-        ("error-500-1", AUTH_URL + "/simulate-error", {}, "GET", None),
-        ("error-500-2", AUTH_URL + "/simulate-error", {}, "GET", None),
-        ("error-500-3", AUTH_URL + "/simulate-error", {}, "GET", None),
-        ("error-500-4", AUTH_URL + "/simulate-error", {}, "GET", None),
-        ("health-ok",   AUTH_URL + "/health",          {}, "GET", None),
-    ]
-
 ok = 0; erros = 0
+start = time.time()
+ciclo = 0
 
-def do_req(label, url, headers, method, body):
+def do_req(url):
     try:
-        req = urllib.request.Request(url, data=body, headers=headers, method=method)
+        req = urllib.request.Request(url, method="GET")
         resp = urllib.request.urlopen(req, timeout=5)
-        return f"  {label:<14} HTTP {resp.status}  OK"
+        return resp.status
     except urllib.error.HTTPError as e:
-        return f"  {label:<14} HTTP {e.code}  ERRO"
-    except Exception as e:
-        return f"  {label:<14} FALHA — {e}"
+        return e.code
+    except:
+        return 0
+
+print(f"  Rodando por {DURATION}s — Ctrl+C para parar antes.", flush=True)
 
 with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
-    futures = [ex.submit(do_req, *args) for args in requests_to_make]
-    for f in as_completed(futures):
-        result = f.result()
-        print(result, flush=True)
-        if "OK" in result: ok += 1
-        else: erros += 1
+    while time.time() - start < DURATION:
+        ciclo += 1
+        urls = [
+            AUTH_URL + "/simulate-error",
+            AUTH_URL + "/simulate-error",
+            AUTH_URL + "/simulate-error",
+            AUTH_URL + "/simulate-error",
+            AUTH_URL + "/health",
+        ]
+        results = list(ex.map(do_req, urls))
+        for code in results:
+            if code == 200: ok += 1
+            else: erros += 1
+        elapsed = int(time.time() - start)
+        total = ok + erros
+        taxa = (erros / total * 100) if total else 0
+        print(f"  [{elapsed:3d}s] ciclo {ciclo:4d} — {erros} erros / {total} total — {taxa:.0f}% erro", flush=True)
+        time.sleep(0.5)
 
 total = ok + erros
 taxa = (erros / total * 100) if total else 0
 print(f"\n  Resumo: {ok} OK  |  {erros} erros  |  {total} total  |  {taxa:.1f}% de erros")
-print(f"  Aguardar ~5min para o monitor Datadog disparar e o self-healing agir.")
 PYEOF
 )
 
@@ -105,10 +110,7 @@ kubectl exec "$POD_NAME" -n "$NAMESPACE" -- python3 -c "$PYTHON_SCRIPT"
 
 echo ""
 echo "======================================"
-echo "  Verifique em 2-5 min:"
-echo "  https://app.datadoghq.com/monitors/282578515"
+echo "  Monitor: https://app.datadoghq.com/monitors/282578515"
 echo "======================================"
 echo ""
-echo "[!] Aguardando 5 minutos para o monitor Datadog avaliar a janela de erros..."
-sleep 300
 # cleanup roda via trap EXIT
