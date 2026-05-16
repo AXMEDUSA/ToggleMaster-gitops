@@ -15,10 +15,7 @@ kubectl get nodes
 kubectl get pods -A | grep -v Running  # deve retornar só Completed ou vazio
 
 # 2. Verificar que o monitor está em OK (obrigatório!)
-curl -s -G "https://api.datadoghq.com/api/v1/monitor/282578515" \
-  -H "DD-API-KEY: $DD_API_KEY" \
-  -H "DD-APPLICATION-KEY: $DD_APP_KEY" | python3 -m json.tool | grep '"overall_state"'
-# Esperado: "overall_state": "OK"
+curl -s -H "DD-API-KEY: $DD_API_KEY" -H "DD-APPLICATION-KEY: $DD_APP_KEY" "https://api.datadoghq.com/api/v1/monitor/282578515" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['overall_state'])"
 
 # 3. Abrir port-forward do Grafana em background
 kubectl port-forward svc/grafana -n observability 3000:80 &
@@ -114,8 +111,7 @@ kubectl get pods -n observability
 **3.4 — Fazer uma requisição ao vivo (opcional)**
 ```bash
 # Gerar uma requisição real ao auth-service
-kubectl run -it --rm test-req --image=curlimages/curl --restart=Never \
-  -n auth-service-prd -- curl -s http://auth-service:8001/health
+kubectl run -it --rm test-req --image=curlimages/curl --restart=Never -n auth-service-prd -- curl -s http://auth-service:8001/health
 ```
 - Mostrar o trace aparecendo no Datadog em tempo real
 
@@ -203,9 +199,7 @@ kubectl get pods -n auth-service-prd -w
 kubectl get pods -A
 
 # Status do monitor Datadog
-curl -s "https://api.datadoghq.com/api/v1/monitor/282578515" \
-  -H "DD-API-KEY: $DD_API_KEY" \
-  -H "DD-APPLICATION-KEY: $DD_APP_KEY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['overall_state'])"
+curl -s -H "DD-API-KEY: $DD_API_KEY" -H "DD-APPLICATION-KEY: $DD_APP_KEY" "https://api.datadoghq.com/api/v1/monitor/282578515" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['overall_state'])"
 
 # Rodar o script de Self-Healing
 bash generate-5xx-errors.sh 100
